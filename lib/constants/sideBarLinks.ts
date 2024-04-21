@@ -2,43 +2,43 @@ export const sideBarLinks = [
   {
     id: 1,
     name: 'Dashboard',
-    link: '/dashboard',
+    link: '/reactor/dashboard',
     icon: 'dashboard'
   },
   {
     id: 2,
     name: 'Courses',
-    link: '/course',
+    link: '/reactor/courses',
     icon: 'academic'
   },
   {
     id: 3,
     name: 'Activity',
-    link: '/activity',
+    link: '/reactor/activity',
     icon: 'chat'
   },
   {
     id: 4,
     name: 'Create',
-    link: '/create',
+    link: '/reactor/create',
     icon: 'documentPlus'
   },
   {
     id: 5,
     name: 'Browse',
-    link: '/browse',
+    link: '/reactor/browse',
     icon: 'eye'
   },
   {
     id: 6,
     name: 'Communities',
-    link: '/communities',
+    link: '/reactor/communities',
     icon: 'globe'
   },
   {
     id: 7,
     name: 'Profile',
-    link: '/profile',
+    link: '/reactor/profile',
     icon: 'user'
   }
 ]

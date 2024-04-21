@@ -6,14 +6,13 @@ interface IReactorLayout {
   children: ReactNode
 }
 
-const ReactorLayout = ({children}: IReactorLayout) => {
+const ReactorLayout = ({ children }: IReactorLayout) => {
   return (
-    <main className='flex flex-row'>
+    <main className='flex flex-row text-jet dark:text-offWhite'>
       <SideBar />
-      <section className='main-container'>
-        <div className='w-full max-w-4xl'>{children}</div>
+      <section className='w-full'>
+        <div className=''>{children}</div>
       </section>
-      {/* @ts-ignore */}
       <BotBarMobileOnly />
     </main>
   )

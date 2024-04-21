@@ -15,7 +15,7 @@ const Logo = ({ href, image, text }: ILogoProps) => {
         className='flex flex-row items-center gap-4 text-2xl font-bold uppercase tracking-widest'
       >
         <Image src={image} alt={text} width={40} height={40} />
-        <p>{text}</p>
+        <p className='text-primary'>{text}</p>
       </Link>
     </div>
   )

@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <header className='z-10 p-6'>
       <nav className='flex items-center justify-between'>
-        <Logo text='Classroom Reactor' href='/reactor' image='/logoExample.png' />
+        <Logo text='Classroom Reactor' href='/reactor' image='/LogoDesignV2 - AltColors.png' />
         <div className='flex items-center justify-between gap-3'>
           <div className=''>
             <SignedOut>
