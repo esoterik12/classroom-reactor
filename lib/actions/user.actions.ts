@@ -1,39 +1,39 @@
-"use server";
-import { FilterQuery, SortOrder } from "mongoose";
-import { revalidatePath } from "next/cache";
-import User from "../models/user.models";
-import Course from "../models/course.model";
-import { connectToDB } from "../mongoose";
+'use server'
+import { FilterQuery, SortOrder } from 'mongoose'
+import { revalidatePath } from 'next/cache'
+import User from '../models/user.models'
+import Course from '../models/course.model'
+import { connectToDB } from '../mongoose'
+import { redirect } from 'next/navigation'
 
 export async function fetchUser(userId: string) {
   try {
-    connectToDB();
+    connectToDB()
 
-    return await User.findOne({ id: userId });
+    return await User.findOne({ id: userId })
   } catch (error: any) {
-    throw new Error(`Failed to fetch user: ${error.message}`);
+    throw new Error(`Failed to fetch user: ${error.message}`)
   }
 }
 
 interface Params {
-  userId: string;
-  username: string;
-  name: string;
-  bio: string;
-  image: string | null;
-  path: string;
+  userId: string
+  username: string
+  name: string
+  bio: string
+  image: string | null
+  path: string
 }
 
 export async function updateUser({
   userId,
   bio,
   name,
-  path,
   username,
-  image,
+  image
 }: Params): Promise<void> {
   try {
-    connectToDB();
+    connectToDB()
     console.log('Trying to update user')
     await User.findOneAndUpdate(
       { id: userId },
@@ -42,15 +42,14 @@ export async function updateUser({
         name,
         bio,
         image,
-        onboarded: true,
+        onboarded: true
       },
       { upsert: true }
-    );
-
-    if (path === "/profile/edit") {
-      revalidatePath(path);
-    }
+    )
+    revalidatePath(`/reactor/profile/${userId}`) // Revalidate to refresh profile after edit made
   } catch (error: any) {
-    throw new Error(`Failed to create/update user: ${error.message}`);
+    throw new Error(`Failed to create/update user: ${error.message}`)
+  } finally {
+    redirect(`/reactor/profile/${userId}`)
   }
 }

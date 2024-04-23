@@ -4,7 +4,7 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputField } from './InputField'
-import { redirect, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 // Zod validation imports:
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,7 +15,6 @@ import { IUserProfile } from '@/lib/types'
 import { updateUser } from '@/lib/actions/user.actions'
 import { TextareaInput } from './TextareaInput'
 import SelectIcon from '../icons/SelectIcon'
-import { revalidatePath } from 'next/cache'
 
 export default function AccountProfileForm({ user }: { user: IUserProfile }) {
   const [serverResponse, setServerResponse] = useState<string | null>(null)
@@ -26,8 +25,7 @@ export default function AccountProfileForm({ user }: { user: IUserProfile }) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    getValues
+    formState: { errors, isSubmitted }
   } = useForm<IAccountProfileForm>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -40,30 +38,27 @@ export default function AccountProfileForm({ user }: { user: IUserProfile }) {
     }
   })
 
-  async function onSubmit() {
-    const values = getValues()
+  async function onSubmit(data: IAccountProfileForm) {
     setLoading(true)
-
+    console.log('user.id', user.id)
     try {
       await updateUser({
         userId: user.id,
-        username: values.username,
-        name: values.name,
-        bio: values.bio,
+        username: data.username,
+        name: data.name,
+        bio: data.bio,
         image: imageUrl,
         path: pathname
       })
       console.log('Update user success!')
-      revalidatePath(`/reactor/profile/${user.id}`) // Revalidate to refresh profile after edit made
     } catch (error) {
       console.log('server action error: ', error)
     } finally {
       setLoading(false)
-      redirect(`/reactor/profile/${user.id}`)
     }
   }
 
-  if (loading) {
+  if (loading || isSubmitted) {
     return (
       <div className='container'>
         <p>Loading...</p>
@@ -80,92 +75,101 @@ export default function AccountProfileForm({ user }: { user: IUserProfile }) {
   }
 
   return (
-    <div className='container py-4 custom-shadow '>
-      <h1 className='text-xl font-semibold'>Complete Your Profile</h1>
-      <form className='m-2 flex flex-col' noValidate action={onSubmit}>
-        {/* Name Field */}
-        <div>
-          <InputField
-            type='text'
-            id='name'
-            label='Your Name'
-            placeholder='Enter your name'
-            inputClasses='w-full max-w-[450px]'
-            {...register('name')}
-            error={errors.name}
-          />
-        </div>
-        {/* Username field */}
-        <div>
-          <InputField
-            type='text'
-            id='username'
-            label='Your Username'
-            placeholder='Enter your username'
-            inputClasses='w-full max-w-[450px]'
-            {...register('username')}
-            error={errors.username}
-          />
-        </div>
-        {/* Image field */}{' '}
-        <div className='mb-4 flex flex-col min-h-20'>
-          <p className='ml-1 font-medium text'>Profile Picture</p>
-
-          {!imageUrl ? (
-            <div className='flex flex-col'>
-              <UploadButton
-                className='p-1'
-                appearance={{
-                  container: 'flex flex-row justify-start gap-4',
-                  button:
-                    'text-jet bg-secondary hover:bg-secondaryLight transition-colors transition-300'
-                }}
-                endpoint='imageUploader'
-                onClientUploadComplete={res => {
-                  // Do something with the response
-                  setImageUrl(res[0].url)
-                  console.log('Files: ', res[0].url)
-                }}
-                onUploadError={(error: Error) => {
-                  // Do something with the error.
-                  console.log(`Error uploading image! ${error.message}`)
-                }}
+    <>
+      {!isSubmitted && (
+        <div className='container py-4 custom-shadow '>
+          <h1 className='text-xl font-semibold'>Complete Your Profile</h1>
+          <form className='m-2 flex flex-col' onSubmit={handleSubmit(onSubmit)}>
+            {/* Name Field */}
+            <div>
+              <InputField
+                type='text'
+                id='name'
+                label='Your Name'
+                placeholder='Enter your name'
+                inputClasses='w-full max-w-[450px]'
+                {...register('name')}
+                error={errors.name}
               />
             </div>
-          ) : (
-            <div className='bg-mint flex flex-row gap-2 rounded-l p-2 text-center'>
-              <SelectIcon
-                iconClasses='h-6 w-6 text-green'
-                iconSelection='check'
+            {/* Username field */}
+            <div>
+              <InputField
+                type='text'
+                id='username'
+                label='Your Username'
+                placeholder='Enter your username'
+                inputClasses='w-full max-w-[450px]'
+                {...register('username')}
+                error={errors.username}
               />
-              <p className=''>Image Uploaded</p>
-              <button onClick={() => setImageUrl(null)} className='ml-4'>
-                Reset Image
+            </div>
+            {/* Image field */}{' '}
+            <div className='mb-4 flex min-h-20 flex-col'>
+              <p className='text ml-1 font-medium text-gray-700'>
+                Profile Picture
+              </p>
+
+              {!imageUrl ? (
+                <div className='flex flex-col'>
+                  <UploadButton
+                    className='p-1'
+                    appearance={{
+                      container: 'flex flex-row justify-start gap-4',
+                      button:
+                        'text-jet bg-secondary-500 hover:bg-secondaryLight transition-colors transition-300'
+                    }}
+                    endpoint='imageUploader'
+                    onClientUploadComplete={res => {
+                      // Do something with the response
+                      setImageUrl(res[0].url)
+                      console.log('Files: ', res[0].url)
+                    }}
+                    onUploadError={(error: Error) => {
+                      // Do something with the error.
+                      console.log(`Error uploading image! ${error.message}`)
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className='bg-mint flex flex-row gap-2 rounded-l p-2 text-center'>
+                  <SelectIcon
+                    iconClasses='h-6 w-6 text-green-500'
+                    iconSelection='check'
+                  />
+                  <p className=''>Image Uploaded</p>
+                  <button
+                    onClick={() => setImageUrl(null)}
+                    className='ml-4 transition-colors duration-300 hover:text-jet-100'
+                  >
+                    Reset Image
+                  </button>
+                </div>
+              )}
+            </div>
+            {/* Bio Section */}
+            <div>
+              <TextareaInput
+                id='bio'
+                label='Your Bio'
+                placeholder='Enter something about yourself!'
+                inputClasses='w-full'
+                {...register('bio')}
+                error={errors.bio}
+              />
+            </div>
+            <div>
+              <button
+                type='submit'
+                className='transition-300 text-jet ml-1 mt-4 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
+                disabled={false}
+              >
+                Update Profile
               </button>
             </div>
-          )}
+          </form>
         </div>
-        {/* Bio Section */}
-        <div>
-          <TextareaInput
-            id='bio'
-            label='Your Bio'
-            placeholder='Enter something about yourself!'
-            inputClasses='w-full'
-            {...register('bio')}
-            error={errors.bio}
-          />
-        </div>
-        <div>
-          <button
-            type='submit'
-            className='transition-300 ml-1 mt-4 rounded-md bg-secondary p-2 px-4 text-jet transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
-            disabled={false}
-          >
-            Update Profile
-          </button>
-        </div>
-      </form>
-    </div>
+      )}
+    </>
   )
 }

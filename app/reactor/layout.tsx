@@ -8,7 +8,7 @@ interface IReactorLayout {
 
 const ReactorLayout = ({ children }: IReactorLayout) => {
   return (
-    <main className='flex flex-row text-jet dark:text-offWhite'>
+    <main className='flex flex-row text-jet dark:text-offWhite-500'>
       <SideBar />
       <section className='w-full'>
         <div className=''>{children}</div>

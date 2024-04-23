@@ -36,7 +36,7 @@ const InputField: React.ForwardRefExoticComponent<
   ) => (
     <div>
       {label && (
-        <label htmlFor={id} className={`${labelClasses} block text-gray-500 p-1 font-medium`}>
+        <label htmlFor={id} className={`${labelClasses} block text-gray-700 p-1 font-medium`}>
           {label}
         </label>
       )}

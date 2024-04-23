@@ -13,3 +13,8 @@ export interface IUserProfile {
   bio: string;
   image: string;
 }
+
+export interface ICryptogram {
+  title: string
+  text: string
+}

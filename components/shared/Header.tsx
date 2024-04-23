@@ -1,9 +1,7 @@
 import React from 'react'
 import {
   OrganizationSwitcher,
-  SignedIn,
   SignedOut,
-  SignInButton,
   UserButton
 } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
