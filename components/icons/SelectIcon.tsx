@@ -28,6 +28,10 @@ import IconInstagram from './social-icons/IconInstagram'
 import IconHome from './IconHome'
 import IconSoundcloud from './social-icons/IconSoundcloud'
 import IconGlobe from './IconGlobe'
+import IconReply from './IconReply'
+import IconHeart from './IconHeart'
+import IconDelete from './IconDelete'
+import IconShare from './IconShare'
 
 interface ISelectIconProps {
   iconSelection: string
@@ -124,6 +128,18 @@ export default function SelectIcon({
       break
     case 'dashboard':
       icon = <IconDashboard classes={iconClasses} />
+      break
+    case 'reply':
+      icon = <IconReply classes={iconClasses} />
+      break
+    case 'heart':
+      icon = <IconHeart classes={iconClasses} />
+      break
+    case 'delete':
+      icon = <IconDelete classes={iconClasses} />
+      break
+    case 'share':
+      icon = <IconShare classes={iconClasses} />
       break
     default:
       icon = <p className='text-red-500'>Error: No Icon Found</p>

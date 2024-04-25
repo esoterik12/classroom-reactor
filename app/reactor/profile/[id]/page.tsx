@@ -2,6 +2,7 @@ import { currentUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import { fetchUser } from '@/lib/actions/user.actions'
 import ProfileHeader from '@/components/shared/ProfileInfo'
+import ShowCreates from '@/components/shared/ShowCreates'
 
 export default async function Page({ params }: { params: { id: string } }) {
   // Getting Clerk user data
@@ -32,6 +33,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         imgUrl={userInfo.image}
         bio={userInfo.bio}
       />
+      <ShowCreates userId={userInfo._id} username={userInfo.username} userImage={user.imageUrl} />
     </main>
   )
 }

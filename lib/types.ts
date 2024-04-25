@@ -14,7 +14,38 @@ export interface IUserProfile {
   image: string;
 }
 
+// Form  types:
 export interface ICryptogram {
   title: string
   text: string
+}
+
+// Dummy not used
+interface Quiz {
+  questions: Array<{
+    question: string;
+    options: string[];
+    answer: number;
+  }>;
+}
+
+// Dummy not used
+interface Activity {
+  summary: string;
+  duration: number;
+}
+
+type CreateContent = ICryptogram | Quiz | Activity;
+
+export interface IPostCreate {
+  content: CreateContent
+  createType: string
+  creator: string
+  course: string | null
+  creatorUsername: string
+  creatorImage: string
+}
+
+export interface IComment {
+  commentText: string
 }

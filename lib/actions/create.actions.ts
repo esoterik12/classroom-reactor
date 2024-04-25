@@ -1,10 +1,11 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { connectToDB } from '../mongoose'
-
+import { IPostCreate } from '../types'
 import User from '../models/user.models'
 import Create from '../models/create.model'
 import Course from '../models/course.model'
+import Comment from '../models/comment.model'
 
 export async function fetchCreate(pageNumber = 1, pageSize = 20) {
   await connectToDB()
@@ -13,11 +14,11 @@ export async function fetchCreate(pageNumber = 1, pageSize = 20) {
   const skipAmount = (pageNumber - 1) * pageSize
 
   const createQuery = Create.find({ parentId: { $in: [null, undefined] } })
-    .sort({ createAt: 'desc' })
+    .sort({ createdAt: 'desc' })
     .skip(skipAmount)
     .limit(pageSize)
     .populate({
-      path: 'author',
+      path: 'creator',
       model: User
     })
     .populate({
@@ -44,16 +45,14 @@ export async function fetchCreate(pageNumber = 1, pageSize = 20) {
   return { creates, isNext }
 }
 
-interface IPostCreate {
-  text: string
-  createType: string
-  title: string
-  creator: string
-  course: string | null
-  path: string
-}
-
-export async function postCreate({ text, createType, title, creator, course, path }: IPostCreate) {
+export async function postCreate({
+  content,
+  createType,
+  creator,
+  course,
+  creatorUsername,
+  creatorImage
+}: IPostCreate) {
   try {
     await connectToDB()
 
@@ -61,11 +60,12 @@ export async function postCreate({ text, createType, title, creator, course, pat
     const courseIdObject = await Course.findOne({ id: course }, { _id: 1 })
 
     const postedCreate = await Create.create({
-      text,
-      title,
+      content,
       creator,
       createType,
-      course: courseIdObject // Assign communityId if provided, or leave it null for personal account
+      course: courseIdObject, // Assign communityId if provided, or leave it null for personal account
+      creatorUsername,
+      creatorImage
     })
 
     // Update User model
@@ -84,4 +84,46 @@ export async function postCreate({ text, createType, title, creator, course, pat
   } catch (error: any) {
     throw new Error(`Failed to create thread: ${error.message}`)
   }
+}
+
+// UNFINISHED
+export async function deleteCreate(id: string, path: string): Promise<void> {
+  try {
+    connectToDB()
+
+    const mainCreate = await Create.findById(id).populate('creator course')
+
+    if (!mainCreate) {
+      throw new Error('Create not found.')
+    }
+
+    // Find descendants or children
+  } catch (error) {}
+}
+
+export async function addCreateComment(
+  createId: string,
+  commentText: string,
+  userId: string,
+  path: string
+) {
+  connectToDB()
+
+  try {
+    const originalCreate = await Create.findById(createId)
+
+    if (!originalCreate) {
+      throw new Error('Create not found.')
+    }
+
+    const savedCommentCreate = new Comment({
+      text: commentText,
+      author: userId,
+      parentId: createId
+    })
+
+    originalCreate.children.push(savedCommentCreate._id)
+
+    await originalCreate.save()
+  } catch (error) {}
 }

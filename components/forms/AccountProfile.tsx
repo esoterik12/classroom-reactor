@@ -15,6 +15,7 @@ import { IUserProfile } from '@/lib/types'
 import { updateUser } from '@/lib/actions/user.actions'
 import { TextareaInput } from './TextareaInput'
 import SelectIcon from '../icons/SelectIcon'
+import Loading from '../shared/Loading'
 
 export default function AccountProfileForm({ user }: { user: IUserProfile }) {
   const [serverResponse, setServerResponse] = useState<string | null>(null)
@@ -60,8 +61,9 @@ export default function AccountProfileForm({ user }: { user: IUserProfile }) {
 
   if (loading || isSubmitted) {
     return (
-      <div className='container'>
-        <p>Loading...</p>
+      <div className='flex flex-col items-center justify-center align-middle pt-24'>
+        <p className='m-6'>Updating...</p>
+        <Loading />
       </div>
     )
   }

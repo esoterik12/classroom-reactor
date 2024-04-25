@@ -1,18 +1,21 @@
 import mongoose from 'mongoose'
 
 const createSchema = new mongoose.Schema({
-  text: {
-    type: String,
-    required: true
-  },
-  title: {
-    type: String,
+  content: {
+    type: mongoose.Schema.Types.Mixed,
     required: true
   },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  creatorUsername: {
+    type: String,
+    required: true,
+  },
+  creatorImage: {
+    type: String,
   },
   course: {
     type: mongoose.Schema.Types.ObjectId,

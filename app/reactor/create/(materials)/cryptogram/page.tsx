@@ -1,17 +1,30 @@
-import CreateCryptogram from "@/components/forms/CreateCryptogram";
-import { currentUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import { fetchUser } from "@/lib/actions/user.actions";
+import CreateCryptogram from '@/components/forms/CreateCryptogram'
+import { currentUser } from '@clerk/nextjs'
+import { redirect } from 'next/navigation'
+import { fetchUser } from '@/lib/actions/user.actions'
+import CreateForm from '@/components/forms/CreateForm'
+import { cryptogramSchema } from '@/lib/zod/materials.schema'
 
 export default async function Page() {
-  const user = await currentUser();
-  if (!user) return null;
+  const user = await currentUser()
+  if (!user) return null
 
   // fetch organization list created by user
-  const userInfo = await fetchUser(user.id);
-  if (!userInfo?.onboarded) redirect("/onboarding");
+  const userInfo = await fetchUser(user.id)
+  if (!userInfo?.onboarded) redirect('/onboarding')
+    console.log('userInfo', userInfo)
 
-  return <main className=''>
-    <CreateCryptogram userId={userInfo._id}/>
-  </main>
+
+  return (
+    <main className=''>
+      <CreateCryptogram userId={userInfo._id.toString()} 
+       username={userInfo.username}
+       userImage={userInfo.image}
+      />
+      {/* <CreateForm
+        userId={userInfo._id.toString()}
+        initialFormValues={{ title: '', text: '' }}
+      /> */}
+    </main>
+  )
 }

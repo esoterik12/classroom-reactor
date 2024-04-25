@@ -9,19 +9,26 @@ import { usePathname } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { cryptogramSchema } from '@/lib/zod/materials.schema'
 import { ICryptogram } from '@/lib/types'
+import Loading from '../shared/Loading'
 import CreateCardPopover from '@/components/shared/CreateCardPopover'
 import { TextareaInput } from '@/components/forms/TextareaInput'
 import { postCreate } from '@/lib/actions/create.actions'
+import { ZodSchema } from 'zod'
 
-export default function CreateCryptogram({
-  userId,
-  username,
-  userImage
-}: {
+interface ICreateForm<T> {
+  initialFormValues: T
   userId: string
-  username: string
-  userImage: string
-}) {
+}
+
+interface FormData {
+  title: string
+  text: string
+}
+
+function CreateForm<T extends FormData>({
+  initialFormValues,
+  userId
+}: ICreateForm<T>) {
   const [serverResponse, setServerResponse] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
@@ -30,17 +37,14 @@ export default function CreateCryptogram({
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<ICryptogram>({
+  } = useForm<FormData>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     resolver: zodResolver(cryptogramSchema),
-    defaultValues: {
-      title: '',
-      text: ''
-    }
+    defaultValues: initialFormValues
   })
 
-  async function onSubmit(data: ICryptogram) {
+  async function onSubmit(data: FormData) {
     setLoading(true)
 
     try {
@@ -48,9 +52,7 @@ export default function CreateCryptogram({
         content: { text: data.text, title: data.title },
         creator: userId,
         createType: 'cryptogram',
-        course: 'CC11',
-        creatorUsername: username,
-        creatorImage: userImage
+        course: 'CC11'
       })
       console.log('Add create success!')
     } catch (error) {
@@ -62,8 +64,9 @@ export default function CreateCryptogram({
 
   if (loading) {
     return (
-      <div className='container'>
-        <p>Loading...</p>
+      <div className='flex flex-col items-center justify-center pt-24 align-middle'>
+        <p className='m-6'>Loading...</p>
+        <Loading />
       </div>
     )
   }
@@ -136,3 +139,5 @@ export default function CreateCryptogram({
     </div>
   )
 }
+
+export default CreateForm
