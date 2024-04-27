@@ -14,10 +14,11 @@ export default async function Page() {
   if (!userInfo?.onboarded) redirect('/onboarding')
     console.log('userInfo', userInfo)
 
+  console.log('user.id', userInfo.id)
 
   return (
     <main className=''>
-      <CreateCryptogram userId={userInfo._id.toString()} 
+      <CreateCryptogram userId={userInfo._id} 
        username={userInfo.username}
        userImage={userInfo.image}
       />

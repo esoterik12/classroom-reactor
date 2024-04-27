@@ -1,10 +1,11 @@
-import { fetchUserCreates } from '@/lib/actions/user.actions'
+// Single bar/card that shows a summary of a Create item
 import Image from 'next/image'
 import Link from 'next/link'
 import SelectIcon from '../icons/SelectIcon'
 import { formatDateString } from '@/lib/utils'
 
 interface ShowCreatesItem {
+  createId: string
   userId: string
   username: string
   userImage: string
@@ -14,6 +15,7 @@ interface ShowCreatesItem {
 }
 
 const ShowCreatesItem = async ({
+  createId,
   userId,
   username,
   userImage,
@@ -21,8 +23,6 @@ const ShowCreatesItem = async ({
   createdAt,
   createType
 }: ShowCreatesItem) => {
-  const result = await fetchUserCreates(userId)
-  console.log('result', result)
   let isComment = true // Placeholder
 
   return (
@@ -52,11 +52,14 @@ const ShowCreatesItem = async ({
 
           <div className='flex flex-1 flex-row justify-between'>
             <div className='mb-3 flex flex-col'>
-              <p className='text-md mt-2 text-gray-700'>
-                <span className='font-bold'>{title}</span> - {createType}
-              </p>
+              <Link href={`/reactor/createview/cryptogram/${createId}`}>
+                <p className='text-md mt-2 text-gray-700'>
+                  <span className='font-bold'>{title}</span> - {createType}
+                </p>
+              </Link>
               <p className='mt-1 text-sm text-gray-500'>
-                Created by: <span className='font-bold'>{username}</span> - {formatDateString(createdAt)}
+                Created by: <span className='font-bold'>{username}</span> -{' '}
+                {formatDateString(createdAt)}
               </p>
             </div>
 

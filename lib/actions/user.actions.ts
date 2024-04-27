@@ -18,6 +18,18 @@ export async function fetchUser(userId: string) {
   }
 }
 
+export async function fetchUserJSON(userId: string) {
+  try {
+    connectToDB()
+
+    const userResult = await User.findOne({ id: userId })
+
+    return JSON.stringify(userResult)
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user: ${error.message}`)
+  }
+}
+
 interface Params {
   userId: string
   username: string

@@ -15,9 +15,13 @@ import { TextareaInput } from '@/components/forms/TextareaInput'
 import { postCreate } from '@/lib/actions/create.actions'
 import { ZodSchema } from 'zod'
 
+// Posisbly not fully updated since changes to CreateCryptogram.tsx
+
 interface ICreateForm<T> {
   initialFormValues: T
-  userId: string
+  userId: string,
+  username: string
+  userImage: string
 }
 
 interface FormData {
@@ -27,7 +31,9 @@ interface FormData {
 
 function CreateForm<T extends FormData>({
   initialFormValues,
-  userId
+  userId,
+  username,
+  userImage
 }: ICreateForm<T>) {
   const [serverResponse, setServerResponse] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -52,7 +58,9 @@ function CreateForm<T extends FormData>({
         content: { text: data.text, title: data.title },
         creator: userId,
         createType: 'cryptogram',
-        course: 'CC11'
+        course: 'CC11',
+        creatorUsername: username,
+        creatorImage: userImage
       })
       console.log('Add create success!')
     } catch (error) {

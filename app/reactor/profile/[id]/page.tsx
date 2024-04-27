@@ -33,7 +33,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         imgUrl={userInfo.image}
         bio={userInfo.bio}
       />
-      <ShowCreates userId={userInfo._id} username={userInfo.username} userImage={user.imageUrl} />
+      <ShowCreates userId={userInfo._id.toString()} username={userInfo.username} userImage={user.imageUrl} />
     </main>
   )
 }

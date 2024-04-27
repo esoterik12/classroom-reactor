@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import SelectIcon from '../icons/SelectIcon'
 import { formatDateString } from '@/lib/utils'
+import DeleteThread from '../forms/DeleteThread'
 
 interface IShowCreates {
   userId: string
@@ -46,9 +47,11 @@ const ShowCreates = async ({ userId, username, userImage }: IShowCreates) => {
 
               <div className='flex flex-1 flex-row justify-between'>
                 <div className='mb-3 flex flex-col'>
+                  <Link href={`/reactor/createview/${item.createType}/${item._id}`}>
                   <p className='text-md mt-2 text-gray-700'>
                     <span className='font-bold'>{item.content.title}</span> - {item.createType}
                   </p>
+                  </Link>
                   <p className='mt-1 text-sm text-gray-500'>
                     {formatDateString(item.createdAt)}
                   </p>
@@ -58,7 +61,7 @@ const ShowCreates = async ({ userId, username, userImage }: IShowCreates) => {
                   <SelectIcon iconClasses='h-6 w-6' iconSelection='heart' />
                   <SelectIcon iconClasses='h-6 w-6' iconSelection='reply' />
                   <SelectIcon iconClasses='h-6 w-6' iconSelection='share' />
-                  <SelectIcon iconClasses='h-6 w-6' iconSelection='delete' />
+                  <DeleteThread createId={item._id.toString()}/>
                 </div>
               </div>
             </div>

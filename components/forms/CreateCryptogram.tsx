@@ -22,6 +22,7 @@ export default function CreateCryptogram({
   username: string
   userImage: string
 }) {
+  // Incorporate error to show server error if necessary
   const [serverResponse, setServerResponse] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
@@ -46,7 +47,7 @@ export default function CreateCryptogram({
     try {
       await postCreate({
         content: { text: data.text, title: data.title },
-        creator: userId,
+        creator: userId, 
         createType: 'cryptogram',
         course: 'CC11',
         creatorUsername: username,
@@ -68,6 +69,7 @@ export default function CreateCryptogram({
     )
   }
 
+  // Unused now
   if (serverResponse) {
     return (
       <div className='container'>

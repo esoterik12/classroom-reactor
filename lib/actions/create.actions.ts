@@ -45,6 +45,19 @@ export async function fetchCreate(pageNumber = 1, pageSize = 20) {
   return { creates, isNext }
 }
 
+export async function fetchSingleCreate(createId: string) {
+  await connectToDB()
+
+  const fetchedCreate = await Create.findById(createId).populate({
+    path: 'children',
+    model: 'Comment', // Ensure the model name matches what's used in your DB setup
+  })
+
+  console.log('fetchedCreateWIthComments', fetchedCreate)
+
+  return fetchedCreate
+}
+
 export async function postCreate({
   content,
   createType,
@@ -73,13 +86,6 @@ export async function postCreate({
       $push: { creates: postedCreate._id }
     })
 
-    if (courseIdObject) {
-      // Update Community model
-      await Course.findByIdAndUpdate(courseIdObject, {
-        $push: { threads: postedCreate._id }
-      })
-    }
-
     // revalidatePath(path)
   } catch (error: any) {
     throw new Error(`Failed to create thread: ${error.message}`)
@@ -97,19 +103,31 @@ export async function deleteCreate(id: string, path: string): Promise<void> {
       throw new Error('Create not found.')
     }
 
+    await Create.deleteMany({ _id: { $in: mainCreate } })
+
     // Find descendants or children
-  } catch (error) {}
+  } catch (error: any) {
+    throw new Error(`Failed to delete thread: ${error.message}`)
+  }
 }
 
 export async function addCreateComment(
   createId: string,
   commentText: string,
-  userId: string,
+  clerkUserId: string,
   path: string
 ) {
   connectToDB()
 
   try {
+    const dbUser = await User.findOne({ id: clerkUserId })
+
+    if (!dbUser) {
+      throw new Error('User not found.')
+    }
+
+    console.log('dbUser', dbUser)
+
     const originalCreate = await Create.findById(createId)
 
     if (!originalCreate) {
@@ -118,12 +136,23 @@ export async function addCreateComment(
 
     const savedCommentCreate = new Comment({
       text: commentText,
-      author: userId,
-      parentId: createId
+      authorMongoId: dbUser._id,
+      authorClerkId: clerkUserId,
+      authorUsername: dbUser.username,
+      authorImage: dbUser.image,
+      parentId: originalCreate._id
     })
+
+    const saveCommentResult = await savedCommentCreate.save()
 
     originalCreate.children.push(savedCommentCreate._id)
 
     await originalCreate.save()
-  } catch (error) {}
+
+    revalidatePath(path)
+
+    console.log('saveCommentResult', saveCommentResult)
+  } catch (error: any) {
+    throw new Error(`Failed to post comment: ${error.message}`)
+  }
 }

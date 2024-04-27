@@ -4,12 +4,19 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { IComment } from '@/lib/types'
 import { commentSchema } from '@/lib/zod/comment.schema'
+import { addCreateComment } from '@/lib/actions/create.actions'
+import { usePathname } from 'next/navigation'
 
-interface IAddComment {
-  userId: string
+interface IAddCommentForm {
+  clerkUserId: string
+  createId: string
 }
 
-const AddComment = ({ userId }: IAddComment) => {
+// Receiving clerk user id
+const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
+  const [loading, setLoading] = useState(false)
+  const pathname = usePathname()
+
   const {
     register,
     handleSubmit,
@@ -18,25 +25,63 @@ const AddComment = ({ userId }: IAddComment) => {
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     resolver: zodResolver(commentSchema),
-    defaultValues:{
+    defaultValues: {
       commentText: ''
     }
   })
 
-  // TODO: connect to server action, add to frontend, test DB model
+  async function onSubmit(data: IComment) {
+    setLoading(true)
+    try {
+      // Passing clerk user id
+      await addCreateComment(createId, data.commentText, clerkUserId, pathname)
+      console.log('Add comment success!')
+    } catch (error) {
+      console.log('Server action error; post comment failed: ', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className='container'>
+        <p>Posting comment...</p>
+      </div>
+    )
+  }
 
   return (
     <div>
-      <input
-        id='commentText'
-        placeholder='Enter a comment'
-        type='text'
-        className='focus:border-transparent focus:ring-blue-400 ml-1 block rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2'
-        {...register('commentText')}
-      />
-            <div className='ml-1 mr-1 min-h-8 p-1'>
-        {errors.commentText && <p className='text-[12px] text-red-400'>{errors.commentText.message}</p>}
-      </div>
+      <form
+        className='m-2 flex flex-col'
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <input
+          id='commentText'
+          placeholder='Enter a comment'
+          type='text'
+          className='focus:border-transparent focus:ring-blue-400 ml-1 block rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2'
+          {...register('commentText')}
+        />
+        <div className='ml-1 mr-1 min-h-8 p-1'>
+          {errors.commentText && (
+            <p className='text-red-400 text-[12px]'>
+              {errors.commentText.message}
+            </p>
+          )}
+        </div>
+        <div>
+          <button
+            type='submit'
+            className='transition-300 text-jet ml-1 mt-4 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
+            disabled={false}
+          >
+            Comment
+          </button>
+        </div>
+      </form>
     </div>
   )
 }

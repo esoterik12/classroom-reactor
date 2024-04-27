@@ -40,7 +40,7 @@ type CreateContent = ICryptogram | Quiz | Activity;
 export interface IPostCreate {
   content: CreateContent
   createType: string
-  creator: string
+  creator: string // Should be clerk user id
   course: string | null
   creatorUsername: string
   creatorImage: string
