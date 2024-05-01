@@ -25,7 +25,7 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
 
   const fetchedCreate = await fetchSingleCreate(params.id)
 
-  console.log('fetchedCreate', fetchedCreate)
+  // console.log('fetchedCreate', fetchedCreate)
 
   return (
     <div>
@@ -42,6 +42,7 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
           authorUsername={item.authorUsername}
           authorClerkId={item.authorClerkId}
           authorImage={item.authorImage}
+          createdAt={item.createdAt}
         />
       ))}
     </div>

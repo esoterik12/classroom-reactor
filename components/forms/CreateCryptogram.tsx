@@ -15,10 +15,12 @@ import { postCreate } from '@/lib/actions/create.actions'
 
 export default function CreateCryptogram({
   userId,
+  clerkId,
   username,
   userImage
 }: {
   userId: string
+  clerkId: string
   username: string
   userImage: string
 }) {
@@ -48,6 +50,7 @@ export default function CreateCryptogram({
       await postCreate({
         content: { text: data.text, title: data.title },
         creator: userId, 
+        creatorClerkId: clerkId.toString(),
         createType: 'cryptogram',
         course: 'CC11',
         creatorUsername: username,

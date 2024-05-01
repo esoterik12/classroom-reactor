@@ -11,17 +11,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   // Getting DB user data
   const userInfo = await fetchUser(user.id)
-  console.log('userInfo', userInfo)
   if (!userInfo?.onboarded) redirect('/onboarding')
-
-  // Creates object for Profile form
-  const userData = {
-    id: user.id,
-    username: userInfo ? userInfo?.username : user.username,
-    name: userInfo ? userInfo?.name : user.firstName ?? '',
-    bio: userInfo ? userInfo?.bio : '',
-    image: userInfo ? userInfo?.image : user.imageUrl
-  }
 
   return (
     <main className='flex flex-col items-center justify-between p-6'>
@@ -33,7 +23,11 @@ export default async function Page({ params }: { params: { id: string } }) {
         imgUrl={userInfo.image}
         bio={userInfo.bio}
       />
-      <ShowCreates userId={userInfo._id.toString()} username={userInfo.username} userImage={user.imageUrl} />
+      <ShowCreates
+        userId={userInfo._id.toString()} // MongoDB
+        clerkUserId={user.id}
+        username={userInfo.username}
+      />
     </main>
   )
 }

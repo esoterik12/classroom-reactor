@@ -10,6 +10,10 @@ const createSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  creatorClerkId: {
+    type: String,
+    required: true
+  },
   creatorUsername: {
     type: String,
     required: true,

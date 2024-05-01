@@ -48,7 +48,7 @@ export async function updateUser({
 }: Params): Promise<void> {
   try {
     connectToDB()
-    console.log('Trying to update user')
+
     await User.findOneAndUpdate(
       { id: userId },
       {
@@ -74,7 +74,7 @@ export async function fetchUserCreates(userId: string) {
 
     const creates = await Create.find({ creator: userId })
 
-    console.log('creates in server actions', creates)
+    // console.log('creates in server actions', creates)
 
     return creates
   } catch (error) {

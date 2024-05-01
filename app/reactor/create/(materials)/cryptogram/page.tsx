@@ -12,15 +12,17 @@ export default async function Page() {
   // fetch organization list created by user
   const userInfo = await fetchUser(user.id)
   if (!userInfo?.onboarded) redirect('/onboarding')
-    console.log('userInfo', userInfo)
+  console.log('userInfo', userInfo)
 
   console.log('user.id', userInfo.id)
 
   return (
     <main className=''>
-      <CreateCryptogram userId={userInfo._id} 
-       username={userInfo.username}
-       userImage={userInfo.image}
+      <CreateCryptogram
+        userId={userInfo._id.toString()}
+        clerkId={user.id}
+        username={userInfo.username}
+        userImage={userInfo.image}
       />
       {/* <CreateForm
         userId={userInfo._id.toString()}

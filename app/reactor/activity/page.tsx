@@ -1,11 +1,15 @@
 import React from 'react'
-import ShowCreatesItem from '@/components/shared/ShowCreatesItem'
 import { fetchCreate } from '@/lib/actions/create.actions'
+import CreateDisplayCard from '@/components/cards/CreateDisplayCard'
+import { currentUser } from '@clerk/nextjs'
 
 const Page = async () => {
   const result = await fetchCreate()
+  const user = await currentUser()
 
-  console.log('creates', result)
+  if (!user) {
+    return <p>Access Denied</p>
+  }
 
   return (
     <div className='container'>
@@ -13,15 +17,16 @@ const Page = async () => {
         Latest Creates
       </div>
       {result.creates.map(item => (
-        <ShowCreatesItem
+        <CreateDisplayCard
           key={item._id}
-          createId={item._id.toString()}
-          userId={item.creator}
+          _id={item._id}
+          creatorUserId={item.creator.id.toString()}
+          currentUserId={user.id} 
           title={item.content.title}
           createType={item.createType}
           createdAt={item.createdAt}
           username={item.creatorUsername}
-          userImage={item.creatorImage}
+          creatorImage={item.creatorImage}
         />
       ))}
     </div>

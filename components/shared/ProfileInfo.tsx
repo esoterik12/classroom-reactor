@@ -29,7 +29,8 @@ function ProfileHeader({
               <Image
                 src={imgUrl}
                 alt='logo'
-                fill
+                height={96}
+                width={96}
                 className='rounded-full object-cover shadow-md'
               />
             ) : (
