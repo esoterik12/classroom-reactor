@@ -24,10 +24,6 @@ export default async function Page() {
         username={userInfo.username}
         userImage={userInfo.image}
       />
-      {/* <CreateForm
-        userId={userInfo._id.toString()}
-        initialFormValues={{ title: '', text: '' }}
-      /> */}
     </main>
   )
 }

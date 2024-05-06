@@ -6,6 +6,7 @@ import User from '../models/user.models'
 import Create from '../models/create.model'
 import Course from '../models/course.model'
 import Comment from '../models/comment.model'
+import selectGenerator from '../generators'
 
 export async function fetchCreate(pageNumber = 1, pageSize = 20) {
   await connectToDB()
@@ -76,6 +77,9 @@ export async function postCreate({
   creatorImage
 }: IPostCreate) {
   try {
+    const processedContent = selectGenerator({ createType, content })
+    console.log('processedContent', processedContent)
+
     await connectToDB()
 
     // Possible issue here - check github
@@ -98,7 +102,7 @@ export async function postCreate({
 
     revalidatePath('/')
   } catch (error: any) {
-    throw new Error(`Failed to create thread: ${error.message}`)
+    throw new Error(`Failed to create in create.actions.ts: ${error.message}`)
   }
 }
 
@@ -115,74 +119,29 @@ async function fetchAllCreateComments(createId: string): Promise<any[]> {
   return childComments
 }
 
-// UNFINISHED
-// export async function deleteCreate(id: string): Promise<void> {
-//   try {
-//     connectToDB()
-
-//     // Find main create to delete
-//     const mainCreate = await Create.findById(id).populate('creator')
-
-//     if (!mainCreate) {
-//       throw new Error('Create not found.')
-//     }
-
-//     // Fetch all child comments and their descendants recusively
-//     const descendantComments = await fetchAllCreateComments(id)
-
-//     const descendantCommentsIds = [
-//       ...descendantComments.map(comment => comment._id)
-//     ]
-
-//     console.log('descendantComments', descendantComments)
-
-//     const uniqueAuthorIds = new Set(
-//       [
-//         ...descendantComments.map(comment =>
-//           comment.authorMongoId?._id?.toString()
-//         ),
-//         mainCreate.creator?._id?.toString()
-//       ].filter(id => id !== undefined)
-//     )
-
-//     await Create.deleteOne({ _id: id })
-//     await Comment.deleteMany({ _id: { $in: descendantCommentsIds } })
-
-//     // Update User model
-//     await User.updateMany(
-//       { _id: { $in: Array.from(uniqueAuthorIds) } },
-//       { $pull: { creates: { $in: descendantCommentsIds } } }
-//     )
-//   } catch (error: any) {
-//     throw new Error(`Failed to delete thread: ${error.message}`)
-//   }
-// }
-
 export async function deleteCreate(id: string): Promise<void> {
   try {
-    connectToDB();
+    connectToDB()
 
     // Find main create to delete
-    const mainCreate = await Create.findById(id).populate('creator');
+    const mainCreate = await Create.findById(id).populate('creator')
 
     if (!mainCreate) {
-      throw new Error('Create not found.');
+      throw new Error('Create not found.')
     }
 
     // Fetch all child comments directly associated with the create plus their descendants
-    const directChildComments = await Comment.find({ parentId: id });
-    const allDescendantComments = [];
-    
+    const directChildComments = await Comment.find({ parentId: id })
+    const allDescendantComments = []
+
     for (const childComment of directChildComments) {
-      const descendants = await fetchAllCreateComments(childComment._id);
-      allDescendantComments.push(childComment, ...descendants);
+      const descendants = await fetchAllCreateComments(childComment._id)
+      allDescendantComments.push(childComment, ...descendants)
     }
 
-    const allCommentIds = [
-      ...allDescendantComments.map(comment => comment._id)
-    ];
+    const allCommentIds = [...allDescendantComments.map(comment => comment._id)]
 
-    console.log('All related comments', allDescendantComments);
+    console.log('All related comments', allDescendantComments)
 
     const uniqueAuthorIds = new Set(
       [
@@ -191,22 +150,20 @@ export async function deleteCreate(id: string): Promise<void> {
         ),
         mainCreate.creator?._id?.toString()
       ].filter(id => id !== undefined)
-    );
+    )
 
-    await Create.deleteOne({ _id: id });
-    await Comment.deleteMany({ _id: { $in: allCommentIds } });
+    await Create.deleteOne({ _id: id })
+    await Comment.deleteMany({ _id: { $in: allCommentIds } })
 
     // Update User model
     await User.updateMany(
       { _id: { $in: Array.from(uniqueAuthorIds) } },
       { $pull: { creates: id } }
-    );
+    )
   } catch (error: any) {
-    throw new Error(`Failed to delete thread: ${error.message}`);
+    throw new Error(`Failed to delete thread: ${error.message}`)
   }
 }
-
-
 
 export async function addCreateComment(
   createId: string,

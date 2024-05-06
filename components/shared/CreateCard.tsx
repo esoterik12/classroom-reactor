@@ -30,7 +30,15 @@ const CreateCard = ({ title, details, link, icon, content }: ICreateCard) => {
           <h1 className=' text-center text-lg font-medium '>{title}</h1>
         </div>
         <div className=''>
-          <CreateCardPopover />
+          <CreateCardPopover
+            buttonText='Learn more'
+            title='Cryptogram Details'
+            description='Each letter of the alphabet is given a number. Players work to decode the cryptogram.'
+            tips={[
+              'Use vocabulary words',
+              'Give 6-10 letters to make it easier'
+            ]}
+          />
         </div>
       </div>
       {/* Content Container */}

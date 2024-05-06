@@ -1,5 +1,6 @@
 'use client'
 import { Popover, Transition } from '@headlessui/react'
+import { title } from 'process'
 import { Fragment } from 'react'
 
 const solutions = [
@@ -23,7 +24,19 @@ const solutions = [
   }
 ]
 
-export default function CreateCardPopover() {
+interface ICreateCardPopover {
+  buttonText: string
+  title: string
+  description: string
+  tips: string[]
+}
+
+export default function CreateCardPopover({
+  buttonText,
+  title,
+  description,
+  tips
+}: ICreateCardPopover) {
   return (
     <div className='w-full max-w-sm px-4'>
       <Popover className='relative'>
@@ -34,7 +47,7 @@ export default function CreateCardPopover() {
                 ${open ? '' : ''}
                 hover:text-white group inline-flex items-center rounded-md bg-primary-100 px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200`}
             >
-              <span className='text-sm'>Learn more</span>
+              <span className='text-sm'>{buttonText}</span>
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -45,28 +58,32 @@ export default function CreateCardPopover() {
               leaveFrom='opacity-100 translate-y-0'
               leaveTo='opacity-0 translate-y-1'
             >
-              <Popover.Panel className='absolute z-10 mt-3 w-screen max-w-xs -translate-x-3/4 transform px-4'>
+              {/* Controls the popover div styles on the page */}
+              <Popover.Panel className='absolute z-10 ml-7 mt-3 w-screen max-w-xs -translate-x-3/4 transform px-4'>
                 <div className='ring-black/5 overflow-hidden rounded-lg bg-primary-100 shadow-lg ring-1'>
-                  <div className='relative grid gap-4 p-7 '>
-                    {solutions.map(item => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className='-m-2 flex items-center rounded-lg p-2 transition duration-150  ease-in-out hover:bg-offWhite-500 focus:outline-none focus-visible:ring focus-visible:ring-secondary-500'
-                      >
-                        {/* <div className='text-white flex h-10 w-10 shrink-0 items-center justify-center sm:h-12 sm:w-12'>
+                  <div className='relative grid gap-2 p-4 '>
+                    <div>
+                      {/* Icon (disabled) */}
+                      {/* <div className='text-white flex h-10 w-10 shrink-0 items-center justify-center sm:h-12 sm:w-12'>
                           <item.icon aria-hidden='true' />
                         </div> */}
-                        <div className='ml-2'>
-                          <p className='text-sm font-medium text-gray-900'>
-                            {item.name}
-                          </p>
-                          <p className='text-sm text-gray-600'>
-                            {item.description}
-                          </p>
-                        </div>
-                      </a>
-                    ))}
+
+                      {/* Internal Div for each item */}
+                      <div className='ml-'>
+                        <p className='text-sm font-medium text-primary-600'>
+                          {title}
+                        </p>
+                        <p className='text-sm text-gray-900'>{description}</p>
+                        <p className='mt-2 text-sm font-medium text-primary-600'>
+                          Tips
+                        </p>
+                        <ul className='list-disc'>
+                        {tips.map(item => (
+                          <li className='ml-5 text-sm text-gray-900'>{item}</li>
+                        ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Popover.Panel>

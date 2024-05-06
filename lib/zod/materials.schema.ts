@@ -13,5 +13,6 @@ export const cryptogramSchema = z.object({
       {
         message: 'All words must be 20 characters or less.'
       }
-    )
+    ),
+  givenLetters: z.string()
 })

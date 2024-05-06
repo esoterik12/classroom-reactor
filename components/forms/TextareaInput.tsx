@@ -45,7 +45,7 @@ const TextareaInput: React.ForwardRefExoticComponent<
         ref={ref}
         id={id}
         placeholder={placeholder}
-        className={`${inputClasses} ml-1 block rounded-md border border-gray-300 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-400`}
+        className={`${inputClasses} ml-1 block rounded-md border border-gray-300 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary-500`}
         {...rest}
       />
       <div className='min-h-8 ml-1.5 mr-1 p-1'>

@@ -50,7 +50,7 @@ const CreateDisplayCard = ({
           <div className='flex flex-1 flex-row justify-between'>
             <div className='mb-3 flex flex-col'>
               <Link href={`/reactor/createview/${createType}/${_id}`}>
-                <p className='text-md mt-2 text-gray-700'>
+                <p className='text-md mt-2 text-gray-500'>
                   <span className='font-bold'>{title}</span> - {createType}
                 </p>
               </Link>

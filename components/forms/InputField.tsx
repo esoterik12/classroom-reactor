@@ -45,7 +45,7 @@ const InputField: React.ForwardRefExoticComponent<
         type={type}
         id={id}
         placeholder={placeholder}
-        className={`${inputClasses} block ml-1 rounded-md border border-gray-300 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-400`}
+        className={`${inputClasses} block ml-1 rounded-md border border-gray-300 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary-500`}
         {...rest} 
       />
       <div className='ml-1 mr-1 min-h-8 p-1'>

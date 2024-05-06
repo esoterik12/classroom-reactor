@@ -12,7 +12,7 @@ interface INavLink {
 
 const NavLink = ({ href, children, className, ...props }: INavLink) => {
   const pathname = usePathname()
-  const isActiveLink = href === pathname
+  const isActiveLink = pathname.startsWith(href)
 
   return (
     <Link
@@ -20,7 +20,7 @@ const NavLink = ({ href, children, className, ...props }: INavLink) => {
       href={href}
       className={clsx(
         className,
-        isActiveLink && 'underline decoration-gray-500'
+        isActiveLink && 'underline text-primary-500'
       )}
     >
       {children}

@@ -18,6 +18,7 @@ export interface IUserProfile {
 export interface ICryptogram {
   title: string
   text: string
+  givenLetters: string
 }
 
 // Dummy not used

@@ -39,14 +39,14 @@ function ProfileHeader({
           </div>
 
           <div className='flex-1'>
-            <h2 className='text-left'>
+            <h2 className='text-left text-gray-500'>
               {name}
             </h2>
-            <p className='text-xl'>@{username}</p>
+            <p className='text-xl font-semibold'>@{username}</p>
             {accountId === authUserId && type !== 'Community' && (
           <Link href='/reactor/profile/edit'>
             <div className='cursor-pointer rounded-lg mt-2'>
-              <p className='text-sm text-gray hover:text-secondary transition-colors duration-300'>Edit Profile</p>
+              <p className='text-xs text-primary-500 hover:text-secondary transition-colors duration-300'>Edit Profile</p>
             </div>
           </Link>
         )}
@@ -56,7 +56,7 @@ function ProfileHeader({
 
       </div>
 
-      <p className='text-base-regular text-light-2 mt-6 max-w-lg text-sm text-gray'>User Bio:</p>
+      <p className='text-base-regular text-light-2 mt-6 max-w-lg text-sm text-gray-500'>User Bio:</p>
       <p className='text-base-regular text-light-2 max-w-lg'>{bio}</p>
 
       <div className='bg-dark-3 mt-12 h-0.5 w-full' />

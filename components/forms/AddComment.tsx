@@ -43,14 +43,6 @@ const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
     }
   }
 
-  if (loading) {
-    return (
-      <div className='container'>
-        <p>Posting comment...</p>
-      </div>
-    )
-  }
-
   return (
     <div>
       <form
@@ -62,7 +54,7 @@ const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
           id='commentText'
           placeholder='Enter a comment'
           type='text'
-          className='focus:border-transparent focus:ring-blue-400 ml-1 block rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2'
+          className='focus:border-transparent focus:ring-blue-400 ml-1 block rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 w-full lg:w-1/2'
           {...register('commentText')}
         />
         <div className='ml-1 mr-1 min-h-8 p-1'>
@@ -75,8 +67,8 @@ const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
         <div>
           <button
             type='submit'
-            className='transition-300 text-jet ml-1 mt-4 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
-            disabled={false}
+            className={`transition-300 text-jet ml-1 rounded-md p-2 px-4 transition-colors  disabled:cursor-not-allowed ${loading ? 'bg-gray-300' : 'bg-secondary-500 hover:bg-secondaryLight'}`}
+            disabled={loading}
           >
             Comment
           </button>
