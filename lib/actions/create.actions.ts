@@ -8,7 +8,7 @@ import Course from '../models/course.model'
 import Comment from '../models/comment.model'
 import selectGenerator from '../generators'
 
-export async function fetchCreate(pageNumber = 1, pageSize = 20) {
+export async function fetchCreates(pageNumber = 1, pageSize = 20) {
   await connectToDB()
 
   // Calculate the number of posts to skip based on the page number and page size.
@@ -51,19 +51,6 @@ export async function fetchSingleCreate(createId: string) {
     }
   })
 
-  // Now, to display this information:
-  // if (fetchedCreate && fetchedCreate.children && fetchedCreate.children.length > 0) {
-  //   fetchedCreate.children.forEach((comment: any) => {
-  //     if (comment.authorMongoId) {
-  //       console.log("Comment Author's Username:", comment.authorMongoId.username);
-  //       console.log("Comment Author's Image:", comment.authorMongoId.image);
-  //       console.log("Comment Author's Clerk ID:", comment.authorMongoId.id);
-  //     }
-  //   });
-  // } else {
-  //   console.log("No comments or comment author information available.");
-  // }
-
   return fetchedCreate
 }
 
@@ -82,7 +69,6 @@ export async function postCreate({
 
     await connectToDB()
 
-    // Possible issue here - check github
     const courseIdObject = await Course.findOne({ id: course }, { _id: 1 })
 
     const postedCreate = await Create.create({
@@ -90,7 +76,7 @@ export async function postCreate({
       creator,
       creatorClerkId,
       createType,
-      course: courseIdObject, // Assign communityId if provided, or leave it null for personal account
+      course: courseIdObject, // Assign courseIdObject if provided, or leave it null for personal account
       creatorUsername,
       creatorImage
     })
@@ -101,6 +87,7 @@ export async function postCreate({
     })
 
     revalidatePath('/')
+    return postedCreate._id.toString()
   } catch (error: any) {
     throw new Error(`Failed to create in create.actions.ts: ${error.message}`)
   }

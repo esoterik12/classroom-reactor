@@ -1,10 +1,15 @@
 import React from 'react'
-import { fetchCreate } from '@/lib/actions/create.actions'
+import { fetchCreates } from '@/lib/actions/create.actions'
 import CreateDisplayCard from '@/components/cards/CreateDisplayCard'
 import { currentUser } from '@clerk/nextjs'
+import PaginationButtons from '@/components/shared/PaginationButtons'
 
-const Page = async () => {
-  const result = await fetchCreate()
+const Page = async ({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | undefined }
+}) => {
+  const result = await fetchCreates(searchParams.p ? +searchParams.p : 1, 20) //+ for type conversion
   const user = await currentUser()
 
   if (!user) {
@@ -12,7 +17,7 @@ const Page = async () => {
   }
 
   return (
-    <div className='container'>
+    <div className='container mb-28 md:mb-12'>
       <div className='mb-6 text-center text-lg font-semibold text-gray-700'>
         Latest Creates
       </div>
@@ -21,7 +26,7 @@ const Page = async () => {
           key={item._id}
           _id={item._id}
           creatorUserId={item.creator.id.toString()}
-          currentUserId={user.id} 
+          currentUserId={user.id}
           title={item.content.title}
           createType={item.createType}
           createdAt={item.createdAt}
@@ -29,6 +34,11 @@ const Page = async () => {
           creatorImage={item.creatorImage}
         />
       ))}
+      <PaginationButtons
+        path='http://localhost:3000/reactor/activity'
+        pageNumber={searchParams?.p ? +searchParams.p : 1}
+        isNext={result.isNext}
+      />
     </div>
   )
 }

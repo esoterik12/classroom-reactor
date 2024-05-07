@@ -47,7 +47,7 @@ export async function updateUser({
   image
 }: Params): Promise<void> {
   try {
-    connectToDB()
+    await connectToDB()
 
     await User.findOneAndUpdate(
       { id: userId },
@@ -68,15 +68,43 @@ export async function updateUser({
   }
 }
 
-export async function fetchUserCreates(userId: string) {
+interface IFetchUserCreates {
+  userId: string
+  pageNumber: number
+  pageSize: number
+}
+
+export async function fetchUserCreates({
+  userId,
+  pageNumber,
+  pageSize = 20
+}: IFetchUserCreates) {
   try {
     await connectToDB()
 
-    const creates = await Create.find({ creator: userId })
+    // Calculate the number of posts to skip
+    const skipAmount = (pageNumber - 1) * pageSize
 
-    // console.log('creates in server actions', creates)
+    const userCreatesQuery = Create.find({ creator: userId })
+      .sort({ createdAt: 'desc' })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .populate({
+        path: 'creator',
+        model: User
+      })
+      .populate({
+        path: 'course',
+        model: Course
+      })
 
-    return creates
+    const totalCreatesCount = await Create.countDocuments({ creator: userId })
+
+    const creates = await userCreatesQuery.exec()
+
+    const isNext = totalCreatesCount > skipAmount + creates.length
+
+    return { creates, isNext }
   } catch (error) {
     console.log('Error fetching user creates: ', error)
     throw error

@@ -1,11 +1,15 @@
 import React from 'react'
 import classes from './Loading.module.css'
 
-type Props = {}
-
-const Loading = (props: Props) => {
+const Loading = ({ text }: { text: string }) => {
   return (
-    <div className={classes.ldsRipple}><div></div><div></div></div>
+    <div className='flex flex-col items-center justify-center pt-24 align-middle'>
+      <p>{text}</p>
+      <div className={classes.ldsRipple}>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   )
 }
 

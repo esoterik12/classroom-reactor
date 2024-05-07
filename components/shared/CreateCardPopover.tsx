@@ -79,7 +79,7 @@ export default function CreateCardPopover({
                         </p>
                         <ul className='list-disc'>
                         {tips.map(item => (
-                          <li className='ml-5 text-sm text-gray-900'>{item}</li>
+                          <li key={item} className='ml-5 text-sm text-gray-900'>{item}</li>
                         ))}
                         </ul>
                       </div>

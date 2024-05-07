@@ -61,9 +61,8 @@ export default function AccountProfileForm({ user }: { user: IUserProfile }) {
 
   if (loading || isSubmitted) {
     return (
-      <div className='flex flex-col items-center justify-center align-middle pt-24'>
-        <p className='m-6'>Updating...</p>
-        <Loading />
+      <div>
+        <Loading text='Updating...' />
       </div>
     )
   }

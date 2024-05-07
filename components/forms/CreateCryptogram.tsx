@@ -14,6 +14,8 @@ import { TextareaInput } from '@/components/forms/TextareaInput'
 import { postCreate } from '@/lib/actions/create.actions'
 import BackButton from '../ui/BackButton'
 import SelectIcon from '../icons/SelectIcon'
+import { useRouter } from 'next/navigation'
+import Loading from '../shared/Loading'
 
 export default function CreateCryptogram({
   userId,
@@ -30,11 +32,12 @@ export default function CreateCryptogram({
   const [serverResponse, setServerResponse] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitted }
   } = useForm<ICryptogram>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -50,7 +53,7 @@ export default function CreateCryptogram({
     setLoading(true)
 
     try {
-      await postCreate({
+      const postedCreateId = await postCreate({
         content: {
           text: data.text,
           title: data.title,
@@ -64,6 +67,7 @@ export default function CreateCryptogram({
         creatorImage: userImage
       })
       console.log('Add create success!')
+      router.push(`/reactor/createview/cryptogram/${postedCreateId}`)
     } catch (error) {
       console.log('server action error: ', error)
     } finally {
@@ -71,10 +75,10 @@ export default function CreateCryptogram({
     }
   }
 
-  if (loading) {
+  if (loading || isSubmitted) {
     return (
-      <div className='container'>
-        <p>Loading...</p>
+      <div>
+        <Loading text='Creating...' />
       </div>
     )
   }
@@ -99,7 +103,10 @@ export default function CreateCryptogram({
         <div className='ml-3 flex flex-row gap-2'>
           {/* <Image className='ml-3' alt='cryptogram logo' src="/cryptogramLogo.png" height={35} width={35} /> */}
           <BackButton classes=''>
-            <SelectIcon iconClasses='h-6 w-6 text-gray-500' iconSelection='back' />
+            <SelectIcon
+              iconClasses='h-6 w-6 text-gray-500'
+              iconSelection='back'
+            />
           </BackButton>
           <h1 className='text-md font-semibold md:text-xl'>
             Create a Cryptogram
@@ -163,7 +170,7 @@ export default function CreateCryptogram({
               />
             </div>
           </div>
-          
+
           {/* Preview Right Side */}
           <div className='m-2 w-1/2'>
             <p className='font-medium text-gray-500'>Cryotpgram Example</p>

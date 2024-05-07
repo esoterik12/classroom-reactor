@@ -14,7 +14,7 @@ export const sideBarLinks = [
   {
     id: 3,
     name: 'Activity',
-    link: '/reactor/activity',
+    link: '/reactor/activity?p=1',
     icon: 'chat'
   },
   {
