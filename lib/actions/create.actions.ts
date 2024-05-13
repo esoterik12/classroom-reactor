@@ -7,14 +7,31 @@ import Create from '../models/create.model'
 import Course from '../models/course.model'
 import Comment from '../models/comment.model'
 import selectGenerator from '../generators'
+import { FilterQuery } from 'mongoose'
 
-export async function fetchCreates(pageNumber = 1, pageSize = 20) {
+export async function fetchCreates(
+  pageNumber = 1,
+  pageSize = 20,
+  searchString = ''
+) {
   await connectToDB()
 
   // Calculate the number of posts to skip based on the page number and page size.
   const skipAmount = (pageNumber - 1) * pageSize
 
-  const createQuery = Create.find({ parentId: { $in: [null, undefined] } })
+  // Creates query if there is a searchString (for search)
+  const regex = new RegExp(searchString, 'i')
+  const query: FilterQuery<typeof Create> = {}
+  if (searchString.trim() !== '') {
+    query.$or = [
+      { createType: { $regex: regex } },
+      { creatorUsername: { $regex: regex } }
+    ]
+  }
+
+  const createQuery = Create.find(
+    searchString === '' ? { parentId: { $in: [null, undefined] } } : query
+  )
     .sort({ createdAt: 'desc' })
     .skip(skipAmount)
     .limit(pageSize)
@@ -27,9 +44,9 @@ export async function fetchCreates(pageNumber = 1, pageSize = 20) {
       model: Course
     })
 
-  const totalCreatesCount = await Create.countDocuments({
-    parentId: { $in: [null, undefined] }
-  })
+  const totalCreatesCount = await Create.countDocuments(
+    searchString === '' ? { parentId: { $in: [null, undefined] } } : query
+  )
 
   const creates = await createQuery.exec()
 
@@ -54,6 +71,7 @@ export async function fetchSingleCreate(createId: string) {
   return fetchedCreate
 }
 
+// Post new create to DB that uses a selected generator function based on createType
 export async function postCreate({
   content,
   createType,
@@ -71,8 +89,13 @@ export async function postCreate({
 
     const courseIdObject = await Course.findOne({ id: course }, { _id: 1 })
 
+    const preparedContent = {
+      content: processedContent,
+      title: content.title // Currently typed in IPostCreate as any
+    }
+
     const postedCreate = await Create.create({
-      content,
+      content: preparedContent,
       creator,
       creatorClerkId,
       createType,

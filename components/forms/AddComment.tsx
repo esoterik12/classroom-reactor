@@ -20,6 +20,7 @@ const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitted }
   } = useForm<IComment>({
     mode: 'onBlur',
@@ -35,6 +36,7 @@ const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
     try {
       // Passing clerk user id
       await addCreateComment(createId, data.commentText, clerkUserId, pathname)
+      reset()
       console.log('Add comment success!')
     } catch (error) {
       console.log('Server action error; post comment failed: ', error)

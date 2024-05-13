@@ -8,7 +8,7 @@ import DeleteThread from '../forms/DeleteThread'
 interface ICreateDisplayCard {
   _id: string
   creatorUserId: string
-  currentUserId: string
+  currentUserId?: string
   creatorImage: string
   createType: string
   title: string
@@ -66,7 +66,7 @@ const CreateDisplayCard = ({
             </div>
 
             <div className='mt-7 flex gap-3'>
-              {currentUserId === creatorUserId && (
+              {currentUserId && currentUserId === creatorUserId && (
                 <DeleteThread createId={_id.toString()} />
               )}
               <SelectIcon iconClasses='h-6 w-6' iconSelection='heart' />

@@ -5,6 +5,7 @@ export const cryptogramSchema = z.object({
   text: z
     .string()
     .min(20, 'You must enter at least 20 letters.')
+    .max(120, 'You cannot enter more than 120 characters.')
     .refine(
       value => {
         const words = value.split(/\s+/)

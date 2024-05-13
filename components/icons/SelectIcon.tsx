@@ -34,6 +34,7 @@ import IconDelete from './IconDelete'
 import IconShare from './IconShare'
 import IconBackArrow from './IconBackArrow'
 import IconForwardArrow from './IconForwardArrow'
+import IconSearch from './IconSearch'
 
 interface ISelectIconProps {
   iconSelection: string
@@ -148,6 +149,9 @@ export default function SelectIcon({
       break
     case 'forward':
       icon = <IconForwardArrow classes={iconClasses} />
+      break
+    case 'search':
+      icon = <IconSearch classes={iconClasses} />
       break
     default:
       icon = <p className='text-red-500'>Error: No Icon Found</p>

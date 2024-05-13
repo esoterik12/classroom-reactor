@@ -37,6 +37,12 @@ export const sideBarLinks = [
   },
   {
     id: 7,
+    name: 'Search',
+    link: '/reactor/search',
+    icon: 'search'
+  },
+  {
+    id: 8,
     name: 'Profile',
     link: '/reactor/profile',
     icon: 'user'
