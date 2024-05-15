@@ -7,7 +7,7 @@ import { connectToDB } from '../mongoose'
 import { redirect } from 'next/navigation'
 import Create from '../models/create.model'
 
-
+// Temporary Dummy function to populate users for UI development
 export async function addDummyUsers() {
   try {
     await connectToDB()

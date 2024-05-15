@@ -8,10 +8,20 @@ export interface IAccountProfileForm {
 
 export interface IUserProfile {
   id: string
+  objectId?: string
   username: string;
   name: string;
   bio: string;
   image: string;
+}
+
+export interface INewCourse {
+  id?: string
+  courseName: string
+  description: string
+  image: string | null
+  createdBy: string | undefined
+  path: string
 }
 
 // Form  types:

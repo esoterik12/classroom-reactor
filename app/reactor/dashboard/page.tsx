@@ -1,3 +1,4 @@
+import DUMMY_COURSES from '@/components/DUMMY_COURSES'
 import DUMMY_USER from '@/components/DUMMY_USER'
 import Image from 'next/image'
 
@@ -6,6 +7,7 @@ export default function Page() {
     <main className='flex flex-col items-center justify-between p-6'>
       <p>Dashboard Page</p>
       <DUMMY_USER />
+      <DUMMY_COURSES />
     </main>
   )
 }
