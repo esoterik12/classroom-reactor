@@ -61,3 +61,22 @@ export interface IPostCreate {
 export interface IComment {
   commentText: string
 }
+
+export interface IAddMembers {
+  addMembersUsernames: string
+  membersRole: 'student' | 'teacher' | 'staff'
+}
+
+export interface ICourseMembersData {
+  user:ICourseUserData
+  role: 'student' | 'teacher' | 'staff'
+  _id: string
+}
+
+interface ICourseUserData {
+  _id: string
+  id: string
+  name: string
+  image: string
+  username: string
+}

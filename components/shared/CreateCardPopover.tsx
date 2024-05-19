@@ -1,28 +1,6 @@
 'use client'
 import { Popover, Transition } from '@headlessui/react'
-import { title } from 'process'
 import { Fragment } from 'react'
-
-const solutions = [
-  {
-    name: 'Insights',
-    description: 'Measure actions your users take',
-    href: '##',
-    icon: IconOne
-  },
-  {
-    name: 'Automations',
-    description: 'Create your own targeted content',
-    href: '##',
-    icon: IconTwo
-  },
-  {
-    name: 'Reports',
-    description: 'Keep track of your growth',
-    href: '##',
-    icon: IconThree
-  }
-]
 
 interface ICreateCardPopover {
   buttonText: string
@@ -47,7 +25,7 @@ export default function CreateCardPopover({
                 ${open ? '' : ''}
                 hover:text-white group inline-flex items-center rounded-md bg-primary-100 px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200`}
             >
-              <span className='text-sm'>{buttonText}</span>
+              <span className='text-sm dark:text-jet-500'>{buttonText}</span>
             </Popover.Button>
             <Transition
               as={Fragment}

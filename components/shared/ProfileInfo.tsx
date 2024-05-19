@@ -43,7 +43,7 @@ function ProfileHeader({
           <div className='flex-1'>
             <h2 className='text-left text-gray-500'>{name}</h2>
             <p className='text-xl font-semibold'>@{username}</p>
-            {accountId === authUserId && type !== 'Community' && (
+            {accountId === authUserId && type !== 'search' && (
               <Link href='/reactor/profile/edit'>
                 <div className='mt-2 cursor-pointer rounded-lg'>
                   <p className='hover:text-secondary text-xs text-primary-500 transition-colors duration-300'>

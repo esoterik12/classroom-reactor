@@ -29,7 +29,6 @@ export default function CreateCryptogram({
   userImage: string
 }) {
   // Incorporate error to show server error if necessary
-  const [serverResponse, setServerResponse] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
@@ -83,14 +82,6 @@ export default function CreateCryptogram({
     )
   }
 
-  // Unused now
-  if (serverResponse) {
-    return (
-      <div className='container'>
-        <p>{serverResponse}</p>
-      </div>
-    )
-  }
 
   return (
     <div className='mx-6 my-2 flex flex-col rounded-md custom-shadow'>

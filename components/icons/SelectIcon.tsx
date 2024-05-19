@@ -35,6 +35,11 @@ import IconShare from './IconShare'
 import IconBackArrow from './IconBackArrow'
 import IconForwardArrow from './IconForwardArrow'
 import IconSearch from './IconSearch'
+import IconEdit from './IconEdit'
+import IconUserGroup from './IconUserGroup'
+import IconBars from './IconBars'
+import IconUserPlus from './IconUserPlus'
+import IconUserMinus from './IconUserMinus'
 
 interface ISelectIconProps {
   iconSelection: string
@@ -152,6 +157,21 @@ export default function SelectIcon({
       break
     case 'search':
       icon = <IconSearch classes={iconClasses} />
+      break
+    case 'edit':
+      icon = <IconEdit classes={iconClasses} />
+      break
+    case 'users':
+      icon = <IconUserGroup classes={iconClasses} />
+      break
+    case 'bars':
+      icon = <IconBars classes={iconClasses} />
+      break
+    case 'userPlus':
+      icon = <IconUserPlus classes={iconClasses} />
+      break
+    case 'userMinus':
+      icon = <IconUserMinus classes={iconClasses} />
       break
     default:
       icon = <p className='text-red-500'>Error: No Icon Found</p>

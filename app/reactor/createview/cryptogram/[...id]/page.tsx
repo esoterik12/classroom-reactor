@@ -30,7 +30,7 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
 
   const fetchedCreate = await fetchSingleCreate(params.id)
 
-  console.log('fetchedCreate', fetchedCreate)
+  // console.log('fetchedCreate', fetchedCreate)
 
   return (
     <div className='m-3 flex flex-col rounded-lg  border-gray-100 p-2 shadow-sm'>

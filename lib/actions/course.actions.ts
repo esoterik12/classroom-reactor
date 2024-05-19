@@ -160,7 +160,7 @@ export async function fetchCourseTitles() {
   try {
     await connectToDB()
     const courses = await Course.find({}).select('courseName _id image')
-    console.log('Course with Modules:', courses)
+    // console.log('Course with Modules:', courses)
     return courses
   } catch (error) {
     console.error('Error fetching course:', error)
@@ -187,6 +187,7 @@ export async function fetchCourseAndModulesTitles(courseId: string) {
   }
 }
 
+// #4 Function - Adda a new course with basic details
 export async function addNewCourse({
   courseName,
   image,
@@ -205,7 +206,6 @@ export async function addNewCourse({
     })
 
     const result = await newCourse.save()
-    console.log('result', result)
     revalidatePath(path)
   } catch (error: any) {
     console.log('Error saving new course: ', error)
@@ -214,6 +214,7 @@ export async function addNewCourse({
   }
 }
 
+// #5 Fn - unsued for updating (will be implemented with edit)
 export async function updateCourse({
   id,
   courseName,
@@ -240,5 +241,104 @@ export async function updateCourse({
     throw new Error(`Failed to create/update course: ${error.message}`)
   } finally {
     redirect('/reactor/courses')
+  }
+}
+
+interface ICourseMember {
+  user: mongoose.Types.ObjectId | string // User's ObjectId, converted to string if necessary
+  role: 'student' | 'teacher' | 'staff' // Enum type for role
+}
+
+export async function addCourseMembers({
+  courseId,
+  memberUsernames,
+  membersRole,
+  pathname
+}: {
+  courseId: string
+  memberUsernames: string[]
+  membersRole: 'student' | 'teacher' | 'staff'
+  pathname: string
+}) {
+  try {
+    await connectToDB()
+    const course = await Course.findById(courseId)
+    const users = await User.find({ username: { $in: memberUsernames } })
+
+    console.log('users', users)
+
+    // Check if valid course and user(s)
+    if (!course) {
+      throw new Error(`Course with ID ${courseId} not found`)
+    }
+    if (!users) {
+      throw new Error(`User or users not found`)
+    }
+
+    // Filter out users already in the course
+    const existingMemberIds = new Set(
+      course.members.map((m: ICourseMember) => m.user.toString())
+    )
+    const newMembers = users.filter(
+      user => !existingMemberIds.has(user._id.toString())
+    )
+
+    course.members.push(
+      ...newMembers.map(user => ({
+        user: user._id,
+        role: membersRole
+      }))
+    )
+
+    await course.save()
+
+    return {
+      success: true,
+      message: `${newMembers.length} user(s) added to course with ID ${courseId}`
+    }
+  } catch (error: any) {
+    throw new Error(`Failed to create/update course: ${error.message}`)
+  } finally {
+    revalidatePath(pathname)
+  }
+}
+
+export async function fetchCourseMembers(courseId: string) {
+  try {
+    await connectToDB()
+
+    const courseWithMembersData = await Course.findById(courseId).populate({
+      path: 'members.user', // Path to the user reference in the members array
+      select: 'username _id image name id' // Fields to include from the User model (add other fields as needed)
+    })
+
+    if (!courseWithMembersData) {
+      console.log('No course found with the given ID')
+      return null
+    }
+
+    return courseWithMembersData
+  } catch (error: any) {
+    throw new Error(`Failed to fetch course members: ${error.message}`)
+  }
+}
+
+export async function removeCourseMember(
+  courseId: string,
+  userId: string,
+  pathname: string
+) {
+  try {
+    await connectToDB()
+
+    const removeResult = await Course.findByIdAndUpdate(courseId, {
+      $pull: { members: { user: userId } }
+    })
+
+    console.log('removeResult', removeResult)
+  } catch (error: any) {
+    throw new Error(`Failed to remove course member: ${error.message}`)
+  } finally {
+    revalidatePath(pathname)
   }
 }
