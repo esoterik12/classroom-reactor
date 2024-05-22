@@ -1,5 +1,5 @@
 import TopRightButtons from '@/components/ui/TopRightButtons'
-import { fetchCourseMembers, removeCourseMember } from '@/lib/actions/course.actions'
+import { fetchCourseMembers } from '@/lib/actions/course.actions'
 import { ICourseMembersData } from '@/lib/types'
 import ProfileHeader from '@/components/shared/ProfileInfo'
 import Link from 'next/link'
@@ -10,8 +10,6 @@ import RemoveCourseUser from '@/components/ui/RemoveCourseUser'
 const CourseMembersPage = async ({ params }: { params: { id: string } }) => {
   const courseMembersData = await fetchCourseMembers(params.id)
 
-
-  console.log('courseMembersData', courseMembersData)
   return (
     <main className='flex flex-wrap gap-6 px-6 py-3'>
       <div className='flex w-full flex-col justify-between rounded-md border border-grayLight-500 shadow-md dark:border-jet-500'>
@@ -21,6 +19,7 @@ const CourseMembersPage = async ({ params }: { params: { id: string } }) => {
             {courseMembersData.courseName} - Members:{' '}
             {courseMembersData.members.length}
           </p>
+          {/* Add Users and Back (and possibly delete many functionality) */}
           <TopRightButtons />
         </div>
         {/* Content Container */}

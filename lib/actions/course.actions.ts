@@ -2,12 +2,11 @@
 import { revalidatePath } from 'next/cache'
 import { connectToDB } from '../mongoose'
 import User from '../models/user.models'
-import Create from '../models/create.model'
 import Course from '../models/course.model'
-import Comment from '../models/comment.model'
 import mongoose, { FilterQuery } from 'mongoose'
 import { INewCourse } from '../types'
 import { redirect } from 'next/navigation'
+import Module from '../models/module.model'
 
 export async function addDummyCourses() {
   try {
@@ -162,8 +161,9 @@ export async function fetchCourseTitles() {
     const courses = await Course.find({}).select('courseName _id image')
     // console.log('Course with Modules:', courses)
     return courses
-  } catch (error) {
-    console.error('Error fetching course:', error)
+  } catch (error: any) {
+    console.error('Error fetching course:', error.message)
+    throw new Error(`Failed to fetch course: ${error.message}`)
   }
 }
 
@@ -172,14 +172,13 @@ export async function fetchCourseTitles() {
 export async function fetchCourseAndModulesTitles(courseId: string) {
   try {
     await connectToDB()
-    const course = await Course.findById(courseId).populate(
-      'createdBy',
-      'username id'
-    )
-    // .populate({
-    //   path: 'modules',
-    //   select: 'moduleTitle' // Only include the 'moduleTitle' field from each module
-    // })
+    const course = await Course.findById(courseId)
+      .populate('createdBy', 'username id')
+      .populate({
+        path: 'modules',
+        select: 'moduleTitle unit',
+        model: Module
+      })
     console.log('Course with Modules:', course)
     return course
   } catch (error) {
@@ -187,7 +186,7 @@ export async function fetchCourseAndModulesTitles(courseId: string) {
   }
 }
 
-// #4 Function - Adda a new course with basic details
+// #4 Function - Add a new course with basic details
 export async function addNewCourse({
   courseName,
   image,
@@ -208,7 +207,8 @@ export async function addNewCourse({
     const result = await newCourse.save()
     revalidatePath(path)
   } catch (error: any) {
-    console.log('Error saving new course: ', error)
+    console.error('Error saving new course:', error.message)
+    throw new Error(`Failed to save new course: ${error.message}`)
   } finally {
     redirect('/reactor/courses')
   }
@@ -264,8 +264,6 @@ export async function addCourseMembers({
     await connectToDB()
     const course = await Course.findById(courseId)
     const users = await User.find({ username: { $in: memberUsernames } })
-
-    console.log('users', users)
 
     // Check if valid course and user(s)
     if (!course) {

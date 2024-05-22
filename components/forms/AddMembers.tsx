@@ -8,8 +8,9 @@ import { useParams, usePathname } from 'next/navigation'
 import { addCourseMembers } from '@/lib/actions/course.actions'
 import SelectIcon from '../icons/SelectIcon'
 import { courseUserRoles } from '@/lib/constants/courseUserRoles'
+import { Dispatch, SetStateAction } from 'react'
 
-const AddMembers = () => {
+const AddMembers = ({setIsOpen}: { setIsOpen: Dispatch<SetStateAction<boolean>> }) => {
   const [loading, setLoading] = useState(false)
   const params = useParams()
   const pathname = usePathname()
@@ -46,13 +47,13 @@ const AddMembers = () => {
         pathname: pathname
       })
 
-      
       reset()
       console.log('Add users success!: ', addMembersResult)
     } catch (error) {
       console.log('Server action error; add course users failed: ', error)
     } finally {
       setLoading(false)
+      setIsOpen(false)
     }
   }
 
@@ -113,9 +114,6 @@ const AddMembers = () => {
           >
             <p className='text-jet-800'>Add Users</p>
           </button>
-          <p className='m-2 text-sm text-gray-500'>
-            bbooth78, Jimmy,Sally, TechGuru
-          </p>
         </div>
       </form>
     </div>

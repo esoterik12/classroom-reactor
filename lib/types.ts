@@ -24,6 +24,16 @@ export interface INewCourse {
   path: string
 }
 
+export interface INewModule {
+  courseId?: string
+  moduleId?: string
+  moduleTitle: string
+  content: string
+  unit: number
+  createdBy: string | undefined
+  path: string
+}
+
 // Form  types:
 export interface ICryptogram {
   title: string

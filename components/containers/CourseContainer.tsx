@@ -5,9 +5,10 @@ import BackButton from '../ui/BackButton'
 import CourseContainerPopover from '../shared/CourseContainerPopover'
 import { formatDateString } from '@/lib/utils'
 import Link from 'next/link'
+import RemoveModule from '../ui/RemoveModule'
 
 type ICourseContainer = {
-  _id: string
+  courseId: string
   courseName: string
   image: string
   description: string
@@ -15,7 +16,13 @@ type ICourseContainer = {
   createdAt: string
   // creates
   // members
-  // modules
+  modules: ModuleDisplayProps[]
+}
+
+type ModuleDisplayProps = {
+  _id: string
+  moduleTitle: string
+  unit: number
 }
 
 type ICourseCreatedBy = {
@@ -25,14 +32,14 @@ type ICourseCreatedBy = {
 }
 
 const CourseContainer = ({
-  _id,
+  courseId,
   courseName,
   image,
   description,
   createdBy,
-  createdAt
+  createdAt,
+  modules
 }: ICourseContainer) => {
-  
   return (
     <main className='flex flex-wrap gap-6 px-6 py-3'>
       <div className='flex w-full flex-col justify-between rounded-md border border-grayLight-500 shadow-md dark:border-jet-500'>
@@ -53,28 +60,37 @@ const CourseContainer = ({
               </p>
             </div>
           </div>
-          <div className='flex flex-row gap-2 mr-2'>
+          <div className='mr-3 flex flex-row gap-2'>
             <BackButton classes='flex flex-row gap-1 text-gray-500 mb-2 mt-0.5'>
               <SelectIcon iconClasses='h-6 w-6' iconSelection='back' />
             </BackButton>
             <CourseContainerPopover buttonText='Edit'>
               <div className='flex flex-col items-start gap-2 text-jet-500'>
-                <Link href={`/reactor/courses/${_id}/edit`}>
+                <Link href={`/reactor/courses/${courseId}/edit`}>
                   <button className='m-1 flex flex-row gap-2'>
-                    <SelectIcon iconClasses='h-5 w-5' iconSelection='edit' />
+                    <SelectIcon
+                      iconClasses='h-5 w-5 mt-0.5'
+                      iconSelection='edit'
+                    />
                     Edit
                   </button>
                 </Link>
 
-                <Link href={`/reactor/courses/${_id}/modules`}>
+                <Link href={`/reactor/courses/${courseId}/addmodules`}>
                   <button className='m-1 flex flex-row gap-2'>
-                    <SelectIcon iconClasses='h-5 w-5' iconSelection='bars' />
-                    Modules
+                    <SelectIcon
+                      iconClasses='h-5 w-5 mt-0.5'
+                      iconSelection='bars'
+                    />
+                    Add Module
                   </button>
                 </Link>
-                <Link href={`/reactor/courses/${_id}/members`}>
+                <Link href={`/reactor/courses/${courseId}/members`}>
                   <button className='m-1 flex flex-row gap-2'>
-                    <SelectIcon iconClasses='h-5 w-5' iconSelection='users' />
+                    <SelectIcon
+                      iconClasses='h-5 w-5 mt-0.5'
+                      iconSelection='users'
+                    />
                     Members
                   </button>
                 </Link>
@@ -83,17 +99,38 @@ const CourseContainer = ({
           </div>
         </div>
         {/* Content Container */}
-        <div className='flex flex-col gap-6 p-4 md:flex-row'>
-          <div className='w-44'>
+        <div className='flex flex-col gap-6 p-4'>
+          <div className=''>
             <p className='mb-1 text-sm text-gray-700 '>Modules: </p>
-            <ul className='w-44'>
-              {/* ADD MODULE TITLES HERE */}
-              {/* {content.map(item => (
-              <li key={item.name} className='text-gray mt-1'>
-                <Link href={item.link}>{item.name}</Link>
-              </li>
-            ))} */}
-            </ul>
+            {/* ADD MODULE TITLES HERE */}
+            {modules.map(module => (
+              <div
+                key={module._id.toString()}
+                className='text-gray mt-1 flex flex-row justify-between'
+              >
+                <Link href={module._id.toString()}>
+                  Unit {module.unit} - {module.moduleTitle}
+                </Link>
+                <div>
+                  <CourseContainerPopover buttonText='...'>
+                    <p className='text-sm text-gray-500'>
+                      Unit {module.unit} - {module.moduleTitle}
+                    </p>
+                    <p className='mt-2 flex flex-row text-jet-900'>
+                      <SelectIcon
+                        iconClasses='h-5 w-5 mt-0.5 mr-2'
+                        iconSelection='edit'
+                      />
+                      Edit
+                    </p>
+                    <RemoveModule
+                      moduleId={module._id.toString()}
+                      courseId={courseId.toString()}
+                    />
+                  </CourseContainerPopover>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>{' '}

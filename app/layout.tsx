@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang='en' suppressHydrationWarning>
-        <body className={`${inter.className} text-jet dark:text-offWhite-500`}>
+        <body className={`${inter.className} text-jet dark:text-offWhite-500 dark:bg-jet-700`}>
           <Providers>
             <Header />
             {children}

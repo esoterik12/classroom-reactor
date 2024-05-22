@@ -18,7 +18,7 @@ export default async function Page({
   if (!user) return null
 
   // Getting DB user data
-  const userInfo = await fetchUser(user.id)
+  const userInfo = await fetchUser(params.id)
   if (!userInfo?.onboarded) redirect('/onboarding')
 
     console.log('userInfo', userInfo)

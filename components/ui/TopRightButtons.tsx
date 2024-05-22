@@ -35,7 +35,7 @@ const TopRightButtons = (props: ITopRightButtons) => {
 
       {/* Modal Component */}
       <Modal isOpen={isOpen} closeModal={() => setIsOpen(false)}>
-        <AddMembers/>
+        <AddMembers setIsOpen={setIsOpen}/>
       </Modal>
     </div>
   )

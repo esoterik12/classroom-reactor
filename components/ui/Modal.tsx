@@ -23,10 +23,10 @@ const Modal = ({ isOpen, closeModal, children }: ModalProps) => {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <div className='fixed inset-0 bg-black bg-opacity-25'></div>
+            <div className='bg-gray-500 fixed inset-0 bg-opacity-25'></div>
           </Transition.Child>
-          <div className='fixed inset-0 overflow-y-auto'>
-            <div className='flex min-h-full items-center justify-center p-4 text-center'>
+          <div className='fixed inset-0 overflow-y-auto '>
+            <div className='flex min-h-full items-center justify-center p-4 text-center '>
               <Transition.Child
                 as={Fragment}
                 enter='ease-out duration-300'
@@ -36,8 +36,8 @@ const Modal = ({ isOpen, closeModal, children }: ModalProps) => {
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='relative mt-24 flex max-h-[90vh] w-full max-w-2xl transform flex-col overflow-y-auto rounded-2xl  p-6 text-left shadow-xl transition-all'>
-                  <div className='flex justify-end'>
+                <Dialog.Panel className='relative mt-24 bg-offWhite-100 dark:bg-jet-700 bg-opacity-100 flex max-h-[90vh] w-full max-w-2xl transform flex-col overflow-y-auto rounded-2xl p-6 text-left shadow-xl transition-all'>
+                  <div className='flex justify-end '>
                     <button onClick={() => closeModal()}>
                       <SelectIcon
                         iconClasses='h-6 w-6 hover:text-gray-400 transition-color transition transition-300'
