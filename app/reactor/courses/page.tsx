@@ -18,7 +18,7 @@ export default async function Page() {
         </Link>
       </section>
       {/* Course list with Course Card - use id to generate dynamic link */}
-      <section className='flex flex-row flex-wrap gap-5'>
+      <section className='flex flex-row flex-wrap'>
         {courses?.map(item => (
           <CourseCard
             key={item._id}

@@ -1,4 +1,5 @@
-// Used in Search results and profile page
+// Used in profile page
+// Can be used to display user for search or other reasons
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -23,7 +24,9 @@ function ProfileHeader({
   type
 }: Props) {
   return (
-    <div className='flex w-full flex-col justify-start'>
+    <div className='flex w-full flex-col justify-start'
+    >
+      {/* Header Div - conditional styling depending on profile page or search results */}
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-6'>
           <div className='relative object-cover'>
@@ -55,6 +58,8 @@ function ProfileHeader({
           </div>
         </div>
       </div>
+      
+      {/* Conditional bio div not used in search results */}
       {bio && (
         <>
           <p className='text-base-regular text-light-2 mt-6 max-w-lg text-sm text-gray-500'>

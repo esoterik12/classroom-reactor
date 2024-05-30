@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import SelectIcon from '../icons/SelectIcon'
+import SearchCardContainer from '../containers/SearchCardContainer'
 
 interface ICourseCard {
   _id: string
@@ -9,32 +11,24 @@ interface ICourseCard {
 
 function CourseCard({ _id, image, courseName }: ICourseCard) {
   return (
-    <Link href={`courses/${_id}`} className='w-full'>
-      <article className='bg-dark-2 flex w-full flex-col rounded-xl border p-2 hover:bg-primary-100'>
-        {' '}
-        <div className='flex items-start justify-between '>
-          <div className='flex flex-1 flex-row gap-4'>
-            <div className='flex flex-col items-center'>
-              <Image
-                src={image}
-                alt='user_community_image'
-                height={60}
-                width={60}
-                className='cursor-pointer rounded-full'
-              />
+    <SearchCardContainer
+      link={`/reactor/courses/${_id}`}
+      image={image}
+      underlineColor='bg-primary-100 dark:bg-primary-500'
+    >
+      <div className='ml-3 mt-1 flex flex-1 flex-row justify-between'>
+        <div className='flex flex-col'>
+          <p className='text-md font-bold'>{courseName}</p>
+          <p className='text-sm mt-1'>Members: 11</p>
+        </div>
 
-              <div className='thread-card_bar' />
-            </div>
-
-            <div className='flex w-full flex-col'>
-              <h4 className='cursor-pointer text-lg'>
-                {courseName}
-              </h4>
-            </div>
-          </div>
-        </div>{' '}
-      </article>{' '}
-    </Link>
+        <div className='mt-3 flex gap-3'>
+          <SelectIcon iconClasses='h-6 w-6' iconSelection='heart' />
+          <SelectIcon iconClasses='h-6 w-6' iconSelection='reply' />
+          <SelectIcon iconClasses='h-6 w-6' iconSelection='share' />
+        </div>
+      </div>
+    </SearchCardContainer>
   )
 }
 

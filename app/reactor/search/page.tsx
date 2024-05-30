@@ -1,10 +1,13 @@
 import CreateDisplayCard from '@/components/cards/CreateDisplayCard'
 import ProfileHeader from '@/components/shared/ProfileInfo'
 import SearchBar from '@/components/shared/SearchBar'
+import { fetchCourses } from '@/lib/actions/course.actions'
 import { fetchCreates } from '@/lib/actions/create.actions'
 import { fetchUser, fetchUsers } from '@/lib/actions/user.actions'
 import { currentUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
+import CourseCard from '@/components/cards/CourseCard'
+import UserCard from '@/components/cards/UserCard'
 
 async function Page({
   searchParams
@@ -33,6 +36,11 @@ async function Page({
     searchCreatesResult = await fetchCreates(1, 20, searchParams.q)
   }
 
+  let searchCousesResult
+  if (searchParams.type === 'courses') {
+    searchCousesResult = await fetchCourses(1, 20, searchParams.q)
+  }
+
   return (
     <section className='container mb-28 flex flex-col items-center md:mb-12'>
       <div className='text-center text-lg font-semibold text-gray-700 dark:text-offWhite-500'>
@@ -48,21 +56,20 @@ async function Page({
         ) : (
           <>
             {searchResult?.users.map(user => (
-              <div key={user._id} className='rounded-lg p-2 shadow'>
-                <ProfileHeader
-                  accountId={user._id}
+              <div key={user._id} className=''>
+                <UserCard
                   authUserId={user.id}
                   name={user.name}
                   username={user.username}
                   imgUrl={user.image}
-                  type='search'
                 />
               </div>
             ))}
           </>
         )}
         {/* Conditionally display creates with CreateDisplayCard component */}
-        {searchParams.type === 'creates' && searchCreatesResult?.creates.length === 0 ? (
+        {searchParams.type === 'creates' &&
+        searchCreatesResult?.creates.length === 0 ? (
           <p className='text-center text-gray-700'>No Results</p>
         ) : (
           <>
@@ -77,6 +84,24 @@ async function Page({
                   createdAt={create.createdAt}
                   title={create.content.title}
                   username={create.creatorUsername}
+                />
+              </div>
+            ))}
+          </>
+        )}
+        {/* Conditionally display creates with CreateDisplayCard component */}
+        {searchParams.type === 'courses' &&
+        searchCousesResult?.courses.length === 0 ? (
+          <p className='text-center text-gray-700'>No Results</p>
+        ) : (
+          <>
+            {searchCousesResult?.courses.map(course => (
+              <div key={course._id} className=''>
+                <CourseCard
+                  key={course._id}
+                  courseName={course.courseName}
+                  _id={course._id}
+                  image={course.image}
                 />
               </div>
             ))}
