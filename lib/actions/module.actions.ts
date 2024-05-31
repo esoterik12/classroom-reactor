@@ -15,7 +15,7 @@ export async function addNewModule({
 }: {
   courseId: string
   moduleTitle: string
-  content: string
+  content: string | null
   unit: number
   createdBy: string
   pathname: string

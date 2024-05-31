@@ -10,13 +10,19 @@ import { usePathname } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { newModuleSchema } from '@/lib/zod/newModule.schema'
 import { INewModule, IUserProfile } from '@/lib/types'
-import { TextareaInput } from './TextareaInput'
 import SelectIcon from '../icons/SelectIcon'
 import Loading from '../shared/Loading'
 import BackButton from '../ui/BackButton'
 import { addNewModule } from '@/lib/actions/module.actions'
+import RichTextEdiotor from '../rte/RichTextEditor'
 
-export default function NewModuleForm({ user, courseId }: { user: IUserProfile, courseId: string }) {
+export default function NewModuleForm({
+  user,
+  courseId
+}: {
+  user: IUserProfile
+  courseId: string
+}) {
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
 
@@ -30,13 +36,15 @@ export default function NewModuleForm({ user, courseId }: { user: IUserProfile, 
     resolver: zodResolver(newModuleSchema),
     defaultValues: {
       moduleTitle: '',
-      content: '',
       unit: 1,
       createdBy: user?.objectId ? user.objectId : ''
     }
   })
 
   async function onSubmit(data: INewModule) {
+    const editorContent = localStorage.getItem('content')
+    console.log('New Module - content in storage', editorContent)
+
     setLoading(true)
     if (!user.objectId) {
       return
@@ -45,10 +53,10 @@ export default function NewModuleForm({ user, courseId }: { user: IUserProfile, 
       await addNewModule({
         courseId: courseId,
         moduleTitle: data.moduleTitle,
-        content: data.content,
+        content: editorContent,
         unit: data.unit,
         createdBy: user.objectId.toString(),
-        pathname,
+        pathname
       })
       console.log('Add module success!')
     } catch (error) {
@@ -69,7 +77,7 @@ export default function NewModuleForm({ user, courseId }: { user: IUserProfile, 
   return (
     <>
       {!isSubmitted && (
-        <div className='container py-4 rounded-md custom-shadow '>
+        <div className='container rounded-md py-4 custom-shadow '>
           <div className='flex flex-row gap-2'>
             <BackButton classes=''>
               <SelectIcon iconClasses='h-6 w-6' iconSelection='back' />
@@ -84,7 +92,7 @@ export default function NewModuleForm({ user, courseId }: { user: IUserProfile, 
                 id='moduleTitle'
                 label='Module Title'
                 placeholder='Enter a title'
-                inputClasses='w-full max-w-[450px]'
+                inputClasses='w-full'
                 {...register('moduleTitle')}
                 error={errors.moduleTitle}
               />
@@ -95,28 +103,25 @@ export default function NewModuleForm({ user, courseId }: { user: IUserProfile, 
                 id='unit'
                 label='Module Unit'
                 placeholder='Enter a unit number'
-                inputClasses='w-full max-w-[450px]'
+                inputClasses='w-full max-w-[70px]'
+                labelClasses=''
                 {...register('unit')}
                 error={errors.unit}
               />
             </div>
 
             {/* Content Section */}
-            {/* This will be replaced with the text editor */}
             <div>
-              <TextareaInput
-                id='content'
-                label='Module Content'
-                placeholder='Enter module content'
-                inputClasses='w-full'
-                {...register('content')}
-                error={errors.content}
-              />
+
+              <label className='block p-1 font-medium'>
+                Module Content
+              </label>
+              <RichTextEdiotor />
             </div>
             <div>
               <button
                 type='submit'
-                className='transition-300 text-jet ml-1 mt-4 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
+                className='transition-300 text-jet ml-1 mt-8 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
                 disabled={false}
               >
                 Add Module

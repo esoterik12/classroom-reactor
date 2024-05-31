@@ -40,6 +40,18 @@ import IconUserGroup from './IconUserGroup'
 import IconBars from './IconBars'
 import IconUserPlus from './IconUserPlus'
 import IconUserMinus from './IconUserMinus'
+// RTE Icons
+import IconAlignCenterRTE from './rte-icons/IconAlignCenterRTE'
+import IconBoldRTE from './rte-icons/IconBoldRTE'
+import IconItalicRTE from './rte-icons/IconItalicRTE'
+import IconUnderlineRTE from './rte-icons/IconUnderlineRTE'
+import IconCodeRTE from './rte-icons/IconCodeRTE'
+import IconAlignLeftRTE from './rte-icons/IconAlignLeftRTE'
+import IconAlignRightRTE from './rte-icons/IconAlignRightRTE'
+import IconAlignJustifyRTE from './rte-icons/IconAlignJustifyRTE'
+import IconQuoteRTE from './rte-icons/IconQuoteRTE'
+import IconOrderedListRTE from './rte-icons/IconOrderedListRTE'
+import IconUnorderedListRTE from './rte-icons/IconUnorderedListRTE'
 
 interface ISelectIconProps {
   iconSelection: string
@@ -172,6 +184,39 @@ export default function SelectIcon({
       break
     case 'userMinus':
       icon = <IconUserMinus classes={iconClasses} />
+      break
+      case 'centerRTE':
+      icon = <IconAlignCenterRTE classes={iconClasses} />
+      break
+    case 'leftRTE':
+      icon = <IconAlignLeftRTE classes={iconClasses} />
+      break
+    case 'rightRTE':
+      icon = <IconAlignRightRTE classes={iconClasses} />
+      break
+    case 'justifyRTE':
+      icon = <IconAlignJustifyRTE classes={iconClasses} />
+      break
+    case 'boldRTE':
+      icon = <IconBoldRTE classes={iconClasses} />
+      break
+    case 'italicRTE':
+      icon = <IconItalicRTE classes={iconClasses} />
+      break
+    case 'underlineRTE':
+      icon = <IconUnderlineRTE classes={iconClasses} />
+      break
+    case 'codeRTE':
+      icon = <IconCodeRTE classes={iconClasses} />
+      break
+    case 'quoteRTE':
+      icon = <IconQuoteRTE classes={iconClasses} />
+      break
+    case 'orderedRTE':
+      icon = <IconOrderedListRTE classes={iconClasses} />
+      break
+    case 'unorderedRTE':
+      icon = <IconUnorderedListRTE classes={iconClasses} />
       break
     default:
       icon = <p className='text-red-500'>Error: No Icon Found</p>

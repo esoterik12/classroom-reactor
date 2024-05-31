@@ -28,7 +28,7 @@ export interface INewModule {
   courseId?: string
   moduleId?: string
   moduleTitle: string
-  content: string
+  // content: string
   unit: number
   createdBy: string | undefined
   path: string
