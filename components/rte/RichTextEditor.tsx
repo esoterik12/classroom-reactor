@@ -4,7 +4,7 @@ import {
   createEditor,
   BaseEditor,
 } from 'slate'
-import { Slate, Editable, withReact, ReactEditor, useSlate } from 'slate-react'
+import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import { RenderElementProps, RenderLeafProps } from 'slate-react'
 import withEmbeds from '@/lib/slate/withEmbeds'
 import CustomEditor from './CustomEditor'

@@ -5,6 +5,19 @@ import { connectToDB } from '../mongoose'
 import Course from '../models/course.model'
 import Module from '../models/module.model'
 
+export async function fetchModule(moduleId: string) {
+  try {
+    await connectToDB()
+
+    const module = Module.findById(moduleId)
+
+    return module
+  } catch (error: any) {
+    console.error('Error fetching module:', error.message)
+    throw new Error(`Failed to fetch module: ${error.message}`)
+  }
+}
+
 export async function addNewModule({
   courseId,
   moduleTitle,

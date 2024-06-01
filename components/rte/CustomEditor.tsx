@@ -6,10 +6,9 @@ import {
   Element as SlateElement,
   Transforms
 } from 'slate'
-import { AlignFormatTypes, CustomElement } from '../RichTextEditor'
-import { MarkFormatTypes } from '../RichTextEditor'
+import { ToggleBlockTypes, CustomText, CustomElement, MarkFormatTypes } from '@/lib/slate/slateTypes'
 
-const LIST_TYPES = ['ordered-list', 'unordered-list']
+const LIST_TYPES = ['ordered-list', 'unordered-list', 'list-item']
 const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify']
 
 const embedRegexes = [
@@ -85,27 +84,7 @@ const CustomEditor = {
     )
   },
 
-  isCenterBlockActive(editor: Editor) {
-    // Retrieves a generator of nodes from editor that match condition
-    const [match] = Editor.nodes<CustomElement>(editor, {
-      // Requires edit to tsconfig - "downlevelIteration": true,
-      match: n => (n as CustomElement).align === 'center'
-    })
-
-    // converts match value to a boolean
-    return !!match
-  },
-
-  toggleCenterBlock(editor: Editor) {
-    const isActive = CustomEditor.isCenterBlockActive(editor)
-    Transforms.setNodes(
-      editor,
-      { align: isActive ? null : 'center' },
-      { match: n => SlateElement.isElement(n) && Editor.isBlock(editor, n) }
-    )
-  },
-
-  isAlignBlockActive(editor: Editor, format: AlignFormatTypes) {
+  isAlignBlockActive(editor: Editor, format: ToggleBlockTypes) {
     const [match] = Editor.nodes<CustomElement>(editor, {
       match: n => (n as CustomElement).align === format
     })
@@ -113,7 +92,7 @@ const CustomEditor = {
     return !!match
   },
 
-  toggleAlignBlock(editor: Editor, format: AlignFormatTypes) {
+  toggleAlignBlock(editor: Editor, format: ToggleBlockTypes) {
     const isActive = CustomEditor.isAlignBlockActive(editor, format)
     Transforms.setNodes(
       editor,
@@ -162,9 +141,10 @@ const CustomEditor = {
 
     // removes the current block type wrapper if it's a list type
     Transforms.unwrapNodes(editor, {
-      match: n =>
+      match: (n) =>
         !Editor.isEditor(n) &&
         SlateElement.isElement(n) &&
+        !!n.type &&
         LIST_TYPES.includes(n.type) &&
         !TEXT_ALIGN_TYPES.includes(format),
       split: true

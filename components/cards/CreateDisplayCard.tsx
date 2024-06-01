@@ -27,7 +27,6 @@ const CreateDisplayCard = ({
   title,
   username
 }: ICreateDisplayCard) => {
-  // console.log('userId', userId)
 
   return (
     <SearchCardContainer
@@ -37,11 +36,9 @@ const CreateDisplayCard = ({
     >
       <div className='ml-3 mt-1 flex flex-1 flex-row justify-between'>
         <div className='flex flex-col'>
-          <Link href={`/reactor/createview/${createType}/${_id}`}>
-            <p className='text-md'>
-              <span className='font-bold'>{title}</span> - {createType}
-            </p>
-          </Link>
+          <p className='text-md'>
+            <span className='font-bold'>{title}</span> - {createType}
+          </p>
           <p className='mt-1 text-sm '>
             {/* Only displays username if in props */}
             {username && (

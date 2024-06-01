@@ -108,7 +108,7 @@ const CourseContainer = ({
                 key={module._id.toString()}
                 className='text-gray mt-1 flex flex-row justify-between'
               >
-                <Link href={module._id.toString()}>
+                <Link href={`/reactor/courses/${courseId}/${module._id.toString()}`}>
                   Unit {module.unit} - {module.moduleTitle}
                 </Link>
                 <div>

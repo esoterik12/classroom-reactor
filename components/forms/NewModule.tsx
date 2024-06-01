@@ -15,6 +15,7 @@ import Loading from '../shared/Loading'
 import BackButton from '../ui/BackButton'
 import { addNewModule } from '@/lib/actions/module.actions'
 import RichTextEdiotor from '../rte/RichTextEditor'
+import { serialize } from '@/lib/slate/serialize'
 
 export default function NewModuleForm({
   user,
