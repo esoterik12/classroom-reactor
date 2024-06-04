@@ -53,7 +53,7 @@ const CourseContainer = ({
               </h1>
               <p className='text-sm'>{description}</p>
               <p className='text-xs text-gray-500'>
-                Created: {formatDateString(createdAt)} by{' '}
+              Created: {formatDateString(createdAt)} by{' '}
                 <Link href={`/reactor/profile/${createdBy.id}`}>
                   {createdBy.username}
                 </Link>
@@ -64,7 +64,7 @@ const CourseContainer = ({
             <BackButton classes='flex flex-row gap-1 text-gray-500 mb-2 mt-0.5'>
               <SelectIcon iconClasses='h-6 w-6' iconSelection='back' />
             </BackButton>
-            <CourseContainerPopover buttonText='Edit'>
+            <CourseContainerPopover buttonText='Course'>
               <div className='flex flex-col items-start gap-2 text-jet-500'>
                 <Link href={`/reactor/courses/${courseId}/edit`}>
                   <button className='m-1 flex flex-row gap-2'>

@@ -9,15 +9,31 @@ import { usePathname } from 'next/navigation'
 // Zod validation imports:
 import { zodResolver } from '@hookform/resolvers/zod'
 import { newCourseSchema } from '@/lib/zod/newCourse.schema'
-import { INewCourse, IUserProfile } from '@/lib/types'
+import { INewCourse } from '@/lib/types'
 import { UploadButton } from '@/lib/uploadthing'
-import { addNewCourse } from '@/lib/actions/course.actions'
+import { addNewCourse, updateCourse } from '@/lib/actions/course.actions'
 import { TextareaInput } from './TextareaInput'
 import SelectIcon from '../icons/SelectIcon'
 import Loading from '../shared/Loading'
 import BackButton from '../ui/BackButton'
 
-export default function NewCourseForm({ user }: { user: IUserProfile }) {
+interface NewCourseFormProps {
+  id?: string
+  user: string
+  courseName?: string
+  description?: string
+  image?: string
+  createdByClerkId?: string
+}
+
+export default function NewCourseForm({
+  id,
+  user,
+  courseName,
+  description,
+  image,
+  createdByClerkId
+}: NewCourseFormProps) {
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<null | string>('')
   const pathname = usePathname()
@@ -31,23 +47,32 @@ export default function NewCourseForm({ user }: { user: IUserProfile }) {
     reValidateMode: 'onBlur',
     resolver: zodResolver(newCourseSchema),
     defaultValues: {
-      image: '',
-      courseName: '',
-      description: '',
-      createdBy: user?.objectId ? user.objectId : ''
+      image: image ? image : '',
+      courseName: courseName ? courseName : '',
+      description: description ? description : '',
+      createdBy: user ? user : ''
     }
   })
 
   async function onSubmit(data: INewCourse) {
     setLoading(true)
     try {
-      await addNewCourse({
+      const courseUpdateObject: INewCourse = {
         courseName: data.courseName,
         image: imageUrl,
         description: data.description,
-        createdBy: user.objectId,
+        createdBy: user,
         path: pathname
-      })
+      }
+
+      if (id) {
+        console.log('UPDATING COURSE')
+        courseUpdateObject.id = id
+        await updateCourse(courseUpdateObject)
+      } else {
+        console.log('ADDING COURSE')
+        await addNewCourse(courseUpdateObject)
+      }
       console.log('Update user success!')
     } catch (error) {
       console.log('server action error: ', error)

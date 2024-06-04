@@ -220,7 +220,7 @@ export async function updateCourse({
   courseName,
   image,
   description,
-  // createdBy,
+  createdBy,
   path
 }: INewCourse): Promise<void> {
   try {
@@ -231,8 +231,8 @@ export async function updateCourse({
       {
         courseName,
         image,
-        description
-        // createdBy
+        description,
+        createdBy
       },
       { upsert: true } // also creates Course if it's a new one
     )

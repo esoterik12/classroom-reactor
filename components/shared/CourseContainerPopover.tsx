@@ -5,11 +5,13 @@ import React, { Fragment } from 'react'
 interface ICreateCardPopover {
   buttonText: string
   children: React.ReactNode
+  marginLeft?: string
 }
 
 export default function CourseContainerPopover({
   buttonText,
-  children
+  children,
+  marginLeft
 }: ICreateCardPopover) {
   return (
     <div className='w-full max-w-sm '>
@@ -33,7 +35,9 @@ export default function CourseContainerPopover({
               leaveTo='opacity-0 translate-y-1'
             >
               {/* Controls the popover div styles on the page */}
-              <Popover.Panel className='absolute z-10 ml-2 mt-3 w-screen max-w-xs -translate-x-3/4 transform px-12'>
+              <Popover.Panel
+                className={`absolute z-10 ${marginLeft ? marginLeft : 'ml-2'} mt-3 w-screen max-w-xs -translate-x-3/4 transform px-12`}
+              >
                 <div className='ring-black/5 overflow-hidden rounded-lg bg-offWhite-200 shadow-lg ring-2'>
                   <div className='relative grid gap-2 p-4 '>
                     <div>

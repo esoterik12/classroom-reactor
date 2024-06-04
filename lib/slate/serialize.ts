@@ -3,7 +3,10 @@ import escapeHtml from 'escape-html'
 import { CustomElement, CustomText } from './slateTypes'
 
 export const serialize = (node: CustomElement | CustomText): string => {
-  console.log('NODE in serialize', node)
+  if (Text.isText(node) && node.text.trim() === '') {
+    return `</br>`
+  }
+
   if (Text.isText(node)) {
     let string = escapeHtml(node.text)
     if (node.bold) {
@@ -18,10 +21,7 @@ export const serialize = (node: CustomElement | CustomText): string => {
     return string
   }
 
-  
-
   const children = node.children.map(n => serialize(n)).join('')
-  console.log('CHILDREN in serialize', children)
   // Some incompatibility with the naming in the CustomEditor for right / end alignment
   const alignStyles = node.align ? `text-align:${node.align}` : ''
 
