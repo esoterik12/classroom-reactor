@@ -1,11 +1,9 @@
 import CourseCard from '@/components/cards/CourseCard'
-import { fetchCourseTitles } from '@/lib/actions/course.actions'
-import Image from 'next/image'
+import { fetchCourses } from '@/lib/actions/course.actions'
 import Link from 'next/link'
 
 export default async function Page() {
-  // Function gets only _id, courseName, image
-  const courses = await fetchCourseTitles()
+  const courseResult = await fetchCourses(1, 20, '')
 
   return (
     <main className='flex min-h-screen flex-col items-center p-6'>
@@ -19,12 +17,13 @@ export default async function Page() {
       </section>
       {/* Course list with Course Card - use id to generate dynamic link */}
       <section className='flex flex-row flex-wrap'>
-        {courses?.map(item => (
+        {courseResult.courses?.map(item => (
           <CourseCard
             key={item._id}
             courseName={item.courseName}
             _id={item._id}
             image={item.image}
+            numOfMembers={item.members.length}
           />
         ))}
       </section>

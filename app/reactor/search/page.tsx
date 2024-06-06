@@ -102,6 +102,7 @@ async function Page({
                   courseName={course.courseName}
                   _id={course._id}
                   image={course.image}
+                  numOfMembers={course.members.length}
                 />
               </div>
             ))}

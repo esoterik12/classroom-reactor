@@ -19,7 +19,7 @@ const NavLink = ({ href, children, className, ...props }: INavLink) => {
     <Link
       {...props}
       href={href}
-      className={clsx(className, isActiveLink && 'text-primary-500 underline')}
+      className={`flex flex-row gap-2 ${clsx(className, isActiveLink && 'text-primary-500 underline')}`}
     >
       {children}
     </Link>

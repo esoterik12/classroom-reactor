@@ -88,6 +88,8 @@ export async function postCreate({
     await connectToDB()
 
     const courseIdObject = await Course.findOne({ id: course }, { _id: 1 })
+    // Creates an array object from the courseIdObject to match the array in the Create model
+    const courseArray = Array.isArray(courseIdObject) ? courseIdObject : [courseIdObject]
 
     const preparedContent = {
       content: processedContent,
@@ -99,7 +101,7 @@ export async function postCreate({
       creator,
       creatorClerkId,
       createType,
-      course: courseIdObject, // Assign courseIdObject if provided, or leave it null for personal account
+      courses: courseArray, // Assign courseIdObject if provided, or leave it null for personal account
       creatorUsername,
       creatorImage
     })

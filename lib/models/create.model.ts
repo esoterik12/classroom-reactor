@@ -21,6 +21,10 @@ const createSchema = new mongoose.Schema({
   creatorImage: {
     type: String,
   },
+  courses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course'
+  }],
   course: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course'

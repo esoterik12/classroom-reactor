@@ -110,11 +110,11 @@ export async function addDummyCourses() {
   }
 }
 
-// #1 Function used for search
+// #1 Function used for search and course homepage (displays all courses)
 export async function fetchCourses(
   pageNumber = 1,
   pageSize = 20,
-  searchString = ''
+  searchString = '' // default set allows course page to populate all
 ) {
   await connectToDB()
 
@@ -141,7 +141,7 @@ export async function fetchCourses(
       path: 'createdBy',
       model: User
     })
-
+    
   const totalCoursesCount = await Course.countDocuments(
     searchString === '' ? { parentId: { $in: [null, undefined] } } : query
   )

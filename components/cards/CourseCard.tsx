@@ -1,5 +1,3 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import SelectIcon from '../icons/SelectIcon'
 import SearchCardContainer from '../containers/SearchCardContainer'
 
@@ -7,9 +5,11 @@ interface ICourseCard {
   _id: string
   image: string
   courseName: string
+  numOfMembers: number // temp
 }
 
-function CourseCard({ _id, image, courseName }: ICourseCard) {
+function CourseCard({ _id, image, courseName, numOfMembers }: ICourseCard) {
+
   return (
     <SearchCardContainer
       link={`/reactor/courses/${_id}`}
@@ -19,7 +19,7 @@ function CourseCard({ _id, image, courseName }: ICourseCard) {
       <div className='ml-3 mt-1 flex flex-1 flex-row justify-between'>
         <div className='flex flex-col'>
           <p className='text-md font-bold'>{courseName}</p>
-          <p className='text-sm mt-1'>Members: 11</p>
+          <p className='text-sm mt-1'>Members: {numOfMembers}</p>
         </div>
 
         <div className='mt-3 flex gap-3'>

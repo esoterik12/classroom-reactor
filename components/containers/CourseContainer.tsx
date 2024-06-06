@@ -40,6 +40,11 @@ const CourseContainer = ({
   createdAt,
   modules
 }: ICourseContainer) => {
+
+  async function deleteCorse(courseId: string) {
+
+  }
+
   return (
     <main className='flex flex-wrap gap-6 px-6 py-3'>
       <div className='flex w-full flex-col justify-between rounded-md border border-grayLight-500 shadow-md dark:border-jet-500'>
@@ -53,7 +58,7 @@ const CourseContainer = ({
               </h1>
               <p className='text-sm'>{description}</p>
               <p className='text-xs text-gray-500'>
-              Created: {formatDateString(createdAt)} by{' '}
+                Created: {formatDateString(createdAt)} by{' '}
                 <Link href={`/reactor/profile/${createdBy.id}`}>
                   {createdBy.username}
                 </Link>
@@ -94,6 +99,22 @@ const CourseContainer = ({
                     Members
                   </button>
                 </Link>
+                <Link href={`/reactor`}>
+                  <button className='m-1 flex flex-row gap-2'>
+                    <SelectIcon
+                      iconClasses='h-5 w-5 mt-0.5'
+                      iconSelection='documentPlus'
+                    />
+                    Course Creates
+                  </button>
+                </Link>
+                <button className='m-1 flex flex-row gap-2'>
+                  <SelectIcon
+                    iconClasses='h-5 w-5 mt-0.5'
+                    iconSelection='x'
+                  />
+                  Delete Course
+                </button>
               </div>
             </CourseContainerPopover>
           </div>
@@ -108,7 +129,9 @@ const CourseContainer = ({
                 key={module._id.toString()}
                 className='text-gray mt-1 flex flex-row justify-between'
               >
-                <Link href={`/reactor/courses/${courseId}/${module._id.toString()}`}>
+                <Link
+                  href={`/reactor/courses/${courseId}/${module._id.toString()}`}
+                >
                   Unit {module.unit} - {module.moduleTitle}
                 </Link>
                 <div>
