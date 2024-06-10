@@ -9,23 +9,32 @@ import { usePathname } from 'next/navigation'
 // Zod validation imports:
 import { zodResolver } from '@hookform/resolvers/zod'
 import { newModuleSchema } from '@/lib/zod/newModule.schema'
-import { INewModule, IUserProfile } from '@/lib/types'
+import { INewModule } from '@/lib/types'
 import SelectIcon from '../icons/SelectIcon'
 import Loading from '../shared/Loading'
 import BackButton from '../ui/BackButton'
-import { addNewModule } from '@/lib/actions/module.actions'
+import { addNewModule, updateModule } from '@/lib/actions/module.actions'
 import RichTextEdiotor from '../rte/RichTextEditor'
-import { serialize } from '@/lib/slate/serialize'
 
 export default function NewModuleForm({
-  user,
-  courseId
+  userId,
+  courseId,
+  editModuleTitle,
+  editModuleContent,
+  setIsEdit,
+  moduleId
 }: {
-  user: IUserProfile
+  userId: string
   courseId: string
+  editModuleTitle?: string
+  editModuleContent?: any
+  setIsEdit?: React.Dispatch<React.SetStateAction<boolean>>
+  moduleId?: string
 }) {
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
+
+  console.log('editModuleContent', editModuleContent)
 
   const {
     register,
@@ -36,34 +45,48 @@ export default function NewModuleForm({
     reValidateMode: 'onBlur',
     resolver: zodResolver(newModuleSchema),
     defaultValues: {
-      moduleTitle: '',
+      moduleTitle: editModuleTitle ? editModuleTitle : '',
       unit: 1,
-      createdBy: user?.objectId ? user.objectId : ''
+      createdBy: userId ? userId : ''
     }
   })
 
   async function onSubmit(data: INewModule) {
     const editorContent = localStorage.getItem('content')
-    console.log('New Module - content in storage', editorContent)
 
     setLoading(true)
-    if (!user.objectId) {
+    if (!userId) {
       return
     }
     try {
-      await addNewModule({
-        courseId: courseId,
-        moduleTitle: data.moduleTitle,
-        content: editorContent,
-        unit: data.unit,
-        createdBy: user.objectId.toString(),
-        pathname
-      })
+      if (setIsEdit && moduleId) {
+        console.log('running updateModule')
+        await updateModule({
+          moduleId: moduleId,
+          moduleTitle: data.moduleTitle,
+          content: editorContent,
+          unit: data.unit,
+          pathname
+        })
+      } else {
+        console.log('running addNewModule')
+        await addNewModule({
+          courseId: courseId,
+          moduleTitle: data.moduleTitle,
+          content: editorContent,
+          unit: data.unit,
+          createdBy: userId.toString(),
+          pathname
+        })
+      }
       console.log('Add module success!')
     } catch (error) {
       console.log('server action error: ', error)
     } finally {
       setLoading(false)
+      if (setIsEdit) {
+        setIsEdit(false)
+      }
     }
   }
 
@@ -83,7 +106,9 @@ export default function NewModuleForm({
             <BackButton classes=''>
               <SelectIcon iconClasses='h-6 w-6' iconSelection='back' />
             </BackButton>
-            <h1 className='text-xl font-semibold'>Add Module</h1>
+            <h1 className='text-xl font-semibold'>
+              {editModuleContent ? 'Edit' : 'Add'} Module
+            </h1>
           </div>
           <form className='m-2 flex flex-col' onSubmit={handleSubmit(onSubmit)}>
             {/* Name Field */}
@@ -113,11 +138,8 @@ export default function NewModuleForm({
 
             {/* Content Section */}
             <div>
-
-              <label className='block p-1 font-medium'>
-                Module Content
-              </label>
-              <RichTextEdiotor />
+              <label className='block p-1 font-medium'>Module Content</label>
+              <RichTextEdiotor startingValue={editModuleContent} />
             </div>
             <div>
               <button

@@ -6,7 +6,7 @@ const SingleCoursePage = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null
 
   const selectedCourse = await fetchCourseAndModulesTitles(params.id)
-  // console.log('selectedCourse in course id page.tsx', selectedCourse)
+  
   return (
     <CourseContainer
       courseId={selectedCourse._id}

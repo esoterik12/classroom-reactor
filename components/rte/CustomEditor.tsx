@@ -1,12 +1,9 @@
 import {
-  createEditor,
-  BaseEditor,
-  Descendant,
   Editor,
   Element as SlateElement,
   Transforms
 } from 'slate'
-import { ToggleBlockTypes, CustomText, CustomElement, MarkFormatTypes } from '@/lib/slate/slateTypes'
+import { ToggleBlockTypes, CustomElement, MarkFormatTypes } from '@/lib/slate/slateTypes'
 
 const LIST_TYPES = ['ordered-list', 'unordered-list', 'list-item']
 const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify']
@@ -47,7 +44,6 @@ const CustomEditor = {
     console.log('onPaste', event.clipboardData.getData('text/plain'))
   },
 
-  // Dynamic Mark Functions Development Start //
   isMarkActive(editor: Editor, format: MarkFormatTypes) {
     const marks = Editor.marks(editor)
     if (marks) {
@@ -63,25 +59,6 @@ const CustomEditor = {
     } else {
       Editor.addMark(editor, format, true)
     }
-  },
-  // Dynamic Mark Functions Development End //
-
-  isCodeBlockActive(editor: Editor) {
-    const [match] = Editor.nodes<CustomElement>(editor, {
-      // Requires edit to tsconfig - "downlevelIteration": true,
-      match: n => (n as CustomElement).type === 'code'
-    })
-
-    return !!match
-  },
-
-  toggleCodeBlock(editor: Editor) {
-    const isActive = CustomEditor.isCodeBlockActive(editor)
-    Transforms.setNodes(
-      editor,
-      { type: isActive ? null : 'code' },
-      { match: n => SlateElement.isElement(n) && Editor.isBlock(editor, n) }
-    )
   },
 
   isAlignBlockActive(editor: Editor, format: ToggleBlockTypes) {
@@ -130,7 +107,7 @@ const CustomEditor = {
     return !!match
   },
 
-  toggleBlock(editor: Editor, format: string) {
+  toggleBlock(editor: Editor, format: ToggleBlockTypes) {
     // Check is current selection already has specified format applied
     const isActive = CustomEditor.isBlockActive(
       editor,

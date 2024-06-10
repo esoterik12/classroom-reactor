@@ -2,8 +2,21 @@ import { fetchModule } from '@/lib/actions/module.actions'
 import React from 'react'
 import { serialize } from '@/lib/slate/serialize'
 import ModuleContainer from '@/components/containers/ModuleContainer'
+import { currentUser } from '@clerk/nextjs'
+import { fetchUser } from '@/lib/actions/user.actions'
+import { redirect } from 'next/navigation'
 
-const Page = async ({ params }: { params: { moduleid: string } }) => {
+const Page = async ({
+  params
+}: {
+  params: { id: string; moduleid: string }
+}) => {
+  const user = await currentUser()
+  if (!user) return null
+
+  const userInfo = await fetchUser(user.id)
+  if (!userInfo?.onboarded) redirect('/onboarding')
+
   // Fetched module from db in JSON format
   const module = await fetchModule(params.moduleid)
   console.log('module', module)
@@ -21,10 +34,14 @@ const Page = async ({ params }: { params: { moduleid: string } }) => {
 
   return (
     <ModuleContainer
+      userId={userInfo._id.toString()}
+      courseId={params.id}
+      moduleId={module._id.toString()}
       moduleTitle={module.moduleTitle}
       unit={module.unit}
       createdAt={module.createdAt}
       serializedModule={serializedModule}
+      parsedModule={parsedModule}
     />
   )
 }

@@ -10,19 +10,10 @@ async function Page({ params }: { params: { id: string } }) {
   const userInfo = await fetchUser(user.id)
   if (!userInfo?.onboarded) redirect('/onboarding')
 
-  const userData = {
-    id: user.id,
-    objectId: userInfo?._id.toString(),
-    username: userInfo ? userInfo?.username : user.username,
-    name: userInfo ? userInfo?.name : user.firstName ?? '',
-    bio: userInfo ? userInfo?.bio : '',
-    image: userInfo ? userInfo?.image : user.imageUrl
-  }
-
   return (
     <section className='mx-6 flex flex-row items-center justify-center'>
       <div className='w-full md:w-2/3'>
-        <NewModuleForm user={userData} courseId={params.id} />
+        <NewModuleForm userId={userInfo._id.toString()} courseId={params.id} />
       </div>
     </section>
   )

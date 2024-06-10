@@ -7,6 +7,7 @@ import mongoose, { FilterQuery } from 'mongoose'
 import { INewCourse } from '../types'
 import { redirect } from 'next/navigation'
 import Module from '../models/module.model'
+import Create from '../models/create.model'
 
 export async function addDummyCourses() {
   try {
@@ -141,7 +142,7 @@ export async function fetchCourses(
       path: 'createdBy',
       model: User
     })
-    
+
   const totalCoursesCount = await Course.countDocuments(
     searchString === '' ? { parentId: { $in: [null, undefined] } } : query
   )
@@ -153,25 +154,12 @@ export async function fetchCourses(
   return { courses, isNext }
 }
 
-// #2 Function for populating course main page with all courses
-// UNFINISHED: ADD paginaition functionality
-export async function fetchCourseTitles() {
-  try {
-    await connectToDB()
-    const courses = await Course.find({}).select('courseName _id image')
-    // console.log('Course with Modules:', courses)
-    return courses
-  } catch (error: any) {
-    console.error('Error fetching course:', error.message)
-    throw new Error(`Failed to fetch course: ${error.message}`)
-  }
-}
-
-// #3 Function - Not tested - intended to collect the modules and their title to create a list of links
-// Use the titles to sort in UI?
+// #3 Collects the modules and their title to create a list of links
+// Unfinished: Add sort functionality
 export async function fetchCourseAndModulesTitles(courseId: string) {
   try {
     await connectToDB()
+
     const course = await Course.findById(courseId)
       .populate('createdBy', 'username id')
       .populate({
@@ -179,7 +167,7 @@ export async function fetchCourseAndModulesTitles(courseId: string) {
         select: 'moduleTitle unit',
         model: Module
       })
-    console.log('Course with Modules:', course)
+
     return course
   } catch (error) {
     console.error('Error fetching course:', error)
@@ -321,6 +309,23 @@ export async function fetchCourseMembers(courseId: string) {
   }
 }
 
+export async function fetchCourseCreates(courseId: string) {
+  try {
+    await connectToDB()
+
+    const courseCreates = await Course.findById(courseId).select('creates')
+
+    if (!courseCreates) {
+      throw new Error(`No creates matching course ${courseId} found.`)
+    }
+
+    console.log('courseCreates', courseCreates)
+    return courseCreates
+  } catch (error: any) {
+    throw new Error(`Failed to fetch course creates: ${error}`)
+  }
+}
+
 export async function removeCourseMember(
   courseId: string,
   userId: string,
@@ -338,5 +343,35 @@ export async function removeCourseMember(
     throw new Error(`Failed to remove course member: ${error.message}`)
   } finally {
     revalidatePath(pathname)
+  }
+}
+
+export async function deleteCourse(courseId: string) {
+  try {
+    await connectToDB()
+
+    // UNFINISHED
+    // Before deleting need to find all creates that have a creates[] entry for this course and remove it
+    // Added complexity: delete the create if it is part of NO course?
+    // Solution for general creates: make general courses / can't be deleted
+    const updatedCreates = await Create.updateMany(
+      { courses: courseId },
+      { $pull: { creates: courseId } }
+    )
+    if (!updatedCreates) {
+      console.log('No creates found in deleted course.')
+    }
+
+    const result = await Course.findByIdAndDelete(courseId)
+
+    if (!result) {
+      throw new Error(`Failed to delete: Course of id ${courseId} no found.`)
+    }
+
+    console.log(`Course ${courseId} deleted successfully.`);
+  } catch (error: any) {
+    throw new Error(`Failed to delete course with id of ${courseId}`)
+  } finally {
+    redirect(`/reactor/courses/`)
   }
 }

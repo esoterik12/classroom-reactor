@@ -10,6 +10,9 @@ export async function fetchModule(moduleId: string) {
     await connectToDB()
 
     const module = Module.findById(moduleId)
+    if (!module) {
+      throw new Error(`No module matching course ${moduleId} found.`)
+    }
 
     return module
   } catch (error: any) {
@@ -62,6 +65,39 @@ export async function addNewModule({
     throw new Error(`Failed to save new module: ${error.message}`)
   } finally {
     redirect(`/reactor/courses/${courseId}`)
+  }
+}
+
+// Created a separate updateModule function for initial simplicity
+// May be worth merging with new module function
+
+export async function updateModule({
+  moduleId,
+  moduleTitle,
+  content,
+  unit,
+  pathname
+}: {
+  moduleId: string
+  moduleTitle: string
+  content: string | null
+  unit: number
+  pathname: string
+}) {
+  try {
+    await connectToDB()
+
+    await Module.findOneAndUpdate(
+      { _id: moduleId },
+      {
+        moduleTitle,
+        htmlContent: content,
+        unit
+      }
+    )
+    revalidatePath(pathname)
+  } catch (error: any) {
+    throw new Error(`Failed to update module: ${error.message}`)
   }
 }
 

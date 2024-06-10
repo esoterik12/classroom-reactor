@@ -1,9 +1,6 @@
 'use client'
 import { useCallback, useState } from 'react'
-import {
-  createEditor,
-  BaseEditor,
-} from 'slate'
+import { createEditor, BaseEditor } from 'slate'
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import { RenderElementProps, RenderLeafProps } from 'slate-react'
 import withEmbeds from '@/lib/slate/withEmbeds'
@@ -113,14 +110,21 @@ const Leaf: React.FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
   return <span {...attributes}>{children}</span>
 }
 
-const RichTextEdiotor = () => {
+const initialEditorValue = [
+  {
+    type: 'paragraph',
+    children: [{ text: 'A line of text in a paragraph.' }]
+  }
+]
+
+const RichTextEdiotor = ({
+  startingValue = initialEditorValue
+}: {
+  startingValue: CustomElement[]
+}) => {
   const [editor] = useState(() => withEmbeds(withReact(createEditor())))
-  const [initialValue, setInitialValue] = useState<CustomElement[]>([
-    {
-      type: 'paragraph',
-      children: [{ text: 'A line of text in a paragraph.' }]
-    }
-  ])
+  const [initialValue, setInitialValue] =
+    useState<CustomElement[]>(startingValue)
 
   useEffect(() => {
     const content = localStorage.getItem('content')
@@ -206,7 +210,6 @@ const RichTextEdiotor = () => {
               )}
             </button>
           ))}
-
         </div>
 
         {/* Editable Div */}
@@ -224,13 +227,23 @@ const RichTextEdiotor = () => {
             switch (event.key) {
               case '`': {
                 event.preventDefault()
-                CustomEditor.toggleCodeBlock(editor)
+                CustomEditor.toggleBlock(editor, 'code-block')
                 break
               }
 
               case 'b': {
                 event.preventDefault()
                 CustomEditor.toggleMark(editor, 'bold')
+                break
+              }
+              case 'i': {
+                event.preventDefault()
+                CustomEditor.toggleMark(editor, 'italic')
+                break
+              }
+              case 'u': {
+                event.preventDefault()
+                CustomEditor.toggleMark(editor, 'underline')
                 break
               }
             }

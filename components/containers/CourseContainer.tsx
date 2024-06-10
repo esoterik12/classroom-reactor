@@ -6,6 +6,8 @@ import CourseContainerPopover from '../shared/CourseContainerPopover'
 import { formatDateString } from '@/lib/utils'
 import Link from 'next/link'
 import RemoveModule from '../ui/RemoveModule'
+import { deleteCourse } from '@/lib/actions/course.actions'
+import DeleteCourse from '../forms/DeleteCourse'
 
 type ICourseContainer = {
   courseId: string
@@ -40,10 +42,6 @@ const CourseContainer = ({
   createdAt,
   modules
 }: ICourseContainer) => {
-
-  async function deleteCorse(courseId: string) {
-
-  }
 
   return (
     <main className='flex flex-wrap gap-6 px-6 py-3'>
@@ -99,7 +97,7 @@ const CourseContainer = ({
                     Members
                   </button>
                 </Link>
-                <Link href={`/reactor`}>
+                <Link href={`/reactor/courses/${courseId}/creates`}>
                   <button className='m-1 flex flex-row gap-2'>
                     <SelectIcon
                       iconClasses='h-5 w-5 mt-0.5'
@@ -108,13 +106,7 @@ const CourseContainer = ({
                     Course Creates
                   </button>
                 </Link>
-                <button className='m-1 flex flex-row gap-2'>
-                  <SelectIcon
-                    iconClasses='h-5 w-5 mt-0.5'
-                    iconSelection='x'
-                  />
-                  Delete Course
-                </button>
+                <DeleteCourse courseId={courseId.toString()} />
               </div>
             </CourseContainerPopover>
           </div>
@@ -138,13 +130,6 @@ const CourseContainer = ({
                   <CourseContainerPopover buttonText='...'>
                     <p className='text-sm text-gray-500'>
                       Unit {module.unit} - {module.moduleTitle}
-                    </p>
-                    <p className='mt-2 flex flex-row text-jet-900'>
-                      <SelectIcon
-                        iconClasses='h-5 w-5 mt-0.5 mr-2'
-                        iconSelection='edit'
-                      />
-                      Edit
                     </p>
                     <RemoveModule
                       moduleId={module._id.toString()}
