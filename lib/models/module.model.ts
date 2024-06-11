@@ -23,6 +23,10 @@ const moduleSchema = new mongoose.Schema({
   unit: {
     type: Number,
     required: true
+  },
+  lesson: {
+    type: Number,
+    required: true
   }
 })
 

@@ -58,6 +58,7 @@ function CreateForm<T extends FormData>({
         content: { text: data.text, title: data.title },
         creator: userId,
         createType: 'cryptogram',
+        creatorClerkId: 'DUMMY',
         course: 'CC11',
         creatorUsername: username,
         creatorImage: userImage
@@ -73,8 +74,8 @@ function CreateForm<T extends FormData>({
   if (loading) {
     return (
       <div className='flex flex-col items-center justify-center pt-24 align-middle'>
-        <p className='m-6'>Loading...</p>
-        <Loading />
+        <p className='m-6'>Loading... loading p element in CreateForm.tsx</p>
+        <Loading text='Loading... (loading component in CreateForm.tsx)' />
       </div>
     )
   }
@@ -101,7 +102,12 @@ function CreateForm<T extends FormData>({
           </h1>
         </div>
         <div className=''>
-          <CreateCardPopover />
+          <CreateCardPopover 
+          buttonText='CreateForm.tsx'
+          title='Fix in CreateForm.tsx'
+          description='Add in CreateForm.tsx'
+          tips={['CreateForm.tsx']}
+          />
         </div>
       </div>
       <form

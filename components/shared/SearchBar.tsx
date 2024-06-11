@@ -24,7 +24,7 @@ const SearchBar = ({ inputClasses }: ISearchBar) => {
     }, 500)
     
     return () => clearTimeout(delayDebounceFn)
-  }, [search, searchType])
+  }, [search, searchType, router])
 
   return (
     <div className=''>

@@ -1,7 +1,7 @@
 // May require suppressHydrationWarning in html of layout.tsx
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputField } from './InputField'
 import { usePathname } from 'next/navigation'
@@ -34,7 +34,13 @@ export default function NewModuleForm({
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
 
-  console.log('editModuleContent', editModuleContent)
+  useEffect(() => {
+    if (editModuleContent) {
+      const content = JSON.stringify(editModuleContent)
+      localStorage.setItem('content', content)
+    }
+    console.log('editModuleContent', editModuleContent)
+  }, [editModuleContent])
 
   const {
     register,
@@ -47,6 +53,7 @@ export default function NewModuleForm({
     defaultValues: {
       moduleTitle: editModuleTitle ? editModuleTitle : '',
       unit: 1,
+      lesson: 1,
       createdBy: userId ? userId : ''
     }
   })
@@ -66,6 +73,7 @@ export default function NewModuleForm({
           moduleTitle: data.moduleTitle,
           content: editorContent,
           unit: data.unit,
+          lesson: data.lesson,
           pathname
         })
       } else {
@@ -75,6 +83,7 @@ export default function NewModuleForm({
           moduleTitle: data.moduleTitle,
           content: editorContent,
           unit: data.unit,
+          lesson: data.lesson,
           createdBy: userId.toString(),
           pathname
         })
@@ -116,38 +125,48 @@ export default function NewModuleForm({
               <InputField
                 type='text'
                 id='moduleTitle'
-                label='Module Title'
+                label='Title:'
                 placeholder='Enter a title'
                 inputClasses='w-full'
                 {...register('moduleTitle')}
                 error={errors.moduleTitle}
               />
             </div>
-            <div>
+            <div className='flex flex-row gap-10'>
               <InputField
                 type='number'
                 id='unit'
-                label='Module Unit'
+                label='Unit:'
                 placeholder='Enter a unit number'
                 inputClasses='w-full max-w-[70px]'
                 labelClasses=''
                 {...register('unit')}
                 error={errors.unit}
               />
+              <InputField
+                type='number'
+                id='lesson'
+                label='Lesson:'
+                placeholder='Enter a lesson number'
+                inputClasses='w-full max-w-[70px]'
+                labelClasses=''
+                {...register('lesson')}
+                error={errors.lesson}
+              />
             </div>
 
             {/* Content Section */}
             <div>
-              <label className='block p-1 font-medium'>Module Content</label>
+              <label className='block p-1 font-medium'>Content:</label>
               <RichTextEdiotor startingValue={editModuleContent} />
             </div>
             <div>
               <button
                 type='submit'
                 className='transition-300 text-jet ml-1 mt-8 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
-                disabled={false}
+                disabled={loading}
               >
-                Add Module
+                {editModuleContent ? 'Edit' : 'Add'} Module
               </button>
             </div>
           </form>

@@ -18,10 +18,10 @@ const Page = async ({
   if (!userInfo?.onboarded) redirect('/onboarding')
 
   // Fetched module from db in JSON format
-  const module = await fetchModule(params.moduleid)
+  const fetchedModule = await fetchModule(params.moduleid)
   console.log('module', module)
   // Convert to slate object
-  const parsedModule = await JSON.parse(module.htmlContent)
+  const parsedModule = await JSON.parse(fetchedModule.htmlContent)
   // console.log('parsedModule', parsedModule)
 
   // format for serialize function (function from Slate docs - developed)
@@ -36,10 +36,10 @@ const Page = async ({
     <ModuleContainer
       userId={userInfo._id.toString()}
       courseId={params.id}
-      moduleId={module._id.toString()}
-      moduleTitle={module.moduleTitle}
-      unit={module.unit}
-      createdAt={module.createdAt}
+      moduleId={fetchedModule._id.toString()}
+      moduleTitle={fetchedModule.moduleTitle}
+      unit={fetchedModule.unit}
+      createdAt={fetchedModule.createdAt}
       serializedModule={serializedModule}
       parsedModule={parsedModule}
     />

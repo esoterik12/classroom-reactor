@@ -28,10 +28,33 @@ export interface INewModule {
   courseId?: string
   moduleId?: string
   moduleTitle: string
-  // content: string
   unit: number
+  lesson: number
   createdBy: string | undefined
   path: string
+}
+
+export type ICourseCreatedBy = {
+  _id: string
+  id: string
+  username: string
+}
+
+export type ICourseContainer = {
+  courseId: string
+  courseName: string
+  image: string
+  description: string
+  createdBy: ICourseCreatedBy
+  createdAt: string
+  modules: ModuleDisplayProps[][]
+}
+
+export type ModuleDisplayProps = {
+  _id: string
+  moduleTitle: string
+  unit: number
+  lesson: number
 }
 
 // Form  types:

@@ -21,9 +21,11 @@ export default function CourseContainerPopover({
             <Popover.Button
               className={`
                 ${open ? '' : ''}
-                hover:text-white group inline-flex items-center rounded-md bg-primary-100 px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500`}
+                inline-flex items-center p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500`}
             >
-              <span className='text-sm text-jet-900'>{buttonText}</span>
+              <p className='text-sm font-semibold text-primary-500 hover:text-primary-200 transition-colors duration-150'>
+                {buttonText}
+              </p>
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -41,7 +43,7 @@ export default function CourseContainerPopover({
                 <div className='ring-black/5 overflow-hidden rounded-lg bg-offWhite-200 shadow-lg ring-2'>
                   <div className='relative grid gap-2 p-4 '>
                     <div>
-                      <div className='ml-'>{children}</div>
+                      <div className=''>{children}</div>
                     </div>
                   </div>
                 </div>

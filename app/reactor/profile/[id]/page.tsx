@@ -41,7 +41,7 @@ export default async function Page({
       />
 
       <div className='mb-6 text-lg font-semibold text-gray-900'>
-        {userInfo.username}'s Latest Creates
+        {userInfo.username}`&apos;s Latest Creates
       </div>
       {result.creates.map(item => (
         <CreateDisplayCard

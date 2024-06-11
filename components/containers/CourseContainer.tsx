@@ -6,32 +6,8 @@ import CourseContainerPopover from '../shared/CourseContainerPopover'
 import { formatDateString } from '@/lib/utils'
 import Link from 'next/link'
 import RemoveModule from '../ui/RemoveModule'
-import { deleteCourse } from '@/lib/actions/course.actions'
 import DeleteCourse from '../forms/DeleteCourse'
-
-type ICourseContainer = {
-  courseId: string
-  courseName: string
-  image: string
-  description: string
-  createdBy: ICourseCreatedBy
-  createdAt: string
-  // creates
-  // members
-  modules: ModuleDisplayProps[]
-}
-
-type ModuleDisplayProps = {
-  _id: string
-  moduleTitle: string
-  unit: number
-}
-
-type ICourseCreatedBy = {
-  _id: string
-  id: string
-  username: string
-}
+import { ICourseContainer } from '@/lib/types'
 
 const CourseContainer = ({
   courseId,
@@ -42,6 +18,7 @@ const CourseContainer = ({
   createdAt,
   modules
 }: ICourseContainer) => {
+  console.log('modules', modules)
 
   return (
     <main className='flex flex-wrap gap-6 px-6 py-3'>
@@ -49,7 +26,7 @@ const CourseContainer = ({
         {/* Main Header Div */}
         <div className='flex h-32 w-full flex-row justify-between gap-1 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500'>
           <div className='flew-row flex gap-2'>
-            <Image src={image} width={90} height={90} alt={courseName} />
+            <Image src={image} width={90} height={90} alt={courseName} className='p-2'/>
             <div className='flex flex-col items-start'>
               <h1 className=' text-center text-3xl font-medium '>
                 {courseName}
@@ -75,7 +52,7 @@ const CourseContainer = ({
                       iconClasses='h-5 w-5 mt-0.5'
                       iconSelection='edit'
                     />
-                    Edit
+                    Edit Course
                   </button>
                 </Link>
 
@@ -114,29 +91,33 @@ const CourseContainer = ({
         {/* Content Container */}
         <div className='flex flex-col gap-6 p-4'>
           <div className=''>
-            <p className='mb-1 text-sm text-gray-700 '>Modules: </p>
-            {/* ADD MODULE TITLES HERE */}
-            {modules.map(module => (
-              <div
-                key={module._id.toString()}
-                className='text-gray mt-1 flex flex-row justify-between'
-              >
-                <Link
-                  href={`/reactor/courses/${courseId}/${module._id.toString()}`}
-                >
-                  Unit {module.unit} - {module.moduleTitle}
-                </Link>
-                <div>
-                  <CourseContainerPopover buttonText='...'>
-                    <p className='text-sm text-gray-500'>
-                      Unit {module.unit} - {module.moduleTitle}
-                    </p>
-                    <RemoveModule
-                      moduleId={module._id.toString()}
-                      courseId={courseId.toString()}
-                    />
-                  </CourseContainerPopover>
-                </div>
+            {modules.map(unit => (
+              <div key={unit[0].unit} className='mt-2 p-2'>
+                <p className='border-b-2 font-bold'>Unit {unit[0].unit}</p>
+                {unit.map(module => (
+                  <div
+                    key={module._id.toString()}
+                    className='text-gray mt-1 flex flex-row justify-between'
+                  >
+                    <Link
+                      href={`/reactor/courses/${courseId}/${module._id.toString()}`}
+                      className='hover:text-primary-200 transition-colors duration-150'
+                    >
+                      Lesson {module.lesson}: {module.moduleTitle}
+                    </Link>
+                    <div>
+                      <CourseContainerPopover buttonText='...'>
+                        <p className='text-sm text-gray-500'>
+                          U{module.unit}L{module.lesson}: {module.moduleTitle}
+                        </p>
+                        <RemoveModule
+                          moduleId={module._id.toString()}
+                          courseId={courseId.toString()}
+                        />
+                      </CourseContainerPopover>
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>

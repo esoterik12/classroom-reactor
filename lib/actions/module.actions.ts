@@ -9,12 +9,12 @@ export async function fetchModule(moduleId: string) {
   try {
     await connectToDB()
 
-    const module = Module.findById(moduleId)
+    const fetchedModule = Module.findById(moduleId)
     if (!module) {
       throw new Error(`No module matching course ${moduleId} found.`)
     }
 
-    return module
+    return fetchedModule
   } catch (error: any) {
     console.error('Error fetching module:', error.message)
     throw new Error(`Failed to fetch module: ${error.message}`)
@@ -26,6 +26,7 @@ export async function addNewModule({
   moduleTitle,
   content,
   unit,
+  lesson,
   createdBy,
   pathname
 }: {
@@ -33,6 +34,7 @@ export async function addNewModule({
   moduleTitle: string
   content: string | null
   unit: number
+  lesson: number
   createdBy: string
   pathname: string
 }) {
@@ -43,6 +45,7 @@ export async function addNewModule({
       moduleTitle,
       htmlContent: content,
       unit,
+      lesson,
       createdBy,
       course: courseId
     })
@@ -76,12 +79,14 @@ export async function updateModule({
   moduleTitle,
   content,
   unit,
+  lesson,
   pathname
 }: {
   moduleId: string
   moduleTitle: string
   content: string | null
   unit: number
+  lesson: number
   pathname: string
 }) {
   try {
@@ -92,7 +97,8 @@ export async function updateModule({
       {
         moduleTitle,
         htmlContent: content,
-        unit
+        unit,
+        lesson
       }
     )
     revalidatePath(pathname)
@@ -105,9 +111,9 @@ export async function deleteModule(moduleId: string, courseId: string) {
   try {
     await connectToDB()
 
-    const module = await Module.findByIdAndDelete(moduleId)
+    const moduleFromDB = await Module.findByIdAndDelete(moduleId)
 
-    if (!module) {
+    if (!moduleFromDB) {
       throw new Error(`Module with ID ${moduleId} not found.`)
     }
 

@@ -4,7 +4,7 @@ import { connectToDB } from '../mongoose'
 import User from '../models/user.models'
 import Course from '../models/course.model'
 import mongoose, { FilterQuery } from 'mongoose'
-import { INewCourse } from '../types'
+import { INewCourse, ModuleDisplayProps, ICourseContainer } from '../types'
 import { redirect } from 'next/navigation'
 import Module from '../models/module.model'
 import Create from '../models/create.model'
@@ -155,8 +155,9 @@ export async function fetchCourses(
 }
 
 // #3 Collects the modules and their title to create a list of links
-// Unfinished: Add sort functionality
-export async function fetchCourseAndModulesTitles(courseId: string) {
+export async function fetchCourseAndModulesTitles(
+  courseId: string
+): Promise<ICourseContainer | undefined> {
   try {
     await connectToDB()
 
@@ -164,11 +165,45 @@ export async function fetchCourseAndModulesTitles(courseId: string) {
       .populate('createdBy', 'username id')
       .populate({
         path: 'modules',
-        select: 'moduleTitle unit',
+        select: 'moduleTitle unit lesson',
         model: Module
       })
 
-    return course
+    course.modules.sort((a: ModuleDisplayProps, b: ModuleDisplayProps) => {
+      if (a.unit < b.unit) return -1
+      if (a.unit > b.unit) return 1
+
+      if (a.lesson < b.lesson) return -1
+      if (a.lesson > b.lesson) return 1
+
+      return 0
+    })
+
+    const groupedByUnit = course.modules.reduce(
+      (acc: ModuleDisplayProps[][], current: ModuleDisplayProps) => {
+        const unitIndex = current.unit - 1
+        if (!acc[unitIndex]) {
+          acc[unitIndex] = []
+        }
+        acc[unitIndex].push(current)
+        return acc
+      },
+      []
+    )
+
+    course.modules = groupedByUnit
+
+    const courseWithModules: ICourseContainer = {
+      courseId: course._id,
+      courseName: course.courseName,
+      image: course.image,
+      description: course.description,
+      createdBy: course.createdBy,
+      createdAt: course.createdAt,
+      modules: groupedByUnit
+    }
+
+    return courseWithModules
   } catch (error) {
     console.error('Error fetching course:', error)
   }
@@ -368,7 +403,7 @@ export async function deleteCourse(courseId: string) {
       throw new Error(`Failed to delete: Course of id ${courseId} no found.`)
     }
 
-    console.log(`Course ${courseId} deleted successfully.`);
+    console.log(`Course ${courseId} deleted successfully.`)
   } catch (error: any) {
     throw new Error(`Failed to delete course with id of ${courseId}`)
   } finally {

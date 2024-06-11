@@ -83,7 +83,7 @@ const AddMembers = ({setIsOpen}: { setIsOpen: Dispatch<SetStateAction<boolean>> 
         {/* User Role Radio Group */}
         <div className='flex flex-wrap gap-3'>
           {courseUserRoles.map(item => (
-            <label className='cursor-pointer'>
+            <label key={item.role} className='cursor-pointer'>
               <input
                 className='peer sr-only'
                 type='radio'

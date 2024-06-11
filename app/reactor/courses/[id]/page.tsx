@@ -5,17 +5,19 @@ import React from 'react'
 const SingleCoursePage = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null
 
-  const selectedCourse = await fetchCourseAndModulesTitles(params.id)
-  
+  const fetchedCourse = await fetchCourseAndModulesTitles(params.id)
+
+  if (!fetchedCourse) return <p>Error loading course details</p>;
+ 
   return (
     <CourseContainer
-      courseId={selectedCourse._id}
-      courseName={selectedCourse.courseName}
-      image={selectedCourse.image}
-      description={selectedCourse.description}
-      createdBy={selectedCourse.createdBy}
-      createdAt={selectedCourse.createdAt}
-      modules={selectedCourse.modules}
+      courseId={fetchedCourse.courseId.toString()}
+      courseName={fetchedCourse.courseName}
+      image={fetchedCourse.image}
+      description={fetchedCourse.description}
+      createdBy={fetchedCourse.createdBy}
+      createdAt={fetchedCourse.createdAt}
+      modules={fetchedCourse.modules}
     />
   )
 }
