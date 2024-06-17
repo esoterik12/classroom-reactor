@@ -5,7 +5,7 @@ export default authMiddleware({
   publicRoutes: ['/', '/reactor', '/api/webhook/clerk', '/api/uploadthing'],
 
   // An array of routes to be ignored by the authentication middleware.
-  ignoredRoutes: ['/api/webhook/clerk', '/api/uploadthing']
+  ignoredRoutes: ['/api/webhook/clerk']
 })
 
 export const config = {
