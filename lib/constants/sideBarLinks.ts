@@ -23,18 +23,18 @@ export const sideBarLinks = [
     link: '/reactor/create',
     icon: 'documentPlus'
   },
-  {
-    id: 5,
-    name: 'Browse',
-    link: '/reactor/browse',
-    icon: 'eye'
-  },
-  {
-    id: 6,
-    name: 'Communities',
-    link: '/reactor/communities',
-    icon: 'globe'
-  },
+  // {
+  //   id: 5,
+  //   name: 'Browse',
+  //   link: '/reactor/browse',
+  //   icon: 'eye'
+  // },
+  // {
+  //   id: 6,
+  //   name: 'Communities',
+  //   link: '/reactor/communities',
+  //   icon: 'globe'
+  // },
   {
     id: 7,
     name: 'Search',

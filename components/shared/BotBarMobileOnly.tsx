@@ -9,8 +9,13 @@ const BotBarMobileOnly = () => {
       <div className='xs:gap-5 flex flex-row items-center justify-between gap-3'>
         {sideBarLinks.map(item => (
           <div key={item.id} className='m-2 flex flex-col items-center gap-2'>
-            <SelectIcon iconClasses='h-6 w-6' iconSelection={item.icon} />
-            <NavLink className='text-subtle-medium text-light-1 text-sm max-sm:hidden' href={item.link}>{item.name}</NavLink>
+            <NavLink
+              className='text-subtle-medium text-light-1 text-sm '
+              href={item.link}
+            >
+              <SelectIcon iconClasses='h-6 w-6' iconSelection={item.icon} />
+              <p className='max-sm:hidden'>{item.name}</p>
+            </NavLink>
           </div>
         ))}
       </div>

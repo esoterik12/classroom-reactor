@@ -32,16 +32,16 @@ const ModuleContainer = ({
   const [isEdit, setIsEdit] = useState<boolean>(false)
 
   return (
-    <main className='flex flex-wrap gap-6 px-6 py-3'>
+    <main className='flex flex-wrap gap-6 px-2 md:px-6 py-3 mb-12'>
       {!isEdit ? (
         <div className='flex w-full flex-col justify-between rounded-md border border-grayLight-500 shadow-md dark:border-jet-500'>
           {/* Main Header Div */}
           <div className='flex h-24 w-full flex-row justify-between gap-1 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500'>
-            <div className='ml-20 flex flex-col gap-2 p-1'>
-              <h1 className='text-center text-3xl font-medium '>
+            <div className='flex flex-col ml-2 gap-2'>
+              <h1 className='text-xl md:text-3xl font-medium '>
                 Unit {unit} - {moduleTitle}
               </h1>
-              <p className='text-xs text-gray-500'>
+              <p className='text-xs text-gray-500 hidden md:block'>
                 Created: {formatDateString(createdAt)}
               </p>
             </div>

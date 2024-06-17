@@ -21,18 +21,25 @@ const CourseContainer = ({
   console.log('modules', modules)
 
   return (
-    <main className='flex flex-wrap gap-6 px-6 py-3'>
+    <main className='flex flex-wrap gap-6 px-2 md:px-6 py-3 mb-8 '>
       <div className='flex w-full flex-col justify-between rounded-md border border-grayLight-500 shadow-md dark:border-jet-500'>
         {/* Main Header Div */}
-        <div className='flex h-32 w-full flex-row justify-between gap-1 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500'>
-          <div className='flew-row flex gap-2'>
-            <Image src={image} width={90} height={90} alt={courseName} className='p-2'/>
+        <div className='flex h-16 w-full flex-row justify-between gap-1 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500 md:h-32'>
+          {/* Container contains responsive tailwind to hide content on sm */}
+          <div className='flew-row ml-2 flex gap-2'>
+            <Image
+              src={image}
+              width={90}
+              height={90}
+              alt={courseName}
+              className='hidden p-2 md:block'
+            />
             <div className='flex flex-col items-start'>
-              <h1 className=' text-center text-3xl font-medium '>
+              <h1 className=' text-center text-xl font-medium md:text-3xl '>
                 {courseName}
               </h1>
-              <p className='text-sm'>{description}</p>
-              <p className='text-xs text-gray-500'>
+              <p className='hidden text-sm md:block'>{description}</p>
+              <p className='text-xs text-gray-500 hidden md:block'>
                 Created: {formatDateString(createdAt)} by{' '}
                 <Link href={`/reactor/profile/${createdBy.id}`}>
                   {createdBy.username}
@@ -101,7 +108,7 @@ const CourseContainer = ({
                   >
                     <Link
                       href={`/reactor/courses/${courseId}/${module._id.toString()}`}
-                      className='hover:text-primary-200 transition-colors duration-150'
+                      className='transition-colors duration-150 hover:text-primary-200'
                     >
                       Lesson {module.lesson}: {module.moduleTitle}
                     </Link>

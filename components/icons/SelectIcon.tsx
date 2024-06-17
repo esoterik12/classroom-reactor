@@ -52,6 +52,11 @@ import IconAlignJustifyRTE from './rte-icons/IconAlignJustifyRTE'
 import IconQuoteRTE from './rte-icons/IconQuoteRTE'
 import IconOrderedListRTE from './rte-icons/IconOrderedListRTE'
 import IconUnorderedListRTE from './rte-icons/IconUnorderedListRTE'
+import IconReactJS from './stack-logos/IconReactJS'
+import IconNextJS from './stack-logos/IconNextJS'
+import IconMongoDB from './stack-logos/IconMongoDB'
+import IconTailwind from './stack-logos/IconTailwind'
+import IconTypeScript from './stack-logos/IconTypeScript'
 
 interface ISelectIconProps {
   iconSelection: string
@@ -185,7 +190,7 @@ export default function SelectIcon({
     case 'userMinus':
       icon = <IconUserMinus classes={iconClasses} />
       break
-      case 'centerRTE':
+    case 'centerRTE':
       icon = <IconAlignCenterRTE classes={iconClasses} />
       break
     case 'leftRTE':
@@ -217,6 +222,21 @@ export default function SelectIcon({
       break
     case 'unorderedRTE':
       icon = <IconUnorderedListRTE classes={iconClasses} />
+      break
+    case 'reactjs':
+      icon = <IconReactJS classes={iconClasses} />
+      break
+    case 'nextjs':
+      icon = <IconNextJS classes={iconClasses} />
+      break
+    case 'mongodb':
+      icon = <IconMongoDB classes={iconClasses} />
+      break
+    case 'tailwind':
+      icon = <IconTailwind classes={iconClasses} />
+      break
+    case 'typescript':
+      icon = <IconTypeScript classes={iconClasses} />
       break
     default:
       icon = <p className='text-red-500'>Error: No Icon Found</p>
