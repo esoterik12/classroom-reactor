@@ -2,18 +2,20 @@
 import React, { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { IComment } from '@/lib/types'
+import { CommentFormProps } from '../../lib/types'
 import { commentSchema } from '@/lib/zod/comment.schema'
 import { addCreateComment } from '@/lib/actions/create.actions'
 import { usePathname } from 'next/navigation'
+import { addCourseComment } from '@/lib/actions/comment.actions'
 
-interface IAddCommentForm {
+export interface AddCommentComponentProps {
   clerkUserId: string
-  createId: string
+  createId?: string
+  courseId?: string
 }
 
 // Receiving clerk user id
-const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
+const AddComment = ({ clerkUserId, createId, courseId }: AddCommentComponentProps) => {
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
 
@@ -22,7 +24,7 @@ const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitted }
-  } = useForm<IComment>({
+  } = useForm<CommentFormProps>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     resolver: zodResolver(commentSchema),
@@ -31,11 +33,17 @@ const AddComment = ({ clerkUserId, createId }: IAddCommentForm) => {
     }
   })
 
-  async function onSubmit(data: IComment) {
+  async function onSubmit(data: CommentFormProps) {
     setLoading(true)
     try {
-      // Passing clerk user id
-      await addCreateComment(createId, data.commentText, clerkUserId, pathname)
+      // Passing clerk user id - these functions get database user data for comment save
+      if (createId) {
+        await addCreateComment(createId, data.commentText, clerkUserId, pathname)
+      } else if (courseId) {
+        await addCourseComment({commentText: data.commentText, clerkUserId, pathname, courseId})
+      } else {
+        throw new Error('Create or course comment not found.')
+      }
       reset()
       console.log('Add comment success!')
     } catch (error) {

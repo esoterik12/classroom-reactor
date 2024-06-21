@@ -35,32 +35,32 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <div className='grid gap-4 md:grid-cols-2'>
-        <div className='rounded-r-lg border p-4'>
-          <p>
-            <span className='font-bold'>CRUD</span>: NextJS Server Actions &
-            MongoDB:
-          </p>
+      <div className='grid gap-2 md:grid-cols-2 w-3/4'>
+        <div className='p-4'>
+          <p>NextJS Server Actions & MongoDB:</p>
           <ul className='ml-6 list-disc'>
             {crudFunctionality.map(item => (
               <li key={item}>{item}</li>
             ))}
           </ul>{' '}
         </div>
-        <div className='rounded-r-lg border p-4'>
+        <div className='p-4'>
           <div className='flex flex-row'>
             <Image width={50} height={50} alt='SlateJS' src='/slatejs.png' />
             <p className='ml-1 mt-1.5'>js - Rich Text Editor:</p>
           </div>
           <ul className='ml-6 list-disc'>
-            <li>Add more</li>
+            <li>Custom What You See Is What You Get editor</li>
+            <li>
+              Manages and toggles text formatting and block-level attributes
+            </li>
             <li>Custom HTML serializer</li>
           </ul>
         </div>
-        <div className='rounded-r-lg border p-4'>3</div>
+        {/* <div className='rounded-r-lg border p-4'>3</div>
         <div className='rounded-r-lg border p-4'>4</div>
         <div className='rounded-r-lg border p-4'>5</div>
-        <div className='rounded-r-lg border p-4'>6</div>
+        <div className='rounded-r-lg border p-4'>6</div> */}
       </div>
     </main>
   )

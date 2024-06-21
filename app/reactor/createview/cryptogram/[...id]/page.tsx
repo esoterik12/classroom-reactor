@@ -9,7 +9,7 @@ import { formatDateString } from '@/lib/utils'
 import Link from 'next/link'
 import ShowCryptogram from '@/components/display/ShowCryptogram'
 
-interface IFetchedCreateComment {
+export interface FetchedCommentProps {
   _id: string
   text: string
   authorMongoId: string
@@ -17,9 +17,8 @@ interface IFetchedCreateComment {
   authorUsername: string
   authorImage: string
   parentId: string
-  children: IFetchedCreateComment
+  children: FetchedCommentProps
   createdAt: Date
-  __v: number
 }
 
 const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
@@ -29,8 +28,6 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
   if (!user) return null
 
   const fetchedCreate = await fetchSingleCreate(params.id)
-
-  // console.log('fetchedCreate', fetchedCreate)
 
   return (
     <div className='m-3 flex flex-col rounded-lg  border-gray-100 p-2 shadow-sm'>
@@ -71,7 +68,7 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
 
       <div className='mt-6'>
         <AddComment clerkUserId={user.id} createId={params.id} />
-        {fetchedCreate.children.map((item: IFetchedCreateComment) => (
+        {fetchedCreate.children.map((item: FetchedCommentProps) => (
           <CommentCard
             key={item._id}
             _id={item._id}

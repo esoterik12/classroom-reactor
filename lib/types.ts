@@ -57,6 +57,16 @@ export type ModuleDisplayProps = {
   lesson: number
 }
 
+export type AddCommentProps = {
+  clerkUserId: string
+  createId?: string
+  courseId?: string
+}
+
+export interface CommentFormProps {
+  commentText: string
+}
+
 // Form  types:
 export interface ICryptogram {
   title: string
@@ -89,10 +99,6 @@ export interface IPostCreate {
   course: string | null
   creatorUsername: string
   creatorImage: string
-}
-
-export interface IComment {
-  commentText: string
 }
 
 export interface IAddMembers {

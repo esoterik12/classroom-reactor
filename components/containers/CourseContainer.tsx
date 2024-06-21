@@ -90,6 +90,15 @@ const CourseContainer = ({
                     Course Creates
                   </button>
                 </Link>
+                <Link href={`/reactor/courses/${courseId}/discussion`}>
+                  <button className='m-1 flex flex-row gap-2'>
+                    <SelectIcon
+                      iconClasses='h-5 w-5 mt-0.5'
+                      iconSelection='chat'
+                    />
+                    Discussion
+                  </button>
+                </Link>
                 <DeleteCourse courseId={courseId.toString()} />
               </div>
             </CourseContainerPopover>
