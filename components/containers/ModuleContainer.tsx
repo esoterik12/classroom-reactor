@@ -32,11 +32,11 @@ const ModuleContainer = ({
   const [isEdit, setIsEdit] = useState<boolean>(false)
 
   return (
-    <main className='flex flex-wrap gap-6 px-2 md:px-6 py-3 mb-12'>
+    <div className='w-full'>
       {!isEdit ? (
-        <div className='flex w-full flex-col justify-between rounded-md border border-grayLight-500 shadow-md dark:border-jet-500'>
+        <div className='flex flex-col justify-between '>
           {/* Main Header Div */}
-          <div className='flex h-24 w-full flex-row justify-between gap-1 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500'>
+          <div className='flex h-24 flex-row justify-between gap-1 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500'>
             <div className='flex flex-col ml-2 gap-2'>
               <h1 className='text-xl md:text-3xl font-medium '>
                 Unit {unit} - {moduleTitle}
@@ -77,11 +77,11 @@ const ModuleContainer = ({
             </div>
           </div>
           {/* Content Container */}
-          <div className='flex flex-col gap-6 px-3'>
+          <div className='flex flex-col gap-6'>
             <div className=''>
               {/* ADD MODULE TITLES HERE */}
               <div
-                className='w-full p-4'
+                className='p-4'
                 dangerouslySetInnerHTML={{ __html: serializedModule }}
               ></div>
             </div>
@@ -97,7 +97,7 @@ const ModuleContainer = ({
           setIsEdit={setIsEdit}
         />
       )}
-    </main>
+    </div>
   )
 }
 

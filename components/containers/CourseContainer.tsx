@@ -21,8 +21,7 @@ const CourseContainer = ({
   console.log('modules', modules)
 
   return (
-    <main className='flex flex-wrap gap-6 px-2 md:px-6 py-3 mb-8 '>
-      <div className='flex w-full flex-col justify-between rounded-md border border-grayLight-500 shadow-md dark:border-jet-500'>
+      <div className='flex w-full flex-col justify-between'>
         {/* Main Header Div */}
         <div className='flex h-16 w-full flex-row justify-between gap-1 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500 md:h-32'>
           {/* Container contains responsive tailwind to hide content on sm */}
@@ -138,8 +137,7 @@ const CourseContainer = ({
             ))}
           </div>
         </div>
-      </div>{' '}
-    </main>
+      </div>
   )
 }
 

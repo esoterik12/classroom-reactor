@@ -110,7 +110,7 @@ export default function NewModuleForm({
   return (
     <>
       {!isSubmitted && (
-        <div className='container rounded-md py-4 custom-shadow '>
+        <div className='w-full p-2'>
           <div className='flex flex-row gap-2'>
             <BackButton classes=''>
               <SelectIcon iconClasses='h-6 w-6' iconSelection='back' />
@@ -121,40 +121,37 @@ export default function NewModuleForm({
           </div>
           <form className='m-2 flex flex-col' onSubmit={handleSubmit(onSubmit)}>
             {/* Name Field */}
-            <div>
-              <InputField
-                type='text'
-                id='moduleTitle'
-                label='Title:'
-                placeholder='Enter a title'
-                inputClasses='w-full'
-                {...register('moduleTitle')}
-                error={errors.moduleTitle}
-              />
-            </div>
-            <div className='flex flex-row gap-10'>
-              <InputField
-                type='number'
-                id='unit'
-                label='Unit:'
-                placeholder='Enter a unit number'
-                inputClasses='w-full max-w-[70px]'
-                labelClasses=''
-                {...register('unit')}
-                error={errors.unit}
-              />
-              <InputField
-                type='number'
-                id='lesson'
-                label='Lesson:'
-                placeholder='Enter a lesson number'
-                inputClasses='w-full max-w-[70px]'
-                labelClasses=''
-                {...register('lesson')}
-                error={errors.lesson}
-              />
-            </div>
-
+                <InputField
+                  type='number'
+                  id='unit'
+                  label='Unit:'
+                  placeholder='Enter a unit number'
+                  inputClasses='w-full max-w-[70px]'
+                  labelClasses=''
+                  {...register('unit')}
+                  error={errors.unit}
+                />
+                <InputField
+                  type='number'
+                  id='lesson'
+                  label='Lesson:'
+                  placeholder='Enter a lesson number'
+                  inputClasses='w-full max-w-[70px]'
+                  labelClasses=''
+                  {...register('lesson')}
+                  error={errors.lesson}
+                />
+              <div className='md:w-1/2'>
+                <InputField
+                  type='text'
+                  id='moduleTitle'
+                  label='Title:'
+                  placeholder='Enter a title'
+                  inputClasses='w-full'
+                  {...register('moduleTitle')}
+                  error={errors.moduleTitle}
+                />
+              </div>
             {/* Content Section */}
             <div>
               <label className='block p-1 font-medium'>Content:</label>

@@ -2,6 +2,7 @@ import { currentUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import { fetchUser } from '@/lib/actions/user.actions'
 import NewCourseForm from '@/components/forms/NewCourse'
+import BasicPageContainer from '@/components/containers/BasicPageContainer'
 
 async function Page() {
   const user = await currentUser()
@@ -11,13 +12,10 @@ async function Page() {
   if (!userInfo?.onboarded) redirect('/onboarding')
 
   return (
-    <section className='mx-6 flex flex-row items-center justify-center'>
-      <div className='w-full md:w-2/3'>
-        <NewCourseForm user={userInfo._id} />
-      </div>
-    </section>
+    <BasicPageContainer>
+          <NewCourseForm user={userInfo._id} />
+    </BasicPageContainer>
   )
 }
 
 export default Page
-

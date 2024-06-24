@@ -49,7 +49,7 @@ const InputField: React.ForwardRefExoticComponent<
         {...rest} 
       />
       <div className='ml-1 mr-1 min-h-8 p-1'>
-        {error && <p className='text-[12px] text-red-400'>{error.message}</p>}
+        {error && <p className='text-[12px] text-primary-500'>{error.message}</p>}
       </div>
     </div>
   )

@@ -92,12 +92,12 @@ export default function NewCourseForm({
   return (
     <>
       {!isSubmitted && (
-        <div className='container py-4 custom-shadow '>
+        <div className='w-full p-2'>
           <div className='flex flex-row gap-2'>
             <BackButton classes=''>
               <SelectIcon iconClasses='h-6 w-6' iconSelection='back' />
             </BackButton>
-            <h1 className='text-xl font-semibold'>Create a New Course</h1>
+            <h1 className='text-xl font-semibold'>{id ? 'Edit': 'Create'} a Course</h1>
           </div>
           <form className='m-2 flex flex-col' onSubmit={handleSubmit(onSubmit)}>
             {/* Name Field */}

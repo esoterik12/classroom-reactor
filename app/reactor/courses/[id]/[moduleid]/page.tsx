@@ -5,6 +5,7 @@ import ModuleContainer from '@/components/containers/ModuleContainer'
 import { currentUser } from '@clerk/nextjs'
 import { fetchUser } from '@/lib/actions/user.actions'
 import { redirect } from 'next/navigation'
+import BasicPageContainer from '@/components/containers/BasicPageContainer'
 
 const Page = async ({
   params
@@ -33,16 +34,18 @@ const Page = async ({
   const serializedModule = serialize(editor)
 
   return (
-    <ModuleContainer
-      userId={userInfo._id.toString()}
-      courseId={params.id}
-      moduleId={fetchedModule._id.toString()}
-      moduleTitle={fetchedModule.moduleTitle}
-      unit={fetchedModule.unit}
-      createdAt={fetchedModule.createdAt}
-      serializedModule={serializedModule}
-      parsedModule={parsedModule}
-    />
+    <BasicPageContainer>
+      <ModuleContainer
+        userId={userInfo._id.toString()}
+        courseId={params.id}
+        moduleId={fetchedModule._id.toString()}
+        moduleTitle={fetchedModule.moduleTitle}
+        unit={fetchedModule.unit}
+        createdAt={fetchedModule.createdAt}
+        serializedModule={serializedModule}
+        parsedModule={parsedModule}
+      />
+    </BasicPageContainer>
   )
 }
 
