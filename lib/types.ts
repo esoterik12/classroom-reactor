@@ -24,6 +24,11 @@ export interface INewCourse {
   path: string
 }
 
+export interface EditCourseUserProps {
+  courseId: string
+  userId: string
+}
+
 export interface INewModule {
   courseId?: string
   moduleId?: string
@@ -101,8 +106,8 @@ export interface IPostCreate {
   creatorImage: string
 }
 
-export interface IAddMembers {
-  addMembersUsernames: string
+export interface AddMembersProps {
+  addMembersUsernames?: string
   membersRole: 'student' | 'teacher' | 'staff'
 }
 

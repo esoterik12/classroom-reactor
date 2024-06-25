@@ -20,22 +20,24 @@ const Page = async ({
   return (
     <BasicPageContainer>
       <>
-        <div className='mb-6 text-center text-lg font-semibold text-gray-700'>
+        <div className='mb-6 w-full rounded-md bg-grayLight-500 py-4 text-center text-lg font-semibold dark:bg-jet-500'>
           Latest Creates
         </div>
-        {result.creates.map(item => (
-          <CreateDisplayCard
-            key={item._id}
-            _id={item._id}
-            creatorUserId={item.creator.id.toString()}
-            currentUserId={user.id}
-            title={item.content.title}
-            createType={item.createType}
-            createdAt={item.createdAt}
-            username={item.creatorUsername}
-            creatorImage={item.creatorImage}
-          />
-        ))}
+        <div className='p-4 w-full'>
+          {result.creates.map(item => (
+            <CreateDisplayCard
+              key={item._id}
+              _id={item._id}
+              creatorUserId={item.creator.id.toString()}
+              currentUserId={user.id}
+              title={item.content.title}
+              createType={item.createType}
+              createdAt={item.createdAt}
+              username={item.creatorUsername}
+              creatorImage={item.creatorImage}
+            />
+          ))}
+        </div>
         <PaginationButtons
           path='http://localhost:3000/reactor/activity'
           pageNumber={searchParams?.p ? +searchParams.p : 1}

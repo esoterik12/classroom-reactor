@@ -4,12 +4,13 @@ import { Fragment, ReactNode } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
 interface ModalProps {
+  title: string
   isOpen: boolean
   closeModal: () => void
   children: ReactNode
 }
 
-const Modal = ({ isOpen, closeModal, children }: ModalProps) => {
+const Modal = ({ title, isOpen, closeModal, children }: ModalProps) => {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -37,7 +38,8 @@ const Modal = ({ isOpen, closeModal, children }: ModalProps) => {
                 leaveTo='opacity-0 scale-95'
               >
                 <Dialog.Panel className='relative mt-24 bg-offWhite-100 dark:bg-jet-700 bg-opacity-100 flex max-h-[90vh] w-full max-w-2xl transform flex-col overflow-y-auto rounded-2xl p-6 text-left shadow-xl transition-all'>
-                  <div className='flex justify-end '>
+                  <div className='flex justify-between'>
+                    <p className='ml-3 font-bold'>{title}</p>
                     <button onClick={() => closeModal()}>
                       <SelectIcon
                         iconClasses='h-6 w-6 hover:text-gray-400 transition-color transition transition-300'

@@ -2,15 +2,9 @@
 import { removeCourseMember } from '@/lib/actions/course.actions'
 import { usePathname } from 'next/navigation'
 import SelectIcon from '../icons/SelectIcon'
+import { EditCourseUserProps } from '@/lib/types'
 
-import React from 'react'
-
-interface RemoveCourseUser {
-  courseId: string
-  userId: string
-}
-
-const RemoveCourseUser = ({ courseId, userId }: RemoveCourseUser) => {
+const RemoveCourseUser = ({ courseId, userId }: EditCourseUserProps) => {
   const pathname = usePathname()
 
   const handleRemove = async () => {

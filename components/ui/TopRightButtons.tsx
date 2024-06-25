@@ -1,14 +1,15 @@
 'use client'
+
+// Used for course members
+
 import SelectIcon from '@/components/icons/SelectIcon'
 import BackButton from '@/components/ui/BackButton'
-import Link from 'next/link'
 import { useState } from 'react'
 import Modal from './Modal'
 import AddMembers from '../forms/AddMembers'
 
-interface ITopRightButtons {}
 
-const TopRightButtons = (props: ITopRightButtons) => {
+const TopRightButtons = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -26,15 +27,7 @@ const TopRightButtons = (props: ITopRightButtons) => {
         />
       </button>
 
-      <button className='m-1 flex flex-row gap-2'>
-        <SelectIcon
-          iconClasses='h-6 w-6 text-primary-500 hover:text-primary-200 transition-colors duration-300'
-          iconSelection='userMinus'
-        />
-      </button>
-
-      {/* Modal Component */}
-      <Modal isOpen={isOpen} closeModal={() => setIsOpen(false)}>
+      <Modal title='New Course Members' isOpen={isOpen} closeModal={() => setIsOpen(false)}>
         <AddMembers setIsOpen={setIsOpen}/>
       </Modal>
     </div>

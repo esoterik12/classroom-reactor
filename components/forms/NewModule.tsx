@@ -110,9 +110,9 @@ export default function NewModuleForm({
   return (
     <>
       {!isSubmitted && (
-        <div className='w-full p-2'>
-          <div className='flex flex-row gap-2'>
-            <BackButton classes=''>
+        <div className='w-full'>
+          <div className='flex flex-row gap-2 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500'>
+            <BackButton classes='ml-2'>
               <SelectIcon iconClasses='h-6 w-6' iconSelection='back' />
             </BackButton>
             <h1 className='text-xl font-semibold'>

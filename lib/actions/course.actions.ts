@@ -267,7 +267,7 @@ export async function updateCourse({
   }
 }
 
-interface ICourseMember {
+interface CourseMember {
   user: mongoose.Types.ObjectId | string // User's ObjectId, converted to string if necessary
   role: 'student' | 'teacher' | 'staff' // Enum type for role
 }
@@ -298,7 +298,7 @@ export async function addCourseMembers({
 
     // Filter out users already in the course
     const existingMemberIds = new Set(
-      course.members.map((m: ICourseMember) => m.user.toString())
+      course.members.map((m: CourseMember) => m.user.toString())
     )
     const newMembers = users.filter(
       user => !existingMemberIds.has(user._id.toString())
@@ -319,6 +319,43 @@ export async function addCourseMembers({
     }
   } catch (error: any) {
     throw new Error(`Failed to create/update course: ${error.message}`)
+  } finally {
+    revalidatePath(pathname)
+  }
+}
+
+export async function changeCourseRole({
+  courseId,
+  memberId,
+  membersRole,
+  pathname
+}: {
+  courseId: string
+  memberId: string
+  membersRole: 'student' | 'teacher' | 'staff'
+  pathname: string
+}) {
+  try {
+    await connectToDB()
+    const course = await Course.findById(courseId)
+
+    const updatedUsers = course.members.map((user: CourseMember) => {
+      if (user.user.toString() === memberId) {
+        return { ...user, role: membersRole }
+      }
+      return user
+    })
+
+    course.members = updatedUsers
+
+    await course.save()
+
+    return {
+      success: true,
+      message: `User of id:${memberId} changed to role ${membersRole}`
+    }
+  } catch (error: any) {
+    throw new Error(`Failed to change user role: ${error.message}`)
   } finally {
     revalidatePath(pathname)
   }

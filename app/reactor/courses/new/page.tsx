@@ -13,7 +13,7 @@ async function Page() {
 
   return (
     <BasicPageContainer>
-          <NewCourseForm user={userInfo._id} />
+      <NewCourseForm user={userInfo._id} />
     </BasicPageContainer>
   )
 }

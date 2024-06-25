@@ -23,7 +23,7 @@ export default function CourseContainerPopover({
                 ${open ? '' : ''}
                 inline-flex items-center p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500`}
             >
-              <p className='text-sm font-semibold text-primary-500 hover:text-primary-200 transition-colors duration-150'>
+              <p className='text-sm min-w-[60px] font-semibold text-primary-500 hover:text-primary-200 transition-colors duration-150'>
                 {buttonText}
               </p>
             </Popover.Button>
