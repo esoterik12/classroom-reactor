@@ -73,7 +73,7 @@ export default function cryptogramGenerator(
   return wrappedWords;
 }
 
-const shuffleArray = (array: string[]) => {
+export const shuffleArray = (array: string[]) => {
   const shuffledAlphabet = [...array];
   for (let i = 25; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

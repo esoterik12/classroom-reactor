@@ -1,11 +1,10 @@
-import CreateCryptogram from '@/components/forms/CreateCryptogram'
+import BasicPageContainer from '@/components/containers/BasicPageContainer'
+import CreateForm from '@/components/forms/CreateForm'
 import { currentUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import { fetchUser } from '@/lib/actions/user.actions'
-import CreateForm from '@/components/forms/CreateForm'
-import { cryptogramSchema } from '@/lib/zod/materials.schema'
 
-export default async function Page() {
+const WordScramblePage = async () => {
   const user = await currentUser()
   if (!user) return null
 
@@ -17,11 +16,16 @@ export default async function Page() {
   console.log('user.id', userInfo.id)
 
   return (
-    <main className=''>
-      <CreateCryptogram
+    <BasicPageContainer>
+      <CreateForm
+        initialFormValues={{ title: '', text: '' }}
         userId={userInfo._id.toString()}
-        clerkId={user.id}
+        username={userInfo.username}
+        userImage={userInfo.image}
+        createType='wordScramble'
       />
-    </main>
+    </BasicPageContainer>
   )
 }
+
+export default WordScramblePage

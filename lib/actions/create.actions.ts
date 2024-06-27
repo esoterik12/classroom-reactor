@@ -37,10 +37,11 @@ export async function fetchCreates(
     .limit(pageSize)
     .populate({
       path: 'creator',
-      model: User
+      model: 'User',
+      populate: 'username image id'
     })
     .populate({
-      path: 'course',
+      path: 'courses',
       model: Course
     })
 
@@ -52,13 +53,20 @@ export async function fetchCreates(
 
   const isNext = totalCreatesCount > skipAmount + creates.length
 
+  console.log('creates in fetch many creates server action', creates)
   return { creates, isNext }
 }
 
 export async function fetchSingleCreate(createId: string) {
   await connectToDB()
 
-  const fetchedCreate = await Create.findById(createId).populate({
+  const fetchedCreate = await Create.findById(createId)
+  .populate({
+    path: 'creator',
+    model: 'User',
+    select: 'username image id'
+  })
+  .populate({
     path: 'children',
     model: 'Comment',
     populate: {
@@ -77,19 +85,22 @@ export async function postCreate({
   createType,
   creator,
   creatorClerkId,
-  course,
-  creatorUsername,
-  creatorImage
+  course
 }: IPostCreate) {
   try {
+    console.log('content', content)
+    console.log('createType', createType)
     const processedContent = selectGenerator({ createType, content })
     console.log('processedContent', processedContent)
 
+    // UNFINISHED testing processing and submission
     await connectToDB()
 
     const courseIdObject = await Course.findOne({ id: course }, { _id: 1 })
     // Creates an array object from the courseIdObject to match the array in the Create model
-    const courseArray = Array.isArray(courseIdObject) ? courseIdObject : [courseIdObject]
+    const courseArray = Array.isArray(courseIdObject)
+      ? courseIdObject
+      : [courseIdObject]
 
     const preparedContent = {
       content: processedContent,
@@ -101,9 +112,7 @@ export async function postCreate({
       creator,
       creatorClerkId,
       createType,
-      courses: courseArray, // Assign courseIdObject if provided, or leave it null for personal account
-      creatorUsername,
-      creatorImage
+      courses: courseArray // Assign courseIdObject if provided, or leave it null for personal account
     })
 
     // Update User model
@@ -111,7 +120,10 @@ export async function postCreate({
       $push: { creates: postedCreate._id }
     })
 
+    // UNFINISHED this is probably not the best way to revalidate
     revalidatePath('/')
+
+    // returns id to be used in router.push on in CreateX component
     return postedCreate._id.toString()
   } catch (error: any) {
     throw new Error(`Failed to create in create.actions.ts: ${error.message}`)

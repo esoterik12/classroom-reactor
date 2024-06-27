@@ -219,12 +219,14 @@ export async function fetchUserCreates({
       .limit(pageSize)
       .populate({
         path: 'creator',
-        model: User
+        model: 'User',
+        populate: 'username image id'
       })
       .populate({
-        path: 'course',
+        path: 'courses',
         model: Course
       })
+
 
     const totalCreatesCount = await Create.countDocuments({ creator: userId })
 

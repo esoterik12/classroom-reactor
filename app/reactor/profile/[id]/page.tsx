@@ -21,13 +21,13 @@ export default async function Page({
   const userInfo = await fetchUser(params.id)
   if (!userInfo?.onboarded) redirect('/onboarding')
 
-    console.log('userInfo', userInfo)
-
   const result = await fetchUserCreates({
     userId: userInfo._id,
     pageNumber: searchParams.p ? +searchParams.p : 1,
     pageSize: 20
   })
+
+  console.log('result in profile page', result)
 
   return (
     <main className='flex flex-col items-center justify-between p-6'>
@@ -41,18 +41,19 @@ export default async function Page({
       />
 
       <div className='mb-6 text-lg font-semibold text-gray-900'>
-        {userInfo.username}`&apos;s Latest Creates
+        {userInfo.username}&apos;s Latest Creates
       </div>
       {result.creates.map(item => (
         <CreateDisplayCard
           key={item._id}
           _id={item._id}
           creatorUserId={item.creatorClerkId}
-          creatorImage={item.creatorImage}
+          creatorImage={item.creator.image}
           currentUserId={user.id} // Clerk user id
           createType={item.createType}
           title={item.content.title}
           createdAt={item.createdAt}
+          commentNumber={item.children.length}
         />
       ))}
       <PaginationButtons

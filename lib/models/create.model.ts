@@ -14,21 +14,10 @@ const createSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  creatorUsername: {
-    type: String,
-    required: true,
-  },
-  creatorImage: {
-    type: String,
-  },
   courses: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course'
   }],
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course'
-  },
   createdAt: {
     type: Date,
     default: Date.now

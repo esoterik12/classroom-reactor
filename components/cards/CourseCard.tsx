@@ -1,5 +1,6 @@
 import SelectIcon from '../icons/SelectIcon'
 import SearchCardContainer from '../containers/SearchCardContainer'
+import Link from 'next/link'
 
 interface ICourseCard {
   _id: string
@@ -9,18 +10,18 @@ interface ICourseCard {
 }
 
 function CourseCard({ _id, image, courseName, numOfMembers }: ICourseCard) {
-
   return (
     <SearchCardContainer
-      link={`/reactor/courses/${_id}`}
       image={image}
       underlineColor='bg-primary-100 dark:bg-primary-500'
     >
       <div className='ml-3 mt-1 flex flex-1 flex-row justify-between'>
-        <div className='flex flex-col'>
-          <p className='text-md font-bold'>{courseName}</p>
-          <p className='text-sm mt-1'>Members: {numOfMembers}</p>
-        </div>
+        <Link href={`/reactor/courses/${_id}`}>
+          <div className='flex flex-col'>
+            <p className='text-md font-bold'>{courseName}</p>
+            <p className='mt-1 text-sm'>Members: {numOfMembers}</p>
+          </div>
+        </Link>
 
         <div className='mt-3 flex gap-3'>
           <SelectIcon iconClasses='h-6 w-6' iconSelection='heart' />

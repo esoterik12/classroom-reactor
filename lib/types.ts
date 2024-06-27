@@ -97,13 +97,11 @@ interface Activity {
 type CreateContent = ICryptogram | Quiz | Activity;
 
 export interface IPostCreate {
-  content: any // PLACEHOLDER - Until form of content becomes more rigid
+  content: any // UNFINISHED PLACEHOLDER - Until form of content becomes more rigid
   createType: string
   creator: string // Mongo ID
   creatorClerkId: string // Clerk ID
   course: string | null
-  creatorUsername: string
-  creatorImage: string
 }
 
 export interface AddMembersProps {

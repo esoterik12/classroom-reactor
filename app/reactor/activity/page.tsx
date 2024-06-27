@@ -17,6 +17,8 @@ const Page = async ({
     return <p>Access Denied</p>
   }
 
+  console.log('result', result)
+
   return (
     <BasicPageContainer>
       <>
@@ -33,8 +35,9 @@ const Page = async ({
               title={item.content.title}
               createType={item.createType}
               createdAt={item.createdAt}
-              username={item.creatorUsername}
-              creatorImage={item.creatorImage}
+              username={item.creator.username}
+              creatorImage={item.creator.image}
+              commentNumber={item.children.length}
             />
           ))}
         </div>

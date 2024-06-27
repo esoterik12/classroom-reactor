@@ -36,7 +36,7 @@ const TextareaInput: React.ForwardRefExoticComponent<
       {label && (
         <label
           htmlFor={id}
-          className={`${labelClasses} block p-1 font-medium text-gray-500`}
+          className={`${labelClasses} block p-1 font-medium`}
         >
           {label}
         </label>
@@ -49,7 +49,7 @@ const TextareaInput: React.ForwardRefExoticComponent<
         {...rest}
       />
       <div className='min-h-8 ml-1.5 mr-1 p-1'>
-        <p className='text-[12px] text-red-400'>
+        <p className='text-[12px] text-primary-500'>
           {error ? error.message : '\u00A0'}
         </p>{' '}
       </div>

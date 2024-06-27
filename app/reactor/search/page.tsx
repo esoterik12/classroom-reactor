@@ -79,11 +79,12 @@ async function Page({
                   _id={create._id}
                   // not using currentUserId?
                   creatorUserId={create.creatorClerkId}
-                  creatorImage={create.creatorImage}
+                  creatorImage={create.creator.image}
                   createType={create.createType}
                   createdAt={create.createdAt}
                   title={create.content.title}
-                  username={create.creatorUsername}
+                  username={create.creator.username}
+                  commentNumber={create.children.length}
                 />
               </div>
             ))}

@@ -20,15 +20,11 @@ import Loading from '../shared/Loading'
 export default function CreateCryptogram({
   userId,
   clerkId,
-  username,
-  userImage
 }: {
   userId: string
   clerkId: string
-  username: string
-  userImage: string
 }) {
-  // Incorporate error to show server error if necessary
+  // UNFINISHED: Incorporate error to show server error if necessary
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
@@ -62,8 +58,6 @@ export default function CreateCryptogram({
         creatorClerkId: clerkId.toString(),
         createType: 'cryptogram',
         course: 'CC11',
-        creatorUsername: username,
-        creatorImage: userImage
       })
       console.log('Add create success!')
       router.push(`/reactor/createview/cryptogram/${postedCreateId}`)
@@ -82,13 +76,11 @@ export default function CreateCryptogram({
     )
   }
 
-
   return (
     <div className='mx-6 my-2 flex flex-col rounded-md custom-shadow'>
       {/* Main Header Div */}
       <div
-        className='flex h-12 w-full flex-row items-center justify-between gap-1 rounded-md
-      '
+        className='flex h-12 w-full flex-row items-center justify-between gap-1 rounded-md'
       >
         {/* Title Div */}
         <div className='ml-3 flex flex-row gap-2'>

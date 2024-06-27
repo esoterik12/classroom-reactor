@@ -7,7 +7,6 @@ import BackButton from '@/components/ui/BackButton'
 import SelectIcon from '@/components/icons/SelectIcon'
 import { formatDateString } from '@/lib/utils'
 import Link from 'next/link'
-import ShowCryptogram from '@/components/display/ShowCryptogram'
 
 export interface FetchedCommentProps {
   _id: string
@@ -21,15 +20,13 @@ export interface FetchedCommentProps {
   createdAt: Date
 }
 
-const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
+const ViewWordScramblePage = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null
 
   const user = await currentUser()
   if (!user) return null
 
   const fetchedCreate = await fetchSingleCreate(params.id)
-
-  console.log('fetchedCreate', fetchedCreate)
 
   return (
     <div className='m-3 flex flex-col rounded-lg  border-gray-100 p-2 shadow-sm'>
@@ -64,11 +61,19 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
       </div>
 
       {/* Content Display - Clinet Comp */}
-      <div>
-        <ShowCryptogram
-          content={fetchedCreate.content}
-          title={fetchedCreate.title}
-        />
+      <div className='mx-3 mt-4 flex flex-col rounded-lg border text-center align-middle'>
+        <div className='flex flex-col items-center text-center'>
+          <div className='my-4 grid grid-cols-4 gap-2'>
+            {fetchedCreate.content.content.map(
+              (word: string, index: number) => (
+                <div className='p-4 text-xl' key={index}>
+                  <p className='mb-4'>{word}</p>
+                  <p>_____________</p>
+                </div>
+              )
+            )}
+          </div>
+        </div>
       </div>
       {/* <p>{fetchedCreate.content.text}</p> */}
 
@@ -90,4 +95,4 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
   )
 }
 
-export default ViewCryptogramPage
+export default ViewWordScramblePage

@@ -13,11 +13,7 @@ const ShowCryptogram = ({ content }: ShowCryptogram) => {
 
   return (
     <div className='mx-3 mt-4 flex flex-col rounded-lg border text-center align-middle'>
-      {/* <h2>Preview Output</h2> */}
       <div className='p-10'>
-        {/* <div>
-          <p>Name:_____________ </p>
-        </div> */}
         {content.content.map((subArray: [], idx: number) => {
           return (
             <div
