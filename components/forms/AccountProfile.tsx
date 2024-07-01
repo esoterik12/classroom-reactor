@@ -9,15 +9,15 @@ import { usePathname } from 'next/navigation'
 // Zod validation imports:
 import { zodResolver } from '@hookform/resolvers/zod'
 import { accountProfileSchema } from '@/lib/zod/accountProfile.schema'
-import { IAccountProfileForm } from '@/lib/types'
+import { AccountProfileFormProps } from '@/lib/types'
 import { UploadButton } from '@/lib/uploadthing'
-import { IUserProfile } from '@/lib/types'
+import { UserProfileProps } from '@/lib/types'
 import { updateUser } from '@/lib/actions/user.actions'
 import { TextareaInput } from './TextareaInput'
 import SelectIcon from '../icons/SelectIcon'
 import Loading from '../shared/Loading'
 
-export default function AccountProfileForm({ user }: { user: IUserProfile }) {
+export default function AccountProfileForm({ user }: { user: UserProfileProps }) {
   const [serverResponse, setServerResponse] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<null | string>(user.image)
@@ -27,7 +27,7 @@ export default function AccountProfileForm({ user }: { user: IUserProfile }) {
     register,
     handleSubmit,
     formState: { errors, isSubmitted }
-  } = useForm<IAccountProfileForm>({
+  } = useForm<AccountProfileFormProps>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     resolver: zodResolver(accountProfileSchema),
@@ -39,7 +39,7 @@ export default function AccountProfileForm({ user }: { user: IUserProfile }) {
     }
   })
 
-  async function onSubmit(data: IAccountProfileForm) {
+  async function onSubmit(data: AccountProfileFormProps) {
     setLoading(true)
     console.log('user.id', user.id)
     try {

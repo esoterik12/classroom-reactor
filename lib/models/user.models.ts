@@ -16,12 +16,6 @@ const userSchema = new mongoose.Schema({
   },
   image: String,
   bio: String,
-  creates: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Create",
-    },
-  ],
   onboarded: {
     type: Boolean,
     default: false,

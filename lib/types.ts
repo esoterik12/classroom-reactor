@@ -1,4 +1,4 @@
-export interface IAccountProfileForm {
+export interface AccountProfileFormProps {
   name: string
   email: string
   image: string
@@ -6,7 +6,7 @@ export interface IAccountProfileForm {
   bio: string
 }
 
-export interface IUserProfile {
+export interface UserProfileProps {
   id: string
   objectId?: string
   username: string;
@@ -82,38 +82,6 @@ export interface FetchedCommentProps {
 
 export interface CommentFormProps {
   commentText: string
-}
-
-// Form  types:
-export interface ICryptogram {
-  title: string
-  text: string
-  givenLetters: string
-}
-
-// Dummy not used
-interface Quiz {
-  questions: Array<{
-    question: string;
-    options: string[];
-    answer: number;
-  }>;
-}
-
-// Dummy not used
-interface Activity {
-  summary: string;
-  duration: number;
-}
-
-type CreateContent = ICryptogram | Quiz | Activity;
-
-export interface IPostCreate {
-  content: any // UNFINISHED PLACEHOLDER - Until form of content becomes more rigid
-  createType: string
-  creator: string // Mongo ID
-  creatorClerkId: string // Clerk ID
-  course: string | null
 }
 
 export interface AddMembersProps {

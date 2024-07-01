@@ -15,12 +15,6 @@ const courseSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  creates: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Create'
-    }
-  ],
   members: [
     {
       user: {

@@ -1,8 +1,5 @@
-import CreateDisplayCard from '@/components/cards/CreateDisplayCard'
-import ProfileHeader from '@/components/shared/ProfileInfo'
 import SearchBar from '@/components/shared/SearchBar'
 import { fetchCourses } from '@/lib/actions/course.actions'
-import { fetchCreates } from '@/lib/actions/create.actions'
 import { fetchUser, fetchUsers } from '@/lib/actions/user.actions'
 import { currentUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
@@ -31,11 +28,6 @@ async function Page({
     })
   }
 
-  let searchCreatesResult
-  if (searchParams.type === 'creates') {
-    searchCreatesResult = await fetchCreates(1, 20, searchParams.q)
-  }
-
   let searchCousesResult
   if (searchParams.type === 'courses') {
     searchCousesResult = await fetchCourses(1, 20, searchParams.q)
@@ -62,29 +54,6 @@ async function Page({
                   name={user.name}
                   username={user.username}
                   imgUrl={user.image}
-                />
-              </div>
-            ))}
-          </>
-        )}
-        {/* Conditionally display creates with CreateDisplayCard component */}
-        {searchParams.type === 'creates' &&
-        searchCreatesResult?.creates.length === 0 ? (
-          <p className='text-center text-gray-700'>No Results</p>
-        ) : (
-          <>
-            {searchCreatesResult?.creates.map(create => (
-              <div key={create._id} className=''>
-                <CreateDisplayCard
-                  _id={create._id}
-                  // not using currentUserId?
-                  creatorUserId={create.creatorClerkId}
-                  creatorImage={create.creator.image}
-                  createType={create.createType}
-                  createdAt={create.createdAt}
-                  title={create.content.title}
-                  username={create.creator.username}
-                  commentNumber={create.children.length}
                 />
               </div>
             ))}

@@ -27,7 +27,7 @@ const SearchBar = ({ inputClasses }: ISearchBar) => {
   }, [search, searchType, router])
 
   return (
-    <div className=''>
+    <div className='flex flex-col items-center'>
       <ActiveButtonsToggle
         searchType={searchType}
         setSearchType={setSearchType}

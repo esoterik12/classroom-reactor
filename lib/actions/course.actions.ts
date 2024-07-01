@@ -7,7 +7,6 @@ import mongoose, { FilterQuery } from 'mongoose'
 import { INewCourse, ModuleDisplayProps, ICourseContainer } from '../types'
 import { redirect } from 'next/navigation'
 import Module from '../models/module.model'
-import Create from '../models/create.model'
 
 export async function addDummyCourses() {
   try {
@@ -382,23 +381,6 @@ export async function fetchCourseMembers(courseId: string) {
   }
 }
 
-export async function fetchCourseCreates(courseId: string) {
-  try {
-    await connectToDB()
-
-    const courseCreates = await Course.findById(courseId).select('creates')
-
-    if (!courseCreates) {
-      throw new Error(`No creates matching course ${courseId} found.`)
-    }
-
-    console.log('courseCreates', courseCreates)
-    return courseCreates
-  } catch (error: any) {
-    throw new Error(`Failed to fetch course creates: ${error}`)
-  }
-}
-
 export async function removeCourseMember(
   courseId: string,
   userId: string,
@@ -422,18 +404,6 @@ export async function removeCourseMember(
 export async function deleteCourse(courseId: string) {
   try {
     await connectToDB()
-
-    // UNFINISHED
-    // Before deleting need to find all creates that have a creates[] entry for this course and remove it
-    // Added complexity: delete the create if it is part of NO course?
-    // Solution for general creates: make general courses / can't be deleted
-    const updatedCreates = await Create.updateMany(
-      { courses: courseId },
-      { $pull: { creates: courseId } }
-    )
-    if (!updatedCreates) {
-      console.log('No creates found in deleted course.')
-    }
 
     const result = await Course.findByIdAndDelete(courseId)
 

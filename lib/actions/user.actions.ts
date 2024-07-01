@@ -2,10 +2,8 @@
 import { FilterQuery } from 'mongoose'
 import { revalidatePath } from 'next/cache'
 import User from '../models/user.models'
-import Course from '../models/course.model'
 import { connectToDB } from '../mongoose'
 import { redirect } from 'next/navigation'
-import Create from '../models/create.model'
 
 // Temporary Dummy function to populate users for UI development
 export async function addDummyUsers() {
@@ -193,50 +191,5 @@ export async function updateUser({
     throw new Error(`Failed to create/update user: ${error.message}`)
   } finally {
     redirect(`/reactor/profile/${userId}`)
-  }
-}
-
-interface IFetchUserCreates {
-  userId: string
-  pageNumber: number
-  pageSize: number
-}
-
-export async function fetchUserCreates({
-  userId,
-  pageNumber,
-  pageSize = 20
-}: IFetchUserCreates) {
-  try {
-    await connectToDB()
-
-    // Calculate the number of posts to skip
-    const skipAmount = (pageNumber - 1) * pageSize
-
-    const userCreatesQuery = Create.find({ creator: userId })
-      .sort({ createdAt: 'desc' })
-      .skip(skipAmount)
-      .limit(pageSize)
-      .populate({
-        path: 'creator',
-        model: 'User',
-        populate: 'username image id'
-      })
-      .populate({
-        path: 'courses',
-        model: Course
-      })
-
-
-    const totalCreatesCount = await Create.countDocuments({ creator: userId })
-
-    const creates = await userCreatesQuery.exec()
-
-    const isNext = totalCreatesCount > skipAmount + creates.length
-
-    return { creates, isNext }
-  } catch (error) {
-    console.log('Error fetching user creates: ', error)
-    throw error
   }
 }
