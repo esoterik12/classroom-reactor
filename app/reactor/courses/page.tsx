@@ -1,9 +1,20 @@
 import CourseCard from '@/components/cards/CourseCard'
 import { fetchCourses } from '@/lib/actions/course.actions'
 import Link from 'next/link'
+import PaginationButtons from '@/components/shared/PaginationButtons'
 
-export default async function Page() {
-  const courseResult = await fetchCourses(1, 20, '')
+export default async function Page({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | undefined }
+}) {
+  const courseResult = await fetchCourses(
+    searchParams.p ? +searchParams.p : 1,
+    10,
+    ''
+  )
+
+  console.log('courseResult', courseResult)
 
   return (
     <main className='flex min-h-screen flex-col items-center p-6'>
@@ -16,7 +27,7 @@ export default async function Page() {
         </Link>
       </section>
       {/* Course list with Course Card - use id to generate dynamic link */}
-      <section className='flex flex-row flex-wrap'>
+      <section className='flex w-full flex-row flex-wrap'>
         {courseResult.courses?.map(item => (
           <CourseCard
             key={item._id}
@@ -27,6 +38,11 @@ export default async function Page() {
           />
         ))}
       </section>
+      <PaginationButtons
+        path='http://localhost:3000/reactor/courses'
+        pageNumber={searchParams?.p ? +searchParams.p : 1}
+        isNext={courseResult.isNext}
+      />
     </main>
   )
 }

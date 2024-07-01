@@ -7,7 +7,7 @@ import { InputField } from '@/components/forms/InputField'
 import { usePathname } from 'next/navigation'
 // Zod validation imports:
 import { zodResolver } from '@hookform/resolvers/zod'
-import { cryptogramSchema } from '@/lib/zod/materials.schema'
+import { basicCreateSchema } from '@/lib/zod/materials.schema'
 import { ICryptogram } from '@/lib/types'
 import CreateCardPopover from '@/components/shared/CreateCardPopover'
 import { TextareaInput } from '@/components/forms/TextareaInput'
@@ -36,7 +36,7 @@ export default function CreateCryptogram({
   } = useForm<ICryptogram>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-    resolver: zodResolver(cryptogramSchema),
+    resolver: zodResolver(basicCreateSchema),
     defaultValues: {
       title: '',
       text: '',

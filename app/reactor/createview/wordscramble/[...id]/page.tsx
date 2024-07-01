@@ -7,18 +7,7 @@ import BackButton from '@/components/ui/BackButton'
 import SelectIcon from '@/components/icons/SelectIcon'
 import { formatDateString } from '@/lib/utils'
 import Link from 'next/link'
-
-export interface FetchedCommentProps {
-  _id: string
-  text: string
-  authorMongoId: string
-  authorClerkId: string
-  authorUsername: string
-  authorImage: string
-  parentId: string
-  children: FetchedCommentProps
-  createdAt: Date
-}
+import { FetchedCommentProps } from '@/lib/types'
 
 const ViewWordScramblePage = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null

@@ -29,20 +29,18 @@ export async function fetchCreates(
     ]
   }
 
+  // UNIFINISHED - fetching too much data for the search / display / activity pages?
   const createQuery = Create.find(
     searchString === '' ? { parentId: { $in: [null, undefined] } } : query
   )
+    .select('_id creator content createType children image createdAt')
     .sort({ createdAt: 'desc' })
     .skip(skipAmount)
     .limit(pageSize)
     .populate({
       path: 'creator',
       model: 'User',
-      populate: 'username image id'
-    })
-    .populate({
-      path: 'courses',
-      model: Course
+      select: 'username image id'
     })
 
   const totalCreatesCount = await Create.countDocuments(
@@ -61,20 +59,20 @@ export async function fetchSingleCreate(createId: string) {
   await connectToDB()
 
   const fetchedCreate = await Create.findById(createId)
-  .populate({
-    path: 'creator',
-    model: 'User',
-    select: 'username image id'
-  })
-  .populate({
-    path: 'children',
-    model: 'Comment',
-    populate: {
-      path: 'authorMongoId', // Path to the user who authored the comment
+    .populate({
+      path: 'creator',
       model: 'User',
-      select: 'username image id' // Selecting specific fields
-    }
-  })
+      select: 'username image id'
+    })
+    .populate({
+      path: 'children',
+      model: 'Comment',
+      populate: {
+        path: 'authorMongoId', // Path to the user who authored the comment
+        model: 'User',
+        select: 'username image id' // Selecting specific fields
+      }
+    })
 
   return fetchedCreate
 }

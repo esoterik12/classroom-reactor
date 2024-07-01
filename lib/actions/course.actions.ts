@@ -135,6 +135,7 @@ export async function fetchCourses(
   const coursesQuery = Course.find(
     searchString === '' ? { parentId: { $in: [null, undefined] } } : query
   )
+    .select('discussion _id courseName image members')
     .sort({ createdAt: 'asc' })
     .skip(skipAmount)
     .limit(pageSize)

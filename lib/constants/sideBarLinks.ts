@@ -8,7 +8,7 @@ export const sideBarLinks = [
   {
     id: 2,
     name: 'Courses',
-    link: '/reactor/courses',
+    link: '/reactor/courses?p=1',
     icon: 'academic'
   },
   {

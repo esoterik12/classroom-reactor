@@ -5,65 +5,53 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputField } from '@/components/forms/InputField'
 import { usePathname } from 'next/navigation'
-// Zod validation imports:
 import { zodResolver } from '@hookform/resolvers/zod'
-import { cryptogramSchema } from '@/lib/zod/materials.schema'
-import { ICryptogram } from '@/lib/types'
+import { basicCreateSchema } from '@/lib/zod/materials.schema'
 import Loading from '../shared/Loading'
 import CreateCardPopover from '@/components/shared/CreateCardPopover'
 import { TextareaInput } from '@/components/forms/TextareaInput'
 import { postCreate } from '@/lib/actions/create.actions'
-import { ZodSchema } from 'zod'
+import BackButton from '../ui/BackButton'
+import SelectIcon from '../icons/SelectIcon'
+import { useRouter } from 'next/navigation'
+import { CreateFormProps } from './CreateWordScramble'
 
-// Posisbly not fully updated since changes to CreateCryptogram.tsx
-
-interface CreateForm<T> {
-  initialFormValues: T
-  userId: string,
-  username: string
-  userImage: string
-  createType: "cryptogram" | "wordScramble"
-}
-
-interface FormData {
+interface SpotItDataProps {
   title: string
   text: string
 }
 
-function CreateForm<T extends FormData>({
+function CreateSpotIt<T extends SpotItDataProps>({
   initialFormValues,
   userId,
-  username,
-  userImage
-}: CreateForm<T>) {
+}: CreateFormProps<T>) {
   const [loading, setLoading] = useState(false)
-  const pathname = usePathname()
+  const router = useRouter()
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
-  } = useForm<FormData>({
+    formState: { errors, isSubmitted }
+  } = useForm<SpotItDataProps>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-    resolver: zodResolver(cryptogramSchema),
+    resolver: zodResolver(basicCreateSchema),
     defaultValues: initialFormValues
   })
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: SpotItDataProps) {
     setLoading(true)
 
     try {
-      await postCreate({
+      const postedCreateId = await postCreate({
         content: { text: data.text, title: data.title },
         creator: userId,
-        createType: 'cryptogram',
+        createType: 'spotit',
         creatorClerkId: 'DUMMY',
         course: 'CC11',
-        creatorUsername: username,
-        creatorImage: userImage
       })
       console.log('Add create success!')
+      router.push(`/reactor/createview/spotit/${postedCreateId}`)
     } catch (error) {
       console.log('server action error: ', error)
     } finally {
@@ -71,7 +59,7 @@ function CreateForm<T extends FormData>({
     }
   }
 
-  if (loading) {
+  if (loading || isSubmitted) {
     return (
       <div className='flex flex-col items-center justify-center pt-24 align-middle'>
         <Loading text='Loading...' />
@@ -80,24 +68,31 @@ function CreateForm<T extends FormData>({
   }
 
   return (
-    <div className=' w-full flex flex-col'>
+    <div className=' flex w-full flex-col'>
       {/* Main Header Div */}
       <div
         className='flex h-16 w-full flex-row items-center justify-between gap-1 rounded-md bg-grayLight-500
        text-jet-500'
       >
-        <div className='flex flex-row'>
+        <div className='ml-3 flex flex-row gap-2'>
           {/* <Image className='ml-3' alt='cryptogram logo' src="/cryptogramLogo.png" height={35} width={35} /> */}
-          <h1 className='text-md ml-3 mt-1 font-semibold md:text-xl'>
-            Create a Cryptogram
+          <BackButton classes=''>
+            <SelectIcon
+              iconClasses='h-6 w-6 text-gray-500'
+              iconSelection='back'
+            />
+          </BackButton>
+          <h1 className='text-md font-semibold md:text-xl'>
+            Create a SpotIt Game
+            queen, well, egg, real, trap, yes, up, in, octopus, punt, awake
           </h1>
         </div>
         <div className=''>
-          <CreateCardPopover 
-          buttonText='CreateForm.tsx'
-          title='Fix in CreateForm.tsx'
-          description='Add in CreateForm.tsx'
-          tips={['CreateForm.tsx']}
+          <CreateCardPopover
+            buttonText='Learn more'
+            title='SpotIt Details'
+            description='Enter a list of words. One letter is randomly chosen to be duplicated. Players race to spot the duplicated word.'
+            tips={['Use vocabulary or spelling words', 'Input is case insensitive; all words will be lowercase']}
           />
         </div>
       </div>
@@ -121,8 +116,8 @@ function CreateForm<T extends FormData>({
         <div className='min-h-40'>
           <TextareaInput
             id='text'
-            label='Sentence'
-            placeholder='Enter your sentence'
+            label='Words'
+            placeholder='Enter your words separated by commas'
             inputClasses='w-full max-w-[450px]'
             {...register('text')}
             error={errors.text}
@@ -143,4 +138,4 @@ function CreateForm<T extends FormData>({
   )
 }
 
-export default CreateForm
+export default CreateSpotIt

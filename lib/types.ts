@@ -68,6 +68,18 @@ export type AddCommentProps = {
   courseId?: string
 }
 
+export interface FetchedCommentProps {
+  _id: string
+  text: string
+  authorMongoId: string
+  authorClerkId: string
+  authorUsername: string
+  authorImage: string
+  parentId: string
+  children: FetchedCommentProps
+  createdAt: Date
+}
+
 export interface CommentFormProps {
   commentText: string
 }

@@ -25,7 +25,7 @@ const Page = async ({
         <div className='mb-6 w-full rounded-md bg-grayLight-500 py-4 text-center text-lg font-semibold dark:bg-jet-500'>
           Latest Creates
         </div>
-        <div className='p-4 w-full'>
+        <div className='w-full p-4'>
           {result.creates.map(item => (
             <CreateDisplayCard
               key={item._id}

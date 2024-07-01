@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { InputField } from '@/components/forms/InputField'
 import { usePathname } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { wordScrambleSchema } from '@/lib/zod/materials.schema'
+import { basicCreateSchema } from '@/lib/zod/materials.schema'
 import Loading from '../shared/Loading'
 import CreateCardPopover from '@/components/shared/CreateCardPopover'
 import { TextareaInput } from '@/components/forms/TextareaInput'
@@ -15,12 +15,10 @@ import BackButton from '../ui/BackButton'
 import SelectIcon from '../icons/SelectIcon'
 import { useRouter } from 'next/navigation'
 
-// Posisbly not fully updated since changes to CreateCryptogram.tsx
-
 export interface CreateFormProps<T> {
   initialFormValues: T
   userId: string
-  createType: 'cryptogram' | 'wordScramble'
+  createType: 'cryptogram' | 'wordScramble' | 'spotit'
 }
 
 interface WordScrambleDataProps {
@@ -33,17 +31,16 @@ function CreateWordScramble<T extends WordScrambleDataProps>({
   userId,
 }: CreateFormProps<T>) {
   const [loading, setLoading] = useState(false)
-  const pathname = usePathname()
   const router = useRouter()
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitted }
   } = useForm<WordScrambleDataProps>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-    resolver: zodResolver(wordScrambleSchema),
+    resolver: zodResolver(basicCreateSchema),
     defaultValues: initialFormValues
   })
 
@@ -67,7 +64,7 @@ function CreateWordScramble<T extends WordScrambleDataProps>({
     }
   }
 
-  if (loading) {
+  if (loading || isSubmitted) {
     return (
       <div className='flex flex-col items-center justify-center pt-24 align-middle'>
         <Loading text='Loading...' />
@@ -100,7 +97,7 @@ function CreateWordScramble<T extends WordScrambleDataProps>({
             buttonText='Learn more'
             title='Word Scramble Details'
             description='Enter a list of words whose letters will be scrambled to create a puzzle.'
-            tips={['Use vocabulary or spelling words', 'Output is case insensitive']}
+            tips={['Use vocabulary or spelling words', 'Input is case insensitive; all words will be lowercase']}
           />
         </div>
       </div>

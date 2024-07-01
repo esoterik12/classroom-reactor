@@ -7,18 +7,16 @@ import BackButton from '@/components/ui/BackButton'
 import SelectIcon from '@/components/icons/SelectIcon'
 import { formatDateString } from '@/lib/utils'
 import Link from 'next/link'
-import ShowCryptogram from '@/components/display/ShowCryptogram'
 import { FetchedCommentProps } from '@/lib/types'
+import ShowSpotIt from '@/components/display/ShowSpotIt'
 
-const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
+const ViewSpotItPage = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null
 
   const user = await currentUser()
   if (!user) return null
 
   const fetchedCreate = await fetchSingleCreate(params.id)
-
-  console.log('fetchedCreate', fetchedCreate)
 
   return (
     <div className='m-3 flex flex-col rounded-lg  border-gray-100 p-2 shadow-sm'>
@@ -36,7 +34,7 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
           </p>
         </div>
 
-        {/* Riight Side Header Section */}
+        {/* Right Side Header Section */}
         <div className='flex flex-col items-end text-sm text-gray-500'>
           <p className='mt-1 flex flex-row '>
             <span className='mr-1 hidden sm:block'>Created on: </span>
@@ -52,14 +50,11 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      {/* Content Display - Clinet Comp */}
-      <div>
-        <ShowCryptogram
-          content={fetchedCreate.content}
-          title={fetchedCreate.title}
-        />
-      </div>
-      {/* <p>{fetchedCreate.content.text}</p> */}
+      {/* Content Display - Client Comp */}
+      <ShowSpotIt
+        content={fetchedCreate.content.content}
+        title={fetchedCreate.content.title}
+      />
 
       <div className='mt-6'>
         <AddComment clerkUserId={user.id} createId={params.id} />
@@ -79,4 +74,4 @@ const ViewCryptogramPage = async ({ params }: { params: { id: string } }) => {
   )
 }
 
-export default ViewCryptogramPage
+export default ViewSpotItPage

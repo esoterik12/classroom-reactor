@@ -16,7 +16,7 @@ function CourseCard({ _id, image, courseName, numOfMembers }: ICourseCard) {
       underlineColor='bg-primary-100 dark:bg-primary-500'
     >
       <div className='ml-3 mt-1 flex flex-1 flex-row justify-between'>
-        <Link href={`/reactor/courses/${_id}`}>
+        <Link href={`/reactor/courses/${_id}`} className='w-1/2 md:w-3/4'>
           <div className='flex flex-col'>
             <p className='text-md font-bold'>{courseName}</p>
             <p className='mt-1 text-sm'>Members: {numOfMembers}</p>

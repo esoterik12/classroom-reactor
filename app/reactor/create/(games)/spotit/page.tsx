@@ -1,31 +1,28 @@
 import BasicPageContainer from '@/components/containers/BasicPageContainer'
-import CreateForm from '@/components/forms/CreateForm'
 import { currentUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import { fetchUser } from '@/lib/actions/user.actions'
+import CreateSpotIt from '@/components/forms/CreateSpotIt'
 
-const WordScramblePage = async () => {
+const SpotItPage = async () => {
   const user = await currentUser()
   if (!user) return null
 
   // fetch organization list created by user
   const userInfo = await fetchUser(user.id)
   if (!userInfo?.onboarded) redirect('/onboarding')
-  console.log('userInfo', userInfo)
 
-  console.log('user.id', userInfo.id)
+  // queen, well, egg, real, trap, yes, up, in, octopus
 
   return (
     <BasicPageContainer>
-      <CreateForm
+      <CreateSpotIt
         initialFormValues={{ title: '', text: '' }}
         userId={userInfo._id.toString()}
-        username={userInfo.username}
-        userImage={userInfo.image}
-        createType='wordScramble'
+        createType='spotit'
       />
     </BasicPageContainer>
   )
 }
 
-export default WordScramblePage
+export default SpotItPage
