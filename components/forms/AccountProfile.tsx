@@ -33,7 +33,7 @@ export default function AccountProfileForm({
     if (user.image) {
       setImageUrl(user.image)
     }
-  }, [setImageUrl])
+  }, [setImageUrl, user.image])
 
   const {
     register,
