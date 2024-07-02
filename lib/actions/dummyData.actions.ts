@@ -50,7 +50,7 @@ export async function addDummyUsers() {
       {
         id: 'user_1aBcdEfghIjklMnopQrStuvWxYz1234',
         bio: 'Passionate about technology and innovation.',
-        username: 'TechGuru',
+        username: 'Guru',
         name: 'Alice Smith',
         image:
           'https://utfs.io/f/10711b1c-da67-4344-9a6f-cc1c5508bb08-r9tb9.png',
@@ -59,7 +59,7 @@ export async function addDummyUsers() {
       {
         id: 'user_2aBcdEfghIjklMnopQrStuvWxYz5678',
         bio: 'Lover of the arts and all things creative.',
-        username: 'ArtLover',
+        username: 'Bastian12',
         name: 'Bob Johnson',
         image:
           'https://utfs.io/f/bb7fd756-95e0-4ef2-ac9b-793100abb3a1-7x8usz.png',
@@ -68,7 +68,7 @@ export async function addDummyUsers() {
       {
         id: 'user_3aBcdEfghIjklMnopQrStuvWxYz9101',
         bio: 'Avid reader and aspiring writer.',
-        username: 'Bookworm',
+        username: 'FrankieX',
         name: 'Charlie Brown',
         image:
           'https://utfs.io/f/77193005-66b1-42f5-b28c-149ba8c37904-hsud09.png',
@@ -77,7 +77,7 @@ export async function addDummyUsers() {
       {
         id: 'user_4aBcdEfghIjklMnopQrStuvWxYz1121',
         bio: 'Fitness enthusiast and health advocate.',
-        username: 'FitFanatic',
+        username: 'FitFc',
         name: 'Dana White',
         image:
           'https://utfs.io/f/6ac6e089-fd92-43ea-8017-6f20df790df6-7r8qrp.png',
@@ -86,7 +86,7 @@ export async function addDummyUsers() {
       {
         id: 'user_5aBcdEfghIjklMnopQrStuvWxYz3141',
         bio: 'Tech entrepreneur with a passion for startups.',
-        username: 'StartupStar',
+        username: 'StarSting',
         name: 'Eli Black',
         image:
           'https://utfs.io/f/15b8fb2b-ea69-458c-a745-2904a4508a0a-7cgjui.png',
@@ -95,7 +95,7 @@ export async function addDummyUsers() {
       {
         id: 'user_6aBcdEfghIjklMnopQrStuvWxYz5161',
         bio: 'Nature lover and outdoor adventurer.',
-        username: 'NatureNerd',
+        username: 'NSy12',
         name: 'Fay Green',
         image: 'https://utfs.io/f/83e761f5-452c-4585-8332-f6b47c407178-1ap.png',
         onboarded: true
@@ -103,7 +103,7 @@ export async function addDummyUsers() {
       {
         id: 'user_7aBcdEfghIjklMnopQrStuvWxYz7181',
         bio: 'Gamer and tech enthusiast.',
-        username: 'GameGeek',
+        username: 'BlueBard34',
         name: 'Gary Blue',
         image:
           'https://utfs.io/f/5b1fb643-a1ae-4026-a440-34802fd08a41-fvmr7a.png',
@@ -112,8 +112,118 @@ export async function addDummyUsers() {
       {
         id: 'user_8aBcdEfghIjklMnopQrStuvWxYz9201',
         bio: 'Foodie and culinary explorer.',
-        username: 'FoodFan',
+        username: 'ChickenSalad',
         name: 'Helen Gray',
+        image:
+          'https://utfs.io/f/10711b1c-da67-4344-9a6f-cc1c5508bb08-r9tb9.png',
+        onboarded: true
+      },
+
+      {
+        id: 'user_5aBcdEfghIjklMnopQrStuvWxYz3141',
+        bio: 'Tech entrepreneur with a passion for startups.',
+        username: 'StarStar1',
+        name: 'Eli Black',
+        image:
+          'https://utfs.io/f/93cdb3fa-0eb9-4874-8388-e5720779b384-7cgjui.png',
+        onboarded: true
+      },
+      {
+        id: 'user_6aBcdEfghIjklMnopQrStuvWxYz5161',
+        bio: 'Nature lover and outdoor adventurer.',
+        username: 'NSy12',
+        name: 'Fay Green',
+        image:
+          'https://utfs.io/f/f298fbfc-f006-4a11-a446-58ef498d6231-sv09zt.png',
+        onboarded: true
+      },
+      {
+        id: 'user_7aBcdEfghIjklMnopQrStuvWxYz7181',
+        bio: 'Gamer and tech enthusiast.',
+        username: 'BlueBard34',
+        name: 'Gary Blue',
+        image:
+          'https://utfs.io/f/5b1fb643-a1ae-4026-a440-34802fd08a41-fvmr7a.png',
+        onboarded: true
+      },
+      {
+        id: 'user_8aBcdEfghIjklMnopQrStuvWxYz9201',
+        bio: 'Foodie and culinary explorer.',
+        username: 'ChickenSalad',
+        name: 'Helen Gray',
+        image:
+          'https://utfs.io/f/10711b1c-da67-4344-9a6f-cc1c5508bb08-r9tb9.png',
+        onboarded: true
+      },
+
+      {
+        id: 'user_9aBcdEfghIjklMnopQrStuvWxYz1321',
+        bio: 'Fitness enthusiast and personal trainer.',
+        username: 'Fieak',
+        name: 'Ivy Brown',
+        image:
+          'https://utfs.io/f/7827da9e-fb47-4c51-83e4-b5852c80d2ce-hqfugl.png',
+        onboarded: true
+      },
+      {
+        id: 'user_10aBcdEfghIjklMnopQrStuvWxYz1421',
+        bio: 'Digital artist and illustrator.',
+        username: 'Artul1',
+        name: 'Jake White',
+        image:
+          'https://utfs.io/f/03accab6-9362-4f09-9d4b-18180062644c-x47bo8.png',
+        onboarded: true
+      },
+      {
+        id: 'user_11aBcdEfghIjklMnopQrStuvWxYz1521',
+        bio: 'Bookworm and aspiring novelist.',
+        username: 'BooXX',
+        name: 'Kimberly Read',
+        image:
+          'https://utfs.io/f/2713f832-3857-445a-b21c-85b95467c569-jot7rq.png',
+        onboarded: true
+      },
+      {
+        id: 'user_12aBcdEfghIjklMnopQrStuvWxYz1621',
+        bio: 'Travel blogger and photographer.',
+        username: 'Wust678',
+        name: 'Leo Brown',
+        image:
+          'https://utfs.io/f/ee0e8ad8-5bbb-4ca3-a195-3b32a51be4d3-q6ciad.png',
+        onboarded: true
+      },
+      {
+        id: 'user_13aBcdEfghIjklMnopQrStuvWxYz1721',
+        bio: 'Music producer and DJ.',
+        username: 'BeatMa',
+        name: 'Mia Black',
+        image:
+          'https://utfs.io/f/9f8b7489-42dc-4cca-ba88-b8e7fe219aad-dlsnl7.png',
+        onboarded: true
+      },
+      {
+        id: 'user_14aBcdEfghIjklMnopQrStuvWxYz1821',
+        bio: 'Environmental activist and eco-warrior.',
+        username: 'GreenEar',
+        name: 'Noah Green',
+        image:
+          'https://utfs.io/f/2fdfb7e0-e783-4144-861e-35dbeb38aa0f-t6ef3m.png',
+        onboarded: true
+      },
+      {
+        id: 'user_15aBcdEfghIjklMnopQrStuvWxYz1921',
+        bio: 'Film buff and movie critic.',
+        username: 'CinemaLo',
+        name: 'Olivia Black',
+        image:
+          'https://utfs.io/f/6ac6e089-fd92-43ea-8017-6f20df790df6-7r8qrp.png',
+        onboarded: true
+      },
+      {
+        id: 'user_16aBcdEfghIjklMnopQrStuvWxYz2021',
+        bio: 'Fashionista and style influencer.',
+        username: 'StyleQueen',
+        name: 'Peter Gray',
         image:
           'https://utfs.io/f/10711b1c-da67-4344-9a6f-cc1c5508bb08-r9tb9.png',
         onboarded: true
@@ -308,7 +418,7 @@ export async function addDummyCourses(userId: string) {
         description:
           'Basic biology concepts including plant and animal life studies.',
         createdBy: userId
-      },
+      }
     ])
   } catch (error: any) {
     console.error(`Failed to create/update user: ${error.message}`)

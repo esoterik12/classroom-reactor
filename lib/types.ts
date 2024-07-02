@@ -3,7 +3,7 @@ export interface AccountProfileFormProps {
   email: string
   image: string
   username: string
-  bio: string
+  bio: string | null
 }
 
 export interface UserProfileProps {
@@ -11,8 +11,17 @@ export interface UserProfileProps {
   objectId?: string
   username: string;
   name: string;
-  bio: string;
+  bio: string | null;
   image: string;
+}
+
+export interface UpdateUser {
+  userId: string
+  username: string
+  name: string
+  bio: string | null
+  image: string | null
+  path?: string
 }
 
 export interface INewCourse {

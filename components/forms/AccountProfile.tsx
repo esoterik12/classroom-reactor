@@ -1,7 +1,7 @@
 // May require suppressHydrationWarning in html of layout.tsx
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputField } from './InputField'
 import { usePathname } from 'next/navigation'
@@ -17,16 +17,28 @@ import { TextareaInput } from './TextareaInput'
 import SelectIcon from '../icons/SelectIcon'
 import Loading from '../shared/Loading'
 
-export default function AccountProfileForm({ user }: { user: UserProfileProps }) {
-  const [serverResponse, setServerResponse] = useState<string | null>(null)
+export default function AccountProfileForm({
+  user
+}: {
+  user: UserProfileProps
+}) {
   const [loading, setLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState<null | string>(user.image)
+  const [imageUrl, setImageUrl] = useState<null | string>(null)
+  const [imageError, setImageError] = useState<null | string>(null)
   const pathname = usePathname()
+
+  console.log('user', user)
+
+  useEffect(() => {
+    if (user.image) {
+      setImageUrl(user.image)
+    }
+  }, [setImageUrl])
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted }
+    formState: { errors, isSubmitted, isSubmitSuccessful }
   } = useForm<AccountProfileFormProps>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -35,13 +47,12 @@ export default function AccountProfileForm({ user }: { user: UserProfileProps })
       image: user?.image ? user.image : '',
       name: user?.name ? user.name : '',
       username: user?.username ? user.username : '',
-      bio: user?.bio ? user.bio : ''
+      bio: user?.bio ? user.bio : null
     }
   })
 
   async function onSubmit(data: AccountProfileFormProps) {
     setLoading(true)
-    console.log('user.id', user.id)
     try {
       await updateUser({
         userId: user.id,
@@ -59,7 +70,7 @@ export default function AccountProfileForm({ user }: { user: UserProfileProps })
     }
   }
 
-  if (loading || isSubmitted) {
+  if (loading && isSubmitted) {
     return (
       <div>
         <Loading text='Updating...' />
@@ -67,17 +78,9 @@ export default function AccountProfileForm({ user }: { user: UserProfileProps })
     )
   }
 
-  if (serverResponse) {
-    return (
-      <div className='container'>
-        <p>{serverResponse}</p>
-      </div>
-    )
-  }
-
   return (
     <>
-      {!isSubmitted && (
+      {!isSubmitSuccessful && (
         <div className='container py-4 custom-shadow '>
           <h1 className='text-xl font-semibold'>Complete Your Profile</h1>
           <form className='m-2 flex flex-col' onSubmit={handleSubmit(onSubmit)}>
@@ -107,9 +110,7 @@ export default function AccountProfileForm({ user }: { user: UserProfileProps })
             </div>
             {/* Image field */}{' '}
             <div className='mb-4 flex min-h-20 flex-col'>
-              <p className='text ml-1 font-medium text-gray-700'>
-                Profile Picture
-              </p>
+              <p className='text ml-1 font-medium'>Profile Picture</p>
 
               {!imageUrl ? (
                 <div className='flex flex-col'>
@@ -122,15 +123,15 @@ export default function AccountProfileForm({ user }: { user: UserProfileProps })
                     }}
                     endpoint='imageUploader'
                     onClientUploadComplete={res => {
-                      // Do something with the response
                       setImageUrl(res[0].url)
-                      console.log('Files: ', res[0].url)
                     }}
                     onUploadError={(error: Error) => {
-                      // Do something with the error.
-                      console.log(`Error uploading image! ${error.message}`)
+                      setImageError(error.message)
                     }}
                   />
+                  {imageError && (
+                    <p className='text-primary-500'>{imageError}</p>
+                  )}
                 </div>
               ) : (
                 <div className='bg-mint flex flex-row gap-2 rounded-l p-2 text-center'>
@@ -162,8 +163,8 @@ export default function AccountProfileForm({ user }: { user: UserProfileProps })
             <div>
               <button
                 type='submit'
-                className='transition-300 text-jet ml-1 mt-4 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
-                disabled={false}
+                className='transition-300 text-jet ml-1 mt-4 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:bg-secondary-200'
+                disabled={!imageUrl}
               >
                 Update Profile
               </button>

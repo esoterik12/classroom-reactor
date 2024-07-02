@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import User from '../models/user.models'
 import { connectToDB } from '../mongoose'
 import { redirect } from 'next/navigation'
+import { UpdateUser } from '../types'
 
 export async function fetchUser(userId: string) {
   try {
@@ -76,14 +77,6 @@ export async function fetchUsers({
   }
 }
 
-export interface IUpdateUser {
-  userId: string
-  username: string
-  name: string
-  bio: string
-  image: string | null
-  path?: string
-}
 
 export async function updateUser({
   userId,
@@ -91,7 +84,7 @@ export async function updateUser({
   name,
   username,
   image
-}: IUpdateUser): Promise<void> {
+}: UpdateUser): Promise<void> {
   try {
     await connectToDB()
 
