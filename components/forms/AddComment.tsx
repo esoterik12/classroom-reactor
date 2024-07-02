@@ -4,18 +4,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { CommentFormProps } from '../../lib/types'
 import { commentSchema } from '@/lib/zod/comment.schema'
-import { addCreateComment } from '@/lib/actions/create.actions'
 import { usePathname } from 'next/navigation'
 import { addCourseComment } from '@/lib/actions/comment.actions'
 
 export interface AddCommentComponentProps {
   clerkUserId: string
-  createId?: string
-  courseId?: string
+  courseId: string
 }
 
 // Receiving clerk user id
-const AddComment = ({ clerkUserId, createId, courseId }: AddCommentComponentProps) => {
+const AddComment = ({ clerkUserId, courseId }: AddCommentComponentProps) => {
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
 
@@ -37,10 +35,13 @@ const AddComment = ({ clerkUserId, createId, courseId }: AddCommentComponentProp
     setLoading(true)
     try {
       // Passing clerk user id - these functions get database user data for comment save
-      if (createId) {
-        await addCreateComment(createId, data.commentText, clerkUserId, pathname)
-      } else if (courseId) {
-        await addCourseComment({commentText: data.commentText, clerkUserId, pathname, courseId})
+      if (courseId) {
+        await addCourseComment({
+          commentText: data.commentText,
+          clerkUserId,
+          pathname,
+          courseId
+        })
       } else {
         throw new Error('Create or course comment not found.')
       }
@@ -64,7 +65,7 @@ const AddComment = ({ clerkUserId, createId, courseId }: AddCommentComponentProp
           id='commentText'
           placeholder='Enter a comment'
           type='text'
-          className='focus:border-transparent focus:ring-blue-400 ml-1 block rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 w-full lg:w-1/2'
+          className='focus:border-transparent focus:ring-blue-400 ml-1 block w-full rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 lg:w-1/2'
           {...register('commentText')}
         />
         <div className='ml-1 mr-1 min-h-8 p-1'>

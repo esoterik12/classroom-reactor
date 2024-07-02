@@ -1,12 +1,10 @@
 'use client'
-import { addDummyCourses } from '@/lib/actions/course.actions'
+import { addDummyCourses } from '@/lib/actions/dummyData.actions'
 import React from 'react'
 
-type Props = {}
-
-const DUMMY_COURSES = (props: Props) => {
+const DUMMY_COURSES = ({ userId }: { userId: string }) => {
   async function addDummy() {
-    addDummyCourses()
+    addDummyCourses(userId)
   }
 
   return (

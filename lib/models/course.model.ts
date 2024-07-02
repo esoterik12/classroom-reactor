@@ -3,7 +3,8 @@ import mongoose from 'mongoose'
 const courseSchema = new mongoose.Schema({
   courseName: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   image: String,
   description: String,

@@ -1,13 +1,26 @@
 import DUMMY_COURSES from '@/components/DUMMY_COURSES'
+import DUMMY_MODULES from '@/components/DUMMY_MODULES'
 import DUMMY_USER from '@/components/DUMMY_USER'
-import Image from 'next/image'
+import { currentUser } from '@clerk/nextjs'
+import { redirect } from 'next/navigation'
+import { fetchUser } from '@/lib/actions/user.actions'
 
-export default function Page() {
+export default async function Page() {
+  // Getting Clerk user data
+  const user = await currentUser()
+  if (!user) return null
+
+  // // Getting DB user data
+  const userInfo = await fetchUser(user.id)  
+  console.log('userInfo', userInfo)
+  if (!userInfo?.onboarded) redirect('/onboarding')
+
   return (
     <main className='flex flex-col items-center justify-between p-6'>
       <p>Dashboard Page</p>
       <DUMMY_USER />
-      <DUMMY_COURSES />
+      <DUMMY_COURSES userId={userInfo._id.toString()}/>
+      <DUMMY_MODULES userId={userInfo._id.toString()} />
     </main>
   )
 }

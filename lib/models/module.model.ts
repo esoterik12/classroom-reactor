@@ -16,10 +16,6 @@ const moduleSchema = new mongoose.Schema({
   htmlContent: {
     type: String
   },
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course'
-  },
   unit: {
     type: Number,
     required: true

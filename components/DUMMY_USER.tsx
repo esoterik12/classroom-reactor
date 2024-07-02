@@ -1,5 +1,5 @@
 'use client'
-import { addDummyUsers } from '@/lib/actions/user.actions'
+import { addDummyUsers } from '@/lib/actions/dummyData.actions'
 import React from 'react'
 
 type Props = {}

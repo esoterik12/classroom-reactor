@@ -4,7 +4,7 @@ import BackButton from '@/components/ui/BackButton'
 import { fetchCourseComments } from '@/lib/actions/comment.actions'
 import { currentUser } from '@clerk/nextjs'
 import CommentCard from '@/components/cards/CommentCard'
-import { FetchedCommentProps } from '@/app/reactor/createview/cryptogram/[...id]/page'
+import { FetchedCommentProps } from '@/lib/types'
 import BasicPageContainer from '@/components/containers/BasicPageContainer'
 
 const CourseDiscussionPage = async ({ params }: { params: { id: string } }) => {

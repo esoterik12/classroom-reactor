@@ -47,7 +47,6 @@ export async function addNewModule({
       unit,
       lesson,
       createdBy,
-      course: courseId
     })
 
     const savedModule = await newModule.save()
