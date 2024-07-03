@@ -110,7 +110,7 @@ const Leaf: React.FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
   return <span {...attributes}>{children}</span>
 }
 
-const initialEditorValue = [
+export const initialEditorValue = [
   {
     type: 'paragraph',
     children: [{ text: 'A line of text in a paragraph.' }]

@@ -15,6 +15,7 @@ import Loading from '../shared/Loading'
 import BackButton from '../ui/BackButton'
 import { addNewModule, updateModule } from '@/lib/actions/module.actions'
 import RichTextEdiotor from '../rte/RichTextEditor'
+import { initialEditorValue } from '../rte/RichTextEditor'
 
 export default function NewModuleForm({
   userId,
@@ -38,14 +39,16 @@ export default function NewModuleForm({
     if (editModuleContent) {
       const content = JSON.stringify(editModuleContent)
       localStorage.setItem('content', content)
+    } else {
+      // This sets the storage item to the default content, in case of a save without editing the RTE content
+      localStorage.setItem('content', JSON.stringify(initialEditorValue))
     }
-    console.log('editModuleContent', editModuleContent)
   }, [editModuleContent])
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<INewModule>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -99,7 +102,7 @@ export default function NewModuleForm({
     }
   }
 
-  if (loading || isSubmitted) {
+  if (loading || isSubmitSuccessful) {
     return (
       <div>
         <Loading text='Updating...' />
@@ -109,7 +112,7 @@ export default function NewModuleForm({
 
   return (
     <>
-      {!isSubmitted && (
+      {!isSubmitSuccessful && (
         <div className='w-full'>
           <div className='flex flex-row gap-2 rounded-md bg-grayLight-500 py-4 dark:bg-jet-500'>
             <BackButton classes='ml-2'>
@@ -121,37 +124,37 @@ export default function NewModuleForm({
           </div>
           <form className='m-2 flex flex-col' onSubmit={handleSubmit(onSubmit)}>
             {/* Name Field */}
-                <InputField
-                  type='number'
-                  id='unit'
-                  label='Unit:'
-                  placeholder='Enter a unit number'
-                  inputClasses='w-full max-w-[70px]'
-                  labelClasses=''
-                  {...register('unit')}
-                  error={errors.unit}
-                />
-                <InputField
-                  type='number'
-                  id='lesson'
-                  label='Lesson:'
-                  placeholder='Enter a lesson number'
-                  inputClasses='w-full max-w-[70px]'
-                  labelClasses=''
-                  {...register('lesson')}
-                  error={errors.lesson}
-                />
-              <div className='md:w-1/2'>
-                <InputField
-                  type='text'
-                  id='moduleTitle'
-                  label='Title:'
-                  placeholder='Enter a title'
-                  inputClasses='w-full'
-                  {...register('moduleTitle')}
-                  error={errors.moduleTitle}
-                />
-              </div>
+            <InputField
+              type='number'
+              id='unit'
+              label='Unit:'
+              placeholder='Enter a unit number'
+              inputClasses='w-full max-w-[70px]'
+              labelClasses=''
+              {...register('unit')}
+              error={errors.unit}
+            />
+            <InputField
+              type='number'
+              id='lesson'
+              label='Lesson:'
+              placeholder='Enter a lesson number'
+              inputClasses='w-full max-w-[70px]'
+              labelClasses=''
+              {...register('lesson')}
+              error={errors.lesson}
+            />
+            <div className='md:w-1/2'>
+              <InputField
+                type='text'
+                id='moduleTitle'
+                label='Title:'
+                placeholder='Enter a title'
+                inputClasses='w-full'
+                {...register('moduleTitle')}
+                error={errors.moduleTitle}
+              />
+            </div>
             {/* Content Section */}
             <div>
               <label className='block p-1 font-medium'>Content:</label>
