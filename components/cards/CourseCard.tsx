@@ -6,10 +6,11 @@ interface ICourseCard {
   _id: string
   image: string
   courseName: string
-  numOfMembers: number // temp
+  numOfMembers: number
+  numOfDissComments: number
 }
 
-function CourseCard({ _id, image, courseName, numOfMembers }: ICourseCard) {
+function CourseCard({ _id, image, courseName, numOfMembers, numOfDissComments }: ICourseCard) {
   return (
     <SearchCardContainer
       image={image}
@@ -24,9 +25,8 @@ function CourseCard({ _id, image, courseName, numOfMembers }: ICourseCard) {
         </Link>
 
         <div className='mt-3 flex gap-3'>
-          <SelectIcon iconClasses='h-6 w-6' iconSelection='heart' />
           <SelectIcon iconClasses='h-6 w-6' iconSelection='reply' />
-          <SelectIcon iconClasses='h-6 w-6' iconSelection='share' />
+          <p>{numOfDissComments}</p>
         </div>
       </div>
     </SearchCardContainer>

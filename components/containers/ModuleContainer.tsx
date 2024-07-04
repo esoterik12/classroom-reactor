@@ -55,7 +55,7 @@ const ModuleContainer = ({
                   {/* Edit Module Section */}
                   <button
                     onClick={() => setIsEdit(true)}
-                    className='m-1 flex flex-row gap-2'
+                    className='m-1 flex flex-row gap-2 transition-colors duration-150 hover:text-primary-300'
                   >
                     <SelectIcon
                       iconClasses='h-5 w-5 mt-0.5'
@@ -66,7 +66,6 @@ const ModuleContainer = ({
 
                   {/* Delete Module Section */}
                   <RemoveModule courseId={courseId} moduleId={moduleId} />
-                  
                 </div>
               </CourseContainerPopover>
             </div>

@@ -166,8 +166,8 @@ export async function updateCourse({
 }
 
 interface CourseMember {
-  user: mongoose.Types.ObjectId | string // User's ObjectId, converted to string if necessary
-  role: 'student' | 'teacher' | 'staff' // Enum type for role
+  user: mongoose.Types.ObjectId | string
+  role: 'student' | 'teacher' | 'staff'
 }
 
 export async function addCourseMembers({
@@ -201,6 +201,14 @@ export async function addCourseMembers({
     const newMembers = users.filter(
       user => !existingMemberIds.has(user._id.toString())
     )
+
+    if (newMembers.length === 0) {
+      console.log('error newMembers.length === 0')
+      return {
+        success: false,
+        message: `${newMembers.length} user(s) added to course with ID ${courseId}`
+      }
+    }
 
     course.members.push(
       ...newMembers.map(user => ({

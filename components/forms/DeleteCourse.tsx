@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation'
 import SelectIcon from '../icons/SelectIcon'
 import { useState } from 'react'
 import { deleteCourse } from '@/lib/actions/course.actions'
-import Modal from '../ui/Modal'
 
 function DeleteCourse({ courseId }: { courseId: string }) {
   const [isLoading, setIsLoading] = useState(false)
@@ -19,7 +18,7 @@ function DeleteCourse({ courseId }: { courseId: string }) {
       }}
       disabled={isLoading}
     >
-      <div className='flex flex-row gap-2 mt-1 ml-0.5'>
+      <div className='ml-0.5 mt-1 flex flex-row gap-2 transition-colors duration-150 hover:text-primary-200'>
         <SelectIcon
           iconClasses={`h-6 w-6 cursor-pointer  ${isLoading ? 'text-gray-500' : ''}`}
           iconSelection='delete'

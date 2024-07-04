@@ -15,10 +15,9 @@ const AddMembers = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>
 }) => {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const params = useParams()
   const pathname = usePathname()
-
-  console.log('params', params.id)
 
   const {
     register,
@@ -52,13 +51,17 @@ const AddMembers = ({
         pathname: pathname
       })
 
+      if (!addMembersResult.success) {
+        setError('Invalid users or users already added.')
+        throw new Error(addMembersResult.message)
+      }
+
       reset()
-      console.log('Add users success!: ', addMembersResult)
+      setIsOpen(false)
     } catch (error) {
       console.log('Server action error; add course users failed: ', error)
     } finally {
       setLoading(false)
-      setIsOpen(false)
     }
   }
 
@@ -88,7 +91,8 @@ const AddMembers = ({
         {/* User Role Radio Group */}
         <CourseRoleRadioGroup registerFunction={register} />
 
-        <div>
+        {/* Button and Error Div */}
+        <div className='flex flex-row '>
           <button
             type='submit'
             className={`transition-300 text-jet ml-1 rounded-md p-2 px-4 transition-colors  disabled:cursor-not-allowed ${loading ? 'bg-gray-300' : 'bg-secondary-500 hover:bg-secondaryLight'}`}
@@ -96,6 +100,7 @@ const AddMembers = ({
           >
             <p className='text-jet-800'>Add Users</p>
           </button>
+          {error && <p className='ml-4 mt-2 text-primary-500 text-sm'>Error: {error}</p>}
         </div>
       </form>
     </div>

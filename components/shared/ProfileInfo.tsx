@@ -3,6 +3,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import TextLink from '../ui/TextLink'
 
 interface Props {
   accountId: string
@@ -47,13 +48,13 @@ function ProfileHeader({
             <h2 className='text-left text-gray-500'>{name}</h2>
             <p className='text-xl font-semibold'>@{username}</p>
             {accountId === authUserId && type !== 'search' && (
-              <Link href='/reactor/profile/edit'>
+              <TextLink href='/reactor/profile/edit'>
                 <div className='mt-2 cursor-pointer rounded-lg'>
-                  <p className='hover:text-secondary text-xs text-primary-500 transition-colors duration-300'>
+                  <p className='text-xs'>
                     Edit Profile
                   </p>
                 </div>
-              </Link>
+              </TextLink>
             )}
           </div>
         </div>

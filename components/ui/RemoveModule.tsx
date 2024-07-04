@@ -15,8 +15,8 @@ const RemoveModule = ({ courseId, moduleId }: RemoveModuleProps) => {
 
   return (
     <button onClick={handleRemove}>
-      <p className='mt-2 flex flex-row text-jet-900'>
-        <SelectIcon iconClasses='h-5 w-5 mt-0.5 mr-2' iconSelection='x' />
+      <p className='mt-2 flex flex-row text-jet-900 transition-colors duration-150 hover:text-primary-300'>
+        <SelectIcon iconClasses='h-5 w-5 mt-0.5 mr-2 ml-1' iconSelection='x' />
         Remove
       </p>
     </button>

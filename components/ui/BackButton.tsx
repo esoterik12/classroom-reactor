@@ -11,7 +11,10 @@ const BackButton = (props: IBackButton) => {
   const router = useRouter()
 
   return (
-    <button className={props.classes} onClick={() => router.back()}>
+    <button
+      className={`${props.classes} transition-colors duration-150 hover:text-gray-300 `}
+      onClick={() => router.back()}
+    >
       {props.children}
     </button>
   )

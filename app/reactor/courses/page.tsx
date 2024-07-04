@@ -14,6 +14,8 @@ export default async function Page({
     ''
   )
 
+  console.log('courseResult', courseResult)
+
   return (
     <main className='flex min-h-screen flex-col items-center p-6'>
       <section className='mb-5 flex w-full flex-row justify-between'>
@@ -33,6 +35,7 @@ export default async function Page({
             _id={item._id}
             image={item.image}
             numOfMembers={item.members.length}
+            numOfDissComments={item.discussion.length}
           />
         ))}
       </section>
