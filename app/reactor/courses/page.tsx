@@ -3,7 +3,7 @@ import { fetchCourses } from '@/lib/actions/course.actions'
 import Link from 'next/link'
 import PaginationButtons from '@/components/shared/PaginationButtons'
 
-export default async function Page({
+export default async function AllCoursesPage({
   searchParams
 }: {
   searchParams: { [key: string]: string | undefined }
@@ -13,8 +13,6 @@ export default async function Page({
     10,
     ''
   )
-
-  console.log('courseResult', courseResult)
 
   return (
     <main className='flex min-h-screen flex-col items-center p-6'>

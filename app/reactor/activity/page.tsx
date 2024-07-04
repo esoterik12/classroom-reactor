@@ -2,6 +2,8 @@ import React from 'react'
 import { currentUser } from '@clerk/nextjs'
 import PaginationButtons from '@/components/shared/PaginationButtons'
 import BasicPageContainer from '@/components/containers/BasicPageContainer'
+import { fetchLatestActivity } from '@/lib/actions/activity.actions'
+import { formatDateString } from '@/lib/utils'
 
 const Page = async ({
   searchParams
@@ -10,10 +12,17 @@ const Page = async ({
 }) => {
   const user = await currentUser()
 
+  // UNIFINISHED: styling
   if (!user) {
     return <p>Access Denied</p>
   }
 
+  const fetchActivityResults = await fetchLatestActivity(
+    searchParams.p ? +searchParams.p : 1,
+    20
+  )
+
+  console.log('fetchActivityResults in component', fetchActivityResults)
 
   return (
     <BasicPageContainer>
@@ -22,20 +31,18 @@ const Page = async ({
           Latest Creates
         </div>
         <div className='w-full p-4'>
-          {/* {result.creates.map(item => (
-            <CreateDisplayCard
-              key={item._id}
-              _id={item._id}
-              creatorUserId={item.creator.id.toString()}
-              currentUserId={user.id}
-              title={item.content.title}
-              createType={item.createType}
-              createdAt={item.createdAt}
-              username={item.creator.username}
-              creatorImage={item.creator.image}
-              commentNumber={item.children.length}
-            />
-          ))} */}
+          {fetchActivityResults?.map(result => {
+            if (result.hasOwnProperty('courseName')) {
+              return <p className='m-2' key={result._id}>New course {result.courseName} added on {formatDateString(result.createdAt)}</p>
+            }
+            if (result.hasOwnProperty('authorMongoId')) {
+              return <p className='m-2' key={result._id}>Comment</p>
+            }
+            if (result.hasOwnProperty('name')) {
+              return <p className='m-2' key={result._id}>User</p>
+            }
+          })}
+
         </div>
         {/* <PaginationButtons
           path='http://localhost:3000/reactor/activity'

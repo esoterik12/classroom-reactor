@@ -6,15 +6,16 @@ import { currentUser } from '@clerk/nextjs'
 import CommentCard from '@/components/cards/CommentCard'
 import { FetchedCommentProps } from '@/lib/types'
 import BasicPageContainer from '@/components/containers/BasicPageContainer'
+import { fetchUser } from '@/lib/actions/user.actions'
 
 const CourseDiscussionPage = async ({ params }: { params: { id: string } }) => {
-  // const courseMembersData = await fetchCourseMembers(params.id)
   if (!params.id) return null
 
   const user = await currentUser()
   if (!user) return null
 
-  // This page also needs to fetch course data (comments, course name)
+  const dbUser = await fetchUser(user.id)
+
   const courseCommentsData = await fetchCourseComments(params.id)
 
   return (
@@ -35,16 +36,16 @@ const CourseDiscussionPage = async ({ params }: { params: { id: string } }) => {
         </div>
         {/* Content Container */}
         <div className='flex flex-col gap-6 p-4'>
-          <AddComment clerkUserId={user.id} courseId={params.id} />
+          <AddComment userMongoID={dbUser._id.toString()} courseId={params.id} />
           {/* UNFINISHED: Add pagination */}
           {courseCommentsData.discussion.map((item: FetchedCommentProps) => (
             <CommentCard
               key={item._id}
               _id={item._id}
               text={item.text}
-              authorUsername={item.authorUsername}
-              authorClerkId={item.authorClerkId}
-              authorImage={item.authorImage}
+              authorUsername={item.authorMongoId.username}
+              authorClerkId={item.authorMongoId.id}
+              authorImage={item.authorMongoId.image}
               createdAt={item.createdAt}
             />
           ))}

@@ -8,12 +8,12 @@ import { usePathname } from 'next/navigation'
 import { addCourseComment } from '@/lib/actions/comment.actions'
 
 export interface AddCommentComponentProps {
-  clerkUserId: string
+  userMongoID: string
   courseId: string
 }
 
 // Receiving clerk user id
-const AddComment = ({ clerkUserId, courseId }: AddCommentComponentProps) => {
+const AddComment = ({ userMongoID, courseId }: AddCommentComponentProps) => {
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
 
@@ -38,7 +38,7 @@ const AddComment = ({ clerkUserId, courseId }: AddCommentComponentProps) => {
       if (courseId) {
         await addCourseComment({
           commentText: data.commentText,
-          clerkUserId,
+          userMongoID,
           pathname,
           courseId
         })

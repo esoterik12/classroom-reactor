@@ -10,17 +10,6 @@ const commentSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  authorClerkId: {
-    type: String,
-    required: true
-  },
-  authorUsername: {
-    type: String,
-    required: true
-  },
-  authorImage: {
-    type: String
-  },
   course: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course'

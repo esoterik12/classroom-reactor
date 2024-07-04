@@ -11,15 +11,22 @@ export default async function Page() {
   if (!user) return null
 
   // // Getting DB user data
-  const userInfo = await fetchUser(user.id)  
+  const userInfo = await fetchUser(user.id)
   console.log('userInfo', userInfo)
   if (!userInfo?.onboarded) redirect('/onboarding')
 
   return (
     <main className='flex flex-col items-center justify-between p-6'>
       <p>Dashboard Page</p>
+      <div className='m-6 border border-secondary-500 p-2'>
+        <p>UNFINISHED: Button text all over for dark mode needs to be fixed</p>
+        <p>
+          UNFINISHED: course form has same problem with validation as profile
+          form
+        </p>
+      </div>
       <DUMMY_USER />
-      <DUMMY_COURSES userId={userInfo._id.toString()}/>
+      <DUMMY_COURSES userId={userInfo._id.toString()} />
       <DUMMY_MODULES userId={userInfo._id.toString()} />
     </main>
   )

@@ -9,10 +9,10 @@ export interface AccountProfileFormProps {
 export interface UserProfileProps {
   id: string
   objectId?: string
-  username: string;
-  name: string;
-  bio: string | null;
-  image: string;
+  username: string
+  name: string
+  bio: string | null
+  image: string
 }
 
 export interface UpdateUser {
@@ -77,10 +77,17 @@ export type AddCommentProps = {
   courseId?: string
 }
 
+export interface FetchedCommentAuthorProps {
+  _id: string
+  id: string
+  image: string
+  username: string
+}
+
 export interface FetchedCommentProps {
   _id: string
   text: string
-  authorMongoId: string
+  authorMongoId: FetchedCommentAuthorProps
   authorClerkId: string
   authorUsername: string
   authorImage: string
@@ -99,7 +106,7 @@ export interface AddMembersProps {
 }
 
 export interface ICourseMembersData {
-  user:ICourseUserData
+  user: ICourseUserData
   role: 'student' | 'teacher' | 'staff'
   _id: string
 }

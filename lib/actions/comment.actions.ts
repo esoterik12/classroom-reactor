@@ -7,30 +7,20 @@ import Comment from '../models/comment.model'
 
 type AddCourseCommentProps = {
   commentText: string
-  clerkUserId: string
+  userMongoID: string
   pathname: string
   courseId: string
 }
 
 export async function addCourseComment({
   commentText,
-  clerkUserId,
+  userMongoID,
   pathname,
   courseId
 }: AddCourseCommentProps) {
   await connectToDB()
 
   try {
-    const dbUser = await User.findOne({ id: clerkUserId })
-
-    console.log('dbUser', dbUser)
-
-    if (!dbUser) {
-      throw new Error('User not found.')
-    }
-
-    console.log('dbUser', dbUser)
-
     const course = await Course.findById(courseId)
 
     if (!course) {
@@ -39,10 +29,7 @@ export async function addCourseComment({
 
     const savedCommentCreate = new Comment({
       text: commentText,
-      authorMongoId: dbUser._id,
-      authorClerkId: clerkUserId,
-      authorUsername: dbUser.username,
-      authorImage: dbUser.image,
+      authorMongoId: userMongoID,
       course: course._id
     })
 
@@ -69,8 +56,14 @@ export async function fetchCourseComments(courseId: string) {
       .populate('createdBy', 'username id')
       .populate({
         path: 'discussion',
-        select: 'text authorUsername authorClerkId authorMongoId authorImage createdAt parentId children',
-        model: Comment
+        select:
+          'text authorMongoId createdAt parentId children',
+        model: Comment,
+        populate: {
+          path: 'authorMongoId',
+          select: 'username id image',
+          model: User
+        }
       })
 
     return courseCommentsData

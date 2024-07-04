@@ -95,8 +95,8 @@ export async function addDummyUsers() {
       {
         id: 'user_6aBcdEfghIjklMnopQrStuvWxYz5161',
         bio: 'Nature lover and outdoor adventurer.',
-        username: 'NSy12',
-        name: 'Fay Green',
+        username: 'NSXXXX12',
+        name: 'Fay Blue',
         image: 'https://utfs.io/f/83e761f5-452c-4585-8332-f6b47c407178-1ap.png',
         onboarded: true
       },
