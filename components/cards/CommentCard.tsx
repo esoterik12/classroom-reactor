@@ -1,6 +1,7 @@
-import { formateTimeSince } from '@/lib/utils'
+import { formatTimeSince } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
+import TextLink from '../ui/TextLink'
 
 interface ICommentCard {
   _id: string
@@ -20,7 +21,6 @@ function CommentCard({
   authorImage,
   createdAt
 }: ICommentCard) {
-
   return (
     <article className='bg-dark-2 flex w-full flex-col rounded-xl p-2'>
       <div className='flex items-start justify-between'>
@@ -42,11 +42,17 @@ function CommentCard({
           </div>
 
           <div className='flex w-full flex-col'>
-            <Link href={`/reactor/profile/${authorClerkId}`} className='w-fit'>
-              <h4 className='text-xs text-gray-500 cursor-pointer'>
-                {authorUsername} - {formateTimeSince(createdAt)}
-              </h4>
-            </Link>
+            <div className='flex flex-row'>
+              <TextLink
+                href={`/reactor/profile/${authorClerkId}`}
+                className='w-fit'
+              >
+                <p className='cursor-pointer text-xs '>{authorUsername}&nbsp;</p>
+              </TextLink>
+              <p className='text-xs text-gray-500'>
+                {formatTimeSince(createdAt)}
+              </p>
+            </div>
 
             <p className='text-small-regular text-light-2 mt-2'>{text}</p>
           </div>

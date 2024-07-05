@@ -5,7 +5,7 @@ import SelectIcon from '../icons/SelectIcon'
 
 interface IPaginationButtons {
   pageNumber: number
-  isNext: boolean
+  isNext: boolean | undefined
   path: string
 }
 

@@ -6,6 +6,7 @@ import { CommentFormProps } from '../../lib/types'
 import { commentSchema } from '@/lib/zod/comment.schema'
 import { usePathname } from 'next/navigation'
 import { addCourseComment } from '@/lib/actions/comment.actions'
+import CustomButton from '../ui/CustomButton'
 
 export interface AddCommentComponentProps {
   userMongoID: string
@@ -76,13 +77,9 @@ const AddComment = ({ userMongoID, courseId }: AddCommentComponentProps) => {
           )}
         </div>
         <div>
-          <button
-            type='submit'
-            className={`transition-300 text-jet ml-1 rounded-md p-2 px-4 transition-colors  disabled:cursor-not-allowed ${loading ? 'bg-gray-300' : 'bg-secondary-500 hover:bg-secondaryLight'}`}
-            disabled={loading}
-          >
-            Comment
-          </button>
+          <CustomButton btnType='submit' isDisabled={loading}>
+            <p>Comment</p>
+          </CustomButton>
         </div>
       </form>
     </div>

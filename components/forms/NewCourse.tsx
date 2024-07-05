@@ -9,13 +9,14 @@ import { usePathname } from 'next/navigation'
 // Zod validation imports:
 import { zodResolver } from '@hookform/resolvers/zod'
 import { newCourseSchema } from '@/lib/zod/newCourse.schema'
-import { INewCourse } from '@/lib/types'
+import { NewCourseProps } from '@/lib/types'
 import { UploadButton } from '@/lib/uploadthing'
 import { addNewCourse, updateCourse } from '@/lib/actions/course.actions'
 import { TextareaInput } from './TextareaInput'
 import SelectIcon from '../icons/SelectIcon'
 import Loading from '../shared/Loading'
 import BackButton from '../ui/BackButton'
+import CustomButton from '../ui/CustomButton'
 
 interface NewCourseFormProps {
   id?: string
@@ -23,7 +24,6 @@ interface NewCourseFormProps {
   courseName?: string
   description?: string
   image?: string
-  createdByClerkId?: string
 }
 
 export default function NewCourseForm({
@@ -31,18 +31,18 @@ export default function NewCourseForm({
   user,
   courseName,
   description,
-  image,
-  createdByClerkId
+  image
 }: NewCourseFormProps) {
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<null | string>('')
+  const [imageError, setImageError] = useState<null | string>(null)
   const pathname = usePathname()
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted }
-  } = useForm<INewCourse>({
+    formState: { errors, isSubmitted, isSubmitSuccessful }
+  } = useForm<NewCourseProps>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     resolver: zodResolver(newCourseSchema),
@@ -54,10 +54,10 @@ export default function NewCourseForm({
     }
   })
 
-  async function onSubmit(data: INewCourse) {
+  async function onSubmit(data: NewCourseProps) {
     setLoading(true)
     try {
-      const courseUpdateObject: INewCourse = {
+      const courseUpdateObject: NewCourseProps = {
         courseName: data.courseName,
         image: imageUrl,
         description: data.description,
@@ -66,22 +66,22 @@ export default function NewCourseForm({
       }
 
       if (id) {
-        console.log('UPDATING COURSE')
+        console.log('Updating course...')
         courseUpdateObject.id = id
         await updateCourse(courseUpdateObject)
       } else {
-        console.log('ADDING COURSE')
+        console.log('Adding course...')
         await addNewCourse(courseUpdateObject)
       }
-      console.log('Update user success!')
+      console.log('Update course success!')
     } catch (error) {
-      console.log('server action error: ', error)
+      console.log('Server action error updating or creating course: ', error)
     } finally {
       setLoading(false)
     }
   }
 
-  if (loading || isSubmitted) {
+  if (loading && isSubmitted) {
     return (
       <div>
         <Loading text='Updating...' />
@@ -91,13 +91,15 @@ export default function NewCourseForm({
 
   return (
     <>
-      {!isSubmitted && (
+      {!isSubmitSuccessful && (
         <div className='w-full p-2'>
           <div className='flex flex-row gap-2'>
             <BackButton classes=''>
               <SelectIcon iconClasses='h-6 w-6' iconSelection='back' />
             </BackButton>
-            <h1 className='text-xl font-semibold'>{id ? 'Edit': 'Create'} a Course</h1>
+            <h1 className='text-xl font-semibold'>
+              {id ? 'Edit' : 'Create'} a Course
+            </h1>
           </div>
           <form className='m-2 flex flex-col' onSubmit={handleSubmit(onSubmit)}>
             {/* Name Field */}
@@ -125,19 +127,19 @@ export default function NewCourseForm({
                     appearance={{
                       container: 'flex flex-row justify-start gap-4',
                       button:
-                        'text-jet bg-secondary-500 hover:bg-secondaryLight transition-colors transition-300'
+                        'transition-300 text-jet rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed dark:text-jet-500'
                     }}
                     endpoint='imageUploader'
                     onClientUploadComplete={res => {
-                      // Do something with the response
                       setImageUrl(res[0].url)
-                      console.log('Files: ', res[0].url)
                     }}
                     onUploadError={(error: Error) => {
-                      // Do something with the error.
                       console.log(`Error uploading image! ${error.message}`)
                     }}
                   />
+                  {imageError && (
+                    <p className='text-primary-500'>{imageError}</p>
+                  )}
                 </div>
               ) : (
                 <div className='bg-mint flex flex-row gap-2 rounded-l p-2 text-center'>
@@ -167,13 +169,9 @@ export default function NewCourseForm({
               />
             </div>
             <div>
-              <button
-                type='submit'
-                className='transition-300 text-jet ml-1 mt-4 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed'
-                disabled={false}
-              >
-                Create Course
-              </button>
+              <CustomButton btnType='submit' isDisabled={!imageUrl}>
+                <p>Create Course</p>
+              </CustomButton>
             </div>
           </form>
         </div>

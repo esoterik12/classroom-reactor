@@ -24,7 +24,7 @@ export interface UpdateUser {
   path?: string
 }
 
-export interface INewCourse {
+export interface NewCourseProps {
   id?: string
   courseName: string
   description: string

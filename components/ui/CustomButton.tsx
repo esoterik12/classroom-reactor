@@ -1,41 +1,33 @@
-"use client";
-import { MouseEventHandler } from "react";
-
-import Image from "next/image";
+'use client'
+import { MouseEventHandler } from 'react'
 
 export interface CustomButtonProps {
-  title: string;
-  containerStyles?: string;
-  handleClick?: MouseEventHandler<HTMLButtonElement>;
-  btnType?: "button" | "submit";
-  textStyles?: string;
-  rightIcon?: React.ReactElement;
-  isDisabled?: boolean;
+  children: React.ReactElement
+  isDisabled?: boolean
+  customClasses?: string
+  handleClick?: MouseEventHandler<HTMLButtonElement>
+  btnType?: 'button' | 'submit'
+  textStyles?: string
 }
 
 const CustomButton = ({
-  title,
-  containerStyles,
+  children,
+  isDisabled,
+  customClasses,
   handleClick,
   btnType,
-  textStyles,
-  rightIcon,
+  textStyles
 }: CustomButtonProps) => {
   return (
     <button
-      disabled={false}
-      type={btnType || "button"}
-      className={`flex flex-row ${containerStyles}`}
+      disabled={isDisabled}
+      type={btnType || 'button'}
+      className={`transition-300 text-jet rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed dark:text-jet-500 ${customClasses}`}
       onClick={handleClick}
     >
-      <span className={`flex-1 ${textStyles}`}>{title}</span>
-      {rightIcon && (
-        <div className="relative ml-2 w-6 h-6">
-          {rightIcon}
-        </div>
-      )}
+      <p className={`flex-1 ${textStyles}`}>{children}</p>
     </button>
-  );
-};
+  )
+}
 
-export default CustomButton;
+export default CustomButton

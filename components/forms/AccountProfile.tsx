@@ -16,6 +16,7 @@ import { updateUser } from '@/lib/actions/user.actions'
 import { TextareaInput } from './TextareaInput'
 import SelectIcon from '../icons/SelectIcon'
 import Loading from '../shared/Loading'
+import CustomButton from '../ui/CustomButton'
 
 export default function AccountProfileForm({
   user
@@ -26,8 +27,6 @@ export default function AccountProfileForm({
   const [imageUrl, setImageUrl] = useState<null | string>(null)
   const [imageError, setImageError] = useState<null | string>(null)
   const pathname = usePathname()
-
-  console.log('user', user)
 
   useEffect(() => {
     if (user.image) {
@@ -161,13 +160,9 @@ export default function AccountProfileForm({
               />
             </div>
             <div>
-              <button
-                type='submit'
-                className='transition-300 text-jet ml-1 mt-4 rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:bg-secondary-200'
-                disabled={!imageUrl}
-              >
-                Update Profile
-              </button>
+              <CustomButton btnType='submit' isDisabled={!imageUrl}>
+                <p>Update Profile</p>
+              </CustomButton>
             </div>
           </form>
         </div>
