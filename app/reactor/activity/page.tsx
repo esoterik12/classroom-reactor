@@ -3,7 +3,7 @@ import { currentUser } from '@clerk/nextjs'
 import PaginationButtons from '@/components/shared/PaginationButtons'
 import BasicPageContainer from '@/components/containers/BasicPageContainer'
 import { fetchLatestActivity } from '@/lib/actions/activity.actions'
-import { formatDateString, formatTimeSince } from '@/lib/utils'
+import { formatTimeSince } from '@/lib/utils'
 import SearchCardContainer from '@/components/containers/SearchCardContainer'
 import TextLink from '@/components/ui/TextLink'
 
@@ -23,6 +23,8 @@ const Page = async ({
     searchParams.p ? +searchParams.p : 1,
     20
   )
+
+  console.log('result', result)
 
   return (
     <BasicPageContainer>
@@ -72,10 +74,14 @@ const Page = async ({
                     <span className='text-gray-500'>commented</span> &#x201F;
                     {result.text}&#x201D;{' '}
                     <span className='text-gray-500'>in course</span>{' '}
-                    <span className='font-bold text-primary-600'>
-                      {result.courseDetails.courseName}
-                    </span>
-                    <span className='text-gray-500'>&nbsp;discussion.</span>
+                    <TextLink
+                      href={`/reactor/courses/${result.courseDetails._id}/discussion`}
+                    >
+                      <>
+                        <span>{result.courseDetails.courseName}</span>
+                        <span>&nbsp;discussion.</span>
+                      </>
+                    </TextLink>
                   </div>
                   <span className='text-sm text-gray-500'>
                     {formatTimeSince(result.createdAt)}
@@ -83,7 +89,7 @@ const Page = async ({
                 </SearchCardContainer>
               )
             }
-            if (result.hasOwnProperty('name')) {
+            if (result.hasOwnProperty('username')) {
               return (
                 <SearchCardContainer
                   image={result.image}

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { CommentFormProps } from '../../lib/types'
@@ -16,13 +16,14 @@ export interface AddCommentComponentProps {
 // Receiving clerk user id
 const AddComment = ({ userMongoID, courseId }: AddCommentComponentProps) => {
   const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState<null | string>(null)
   const pathname = usePathname()
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitted }
+    formState: { errors }
   } = useForm<CommentFormProps>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -32,17 +33,26 @@ const AddComment = ({ userMongoID, courseId }: AddCommentComponentProps) => {
     }
   })
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setResult(null)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [result, setResult])
+
   async function onSubmit(data: CommentFormProps) {
     setLoading(true)
     try {
       // Passing clerk user id - these functions get database user data for comment save
       if (courseId) {
-        await addCourseComment({
+        const addCommentResult = await addCourseComment({
           commentText: data.commentText,
           userMongoID,
           pathname,
           courseId
         })
+        setResult(addCommentResult.message)
       } else {
         throw new Error('Create or course comment not found.')
       }
@@ -76,10 +86,13 @@ const AddComment = ({ userMongoID, courseId }: AddCommentComponentProps) => {
             </p>
           )}
         </div>
-        <div>
+        <div className='flex flex-row'>
           <CustomButton btnType='submit' isDisabled={loading}>
             <p>Comment</p>
           </CustomButton>
+          {result && (
+            <p className='ml-4 mt-2 text-sm text-primary-500'>{result}</p>
+          )}
         </div>
       </form>
     </div>

@@ -19,7 +19,9 @@ export default async function Page() {
     <main className='flex flex-col items-center justify-between p-6'>
       <p>Dashboard Page</p>
       <div className='m-6 border border-secondary-500 p-2'>
-        <p>UNFINISHED: </p>
+        <p>UNFINISHED: Permissions.</p>
+        <p>UNFINISHED: Rate limits.</p>
+        <p>UNFINISHED: User dashboard - add all new users to three courses.</p>
       </div>
       <DUMMY_USER />
       <DUMMY_COURSES userId={userInfo._id.toString()} />

@@ -7,8 +7,15 @@ import CommentCard from '@/components/cards/CommentCard'
 import { FetchedCommentProps } from '@/lib/types'
 import BasicPageContainer from '@/components/containers/BasicPageContainer'
 import { fetchUser } from '@/lib/actions/user.actions'
+import PaginationButtons from '@/components/shared/PaginationButtons'
 
-const CourseDiscussionPage = async ({ params }: { params: { id: string } }) => {
+const CourseDiscussionPage = async ({
+  params,
+  searchParams
+}: {
+  params: { id: string }
+  searchParams: { [key: string]: string | undefined }
+}) => {
   if (!params.id) return null
 
   const user = await currentUser()
@@ -16,7 +23,11 @@ const CourseDiscussionPage = async ({ params }: { params: { id: string } }) => {
 
   const dbUser = await fetchUser(user.id)
 
-  const courseCommentsData = await fetchCourseComments(params.id)
+  const fetchCommentsResult = await fetchCourseComments(
+    params.id,
+    searchParams.p ? +searchParams.p : 1,
+    10
+  )
 
   return (
     <BasicPageContainer>
@@ -36,19 +47,29 @@ const CourseDiscussionPage = async ({ params }: { params: { id: string } }) => {
         </div>
         {/* Content Container */}
         <div className='flex flex-col gap-6 p-4'>
-          <AddComment userMongoID={dbUser._id.toString()} courseId={params.id} />
+          <AddComment
+            userMongoID={dbUser._id.toString()}
+            courseId={params.id}
+          />
           {/* UNFINISHED: Add pagination */}
-          {courseCommentsData.discussion.map((item: FetchedCommentProps) => (
-            <CommentCard
-              key={item._id}
-              _id={item._id}
-              text={item.text}
-              authorUsername={item.authorMongoId.username}
-              authorClerkId={item.authorMongoId.id}
-              authorImage={item.authorMongoId.image}
-              createdAt={item.createdAt}
-            />
-          ))}
+          {fetchCommentsResult.courseCommentsData.discussion.map(
+            (item: FetchedCommentProps) => (
+              <CommentCard
+                key={item._id}
+                _id={item._id}
+                text={item.text}
+                authorUsername={item.authorMongoId.username}
+                authorClerkId={item.authorMongoId.id}
+                authorImage={item.authorMongoId.image}
+                createdAt={item.createdAt}
+              />
+            )
+          )}
+          <PaginationButtons
+            path={`http://localhost:3000/reactor/courses/${params.id}/discussion`}
+            pageNumber={searchParams?.p ? +searchParams.p : 1}
+            isNext={fetchCommentsResult.isNext}
+          />
         </div>
       </div>
     </BasicPageContainer>

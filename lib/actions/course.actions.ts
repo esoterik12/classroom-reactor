@@ -4,7 +4,7 @@ import { connectToDB } from '../mongoose'
 import User from '../models/user.models'
 import Course from '../models/course.model'
 import mongoose, { FilterQuery } from 'mongoose'
-import { INewCourse, ModuleDisplayProps, ICourseContainer } from '../types'
+import { NewCourseProps, ModuleDisplayProps, ICourseContainer } from '../types'
 import { redirect } from 'next/navigation'
 import Module from '../models/module.model'
 
@@ -114,7 +114,7 @@ export async function addNewCourse({
   description,
   createdBy,
   path
-}: INewCourse): Promise<void> {
+}: NewCourseProps): Promise<void> {
   try {
     await connectToDB()
 
@@ -143,7 +143,7 @@ export async function updateCourse({
   description,
   createdBy,
   path
-}: INewCourse): Promise<void> {
+}: NewCourseProps): Promise<void> {
   try {
     await connectToDB()
 

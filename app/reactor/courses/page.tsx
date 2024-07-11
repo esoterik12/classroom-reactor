@@ -1,6 +1,5 @@
 import CourseCard from '@/components/cards/CourseCard'
 import { fetchCourses } from '@/lib/actions/course.actions'
-import Link from 'next/link'
 import PaginationButtons from '@/components/shared/PaginationButtons'
 import LinkButton from '@/components/ui/LinkButton'
 

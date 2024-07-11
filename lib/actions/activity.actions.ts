@@ -32,19 +32,21 @@ export async function fetchLatestActivity(pageNumber = 1, pageSize = 20) {
         }
       },
       {
+        // -Joins "comments" with "users" using the authorMongoId field to match with _id foreignField
+        // in "users" collection - creates array courseDetails with data.
         $lookup: {
-          from: 'users', // The collection to join with
-          localField: 'authorMongoId', // The field from the 'comments' collection
-          foreignField: '_id', // The field from the 'users' collection
-          as: 'authorDetails' // The name of the new array field to add to the input documents
+          from: 'users',
+          localField: 'authorMongoId',
+          foreignField: '_id',
+          as: 'authorDetails'
         }
       },
       {
         $lookup: {
-          from: 'courses', // The collection to join with
-          localField: 'course', // The field from the 'comments' collection
-          foreignField: '_id', // The field from the 'users' collection
-          as: 'courseDetails', // The name of the new array field to add to the input documents
+          from: 'courses',
+          localField: 'course',
+          foreignField: '_id',
+          as: 'courseDetails',
           pipeline: [
             {
               $project: {
@@ -73,7 +75,23 @@ export async function fetchLatestActivity(pageNumber = 1, pageSize = 20) {
       {
         $unwind: {
           path: '$courseDetails',
-          preserveNullAndEmptyArrays: true // Keeps comments without authors intact
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        // Project the fields needed in final output - minor processing overhead
+        // Each entry marked with which components use the data
+        $project: {
+          _id: 1, // All (User, Comment, Course)
+          id: 1, // Comment (Clerk ID for profile link)
+          createdAt: 1, // All
+          courseName: 1, // Course
+          username: 1, // User
+          image: 1, // Course + User
+          authorMongoId: 1, // Comment
+          authorDetails: 1, // Comment
+          courseDetails: 1, // Comment
+          text: 1 // Comment
         }
       }
     ])

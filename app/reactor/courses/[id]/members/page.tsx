@@ -42,8 +42,8 @@ const CourseMembersPage = async ({ params }: { params: { id: string } }) => {
                   type='Search'
                 />
               </Link>
-              <div className='flex flex-row items-end justify-start gap-2'>
-                <p className='rounded-md  px-2 py-1 text-sm capitalize text-gray-500'>
+              <div className='flex flex-row items-end justify-start gap-1'>
+                <p className='rounded-md py-1 text-sm capitalize text-gray-500'>
                   {member.role}
                 </p>
                 <CourseContainerPopover buttonText='Edit'>
