@@ -7,9 +7,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - Page container with margin bottom for small screens
 - Search for courses and creates
 
+## Steps to Permissions:
+- Get clerk user,
+- Get mongo db user (and permissions for components),
+- Pass user id / permissions to server actions / components
+- Front end disabled
+- Back end permissions check
+- Return errors
 
-## Steps to Build a Create:
-- Create path, page.tsx, and CreateX.tsx
-- Define types in new form
-  - CreateFormProps<T>
-  - XDataProps
+##

@@ -7,8 +7,11 @@ import RemoveModule from '../ui/RemoveModule'
 import DeleteCourse from '../forms/DeleteCourse'
 import { ICourseContainer } from '@/lib/types'
 import TextLink from '../ui/TextLink'
+import { currentUser } from '@clerk/nextjs'
+import { redirect } from 'next/navigation'
+import { fetchUser } from '@/lib/actions/user.actions'
 
-const CourseContainer = ({
+const CourseContainer = async ({
   courseId,
   courseName,
   image,
@@ -17,7 +20,14 @@ const CourseContainer = ({
   createdAt,
   modules
 }: ICourseContainer) => {
-  console.log('modules', modules)
+  // Check user is admin
+  // Getting Clerk user data
+  const user = await currentUser()
+  if (!user) return null
+
+  // Getting DB user data
+  const userInfo = await fetchUser(user.id)
+  if (!userInfo?.onboarded) redirect('/onboarding')
 
   return (
     <div className='flex w-full flex-col justify-between'>
@@ -88,7 +98,11 @@ const CourseContainer = ({
                   Discussion
                 </button>
               </TextLink>
-              <DeleteCourse courseId={courseId.toString()} />
+              <DeleteCourse
+                courseId={courseId.toString()}
+                userMongoId={userInfo._id.toString()}
+                permissionDisabled={userInfo.permissions !== 'admin'}
+              />
             </div>
           </CourseContainerPopover>
         </div>

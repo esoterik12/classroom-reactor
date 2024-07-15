@@ -307,20 +307,46 @@ export async function removeCourseMember(
   }
 }
 
-export async function deleteCourse(courseId: string) {
+export async function deleteCourse({
+  courseId,
+  userMongoId
+}: {
+  courseId: string
+  userMongoId: string
+}) {
   try {
     await connectToDB()
+
+    console.log('started deleteCourse action')
+
+    const user = await User.findById(userMongoId)
+
+    if (user.permissions !== 'admin') {
+      console.log('no permsisions if statement')
+      return {
+        code: 403,
+        message: 'Error 403: You do not have permission to delete a course.'
+      }
+    }
 
     const result = await Course.findByIdAndDelete(courseId)
 
     if (!result) {
-      throw new Error(`Failed to delete: Course of id ${courseId} no found.`)
+      return {
+        code: 404,
+        message: `Failed to delete: Course with id ${courseId} not found.`
+      }
     }
 
-    console.log(`Course ${courseId} deleted successfully.`)
+    return {
+      code: 200,
+      message: `Course ${courseId} deleted successfully.`
+    }
   } catch (error: any) {
-    throw new Error(`Failed to delete course with id of ${courseId}`)
-  } finally {
-    redirect(`/reactor/courses/`)
+    console.error(`Failed to delete course with id ${courseId}`, error)
+    return {
+      code: 500,
+      message: `Failed to delete course with id ${courseId}: ${error.message}`
+    }
   }
 }

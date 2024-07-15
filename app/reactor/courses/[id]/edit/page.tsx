@@ -15,7 +15,6 @@ const EditCoursePage = async ({ params }: { params: { id: string } }) => {
           courseName={selectedCourse.courseName}
           description={selectedCourse.description}
           image={selectedCourse.image}
-          createdByClerkId={selectedCourse.createdBy.id}
         />
       </BasicPageContainer>
     )

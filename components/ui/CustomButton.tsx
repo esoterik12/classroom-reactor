@@ -25,7 +25,7 @@ const CustomButton = ({
       className={`transition-300 text-jet rounded-md bg-secondary-500 p-2 px-4 transition-colors hover:bg-secondaryLight disabled:cursor-not-allowed dark:text-jet-500 ${customClasses}`}
       onClick={handleClick}
     >
-      <p className={`flex-1 ${textStyles}`}>{children}</p>
+      <span className={`flex-1 ${textStyles}`}>{children}</span>
     </button>
   )
 }

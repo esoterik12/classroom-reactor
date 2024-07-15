@@ -273,7 +273,6 @@ export function createCourseContent(
       weekCount++
     }
 
-  console.log('newArray', newArray)
   return newArray
 }
 

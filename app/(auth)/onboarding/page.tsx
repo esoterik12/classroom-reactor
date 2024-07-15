@@ -1,6 +1,5 @@
 import AccountProfileForm from '@/components/forms/AccountProfile'
 import { currentUser } from '@clerk/nextjs'
-import { redirect } from 'next/navigation'
 import { fetchUser } from '@/lib/actions/user.actions'
 
 import React from 'react'

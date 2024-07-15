@@ -30,6 +30,8 @@ export async function addDummyModules(courseNames: string[], userId: string) {
       { courseName: { $in: allCourseNamesArray } },
       { $set: { modules: insertedDummyModules } }
     )
+
+    console.log('Added dummy modules.')
   } catch (error: any) {
     console.error('Error adding dummy modules:', error.message)
     throw new Error(`Failed adding dummy modules: ${error.message}`)
@@ -103,8 +105,8 @@ export async function addDummyUsers() {
       {
         id: 'user_7aBcdEfghIjklMnopQrStuvWxYz7181',
         bio: 'Gamer and tech enthusiast.',
-        username: 'BlueBard34',
-        name: 'Gary Blue',
+        username: 'GreenBard99',
+        name: 'Sam Green',
         image:
           'https://utfs.io/f/5b1fb643-a1ae-4026-a440-34802fd08a41-fvmr7a.png',
         onboarded: true
@@ -420,6 +422,8 @@ export async function addDummyCourses(userId: string) {
         createdBy: userId
       }
     ])
+
+    console.log('Added dummy courses.')
   } catch (error: any) {
     console.error(`Failed to create/update user: ${error.message}`)
     throw new Error(`Failed to create/update user: ${error.message}`)

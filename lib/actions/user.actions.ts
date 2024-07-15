@@ -79,11 +79,13 @@ export async function updateUser({
     await User.findOneAndUpdate(
       { id: userId },
       {
-        username: username.toLowerCase(),
+        username: username,
+        permissions: 'member',
         name,
         bio,
         image,
-        onboarded: true
+        onboarded: true,
+        
       },
       { upsert: true } // Means it also creates User if not found
     )
