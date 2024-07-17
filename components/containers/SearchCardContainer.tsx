@@ -11,7 +11,7 @@ const SearchCardContainer = ({ image, underlineColor, children }: ICreateDisplay
     <article className='mb-4 mt-2 flex h-20 w-full flex-col rounded-xl px-4 shadow-md transition-colors duration-150 hover:shadow-lg sm:px-7'>
         <div className='flex items-start justify-between'>
           <div className='gap-4 mt-3'>
-            <div className='h-30 p-1 rounded-full'>
+            <div className='h-30 w-12 md:w-16 p-1 rounded-full'>
               <Image
                 src={image}
                 alt='image'

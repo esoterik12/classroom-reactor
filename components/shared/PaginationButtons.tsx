@@ -31,7 +31,7 @@ function PaginationButtons({ pageNumber, isNext, path }: IPaginationButtons) {
   if (!isNext && pageNumber === 1) return null
 
   return (
-    <div className='flex flex-row gap-5 justify-center mr-0 md:mr-10'>
+    <div className='mb-4 flex flex-row gap-5 justify-center mr-0 md:mr-10'>
       <button
         onClick={() => handleNavigation('prev')}
         disabled={pageNumber === 1}

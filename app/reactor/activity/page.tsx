@@ -29,11 +29,12 @@ const Page = async ({
   return (
     <BasicPageContainer>
       <>
-        <div className='mb-6 w-full rounded-md bg-grayLight-500 py-4 text-center text-lg font-semibold dark:bg-jet-500'>
+        <div className='w-full rounded-md bg-grayLight-500 py-4 text-center text-lg font-semibold dark:bg-jet-500'>
           Latest Creates
         </div>
         <div className='w-full p-4'>
           {result?.fetchActivityResults?.map(result => {
+            // New Course Activity
             if (result.hasOwnProperty('courseName')) {
               return (
                 <SearchCardContainer
@@ -41,22 +42,23 @@ const Page = async ({
                   underlineColor='text-primary-500'
                   key={result._id}
                 >
-                  <div className='ml-4 flex flex-row'>
-                    <p>New course named&nbsp;</p>
+                  <p className='mx-2 flex-row flex-wrap text-sm md:text-base'>
+                    <span>New course</span>
                     <TextLink
                       className='font-bold'
                       href={`/reactor/course/${result._id}`}
                     >
-                      {result.courseName}
+                      &nbsp;{result.courseName}
                     </TextLink>
-                    <p>&nbsp;was added.</p>
-                  </div>
-                  <span className='text-sm text-gray-500'>
+                    <span>&nbsp;was added.</span>
+                  </p>
+                  <span className='text-right text-sm text-gray-500'>
                     {formatTimeSince(result.createdAt)}
                   </span>
                 </SearchCardContainer>
               )
             }
+            // New Comment Activity
             if (result.hasOwnProperty('authorMongoId')) {
               return (
                 <SearchCardContainer
@@ -64,31 +66,30 @@ const Page = async ({
                   underlineColor='text-primary-500'
                   key={result._id}
                 >
-                  <div className='ml-4'>
+                  <p className='mx-2 flex flex-col md:flex-row text-sm md:text-base'>
                     <TextLink
                       className='font-bold'
                       href={`/reactor/profile/${result.id}`}
                     >
-                      {result.authorDetails.username}
-                    </TextLink>{' '}
-                    <span className='text-gray-500'>commented</span> &#x201F;
-                    {result.text}&#x201D;{' '}
-                    <span className='text-gray-500'>in course</span>{' '}
-                    <TextLink
-                      href={`/reactor/courses/${result.courseDetails._id}/discussion`}
-                    >
-                      <>
-                        <span>{result.courseDetails.courseName}</span>
-                        <span>&nbsp;discussion.</span>
-                      </>
+                      {result.authorDetails.username}&nbsp;
                     </TextLink>
-                  </div>
-                  <span className='text-sm text-gray-500'>
+                    <div>
+                      <span>posted&nbsp;</span>
+                      <span>in course</span>{' '}
+                      <TextLink
+                        href={`/reactor/courses/${result.courseDetails._id}/discussion`}
+                      >
+                        <span>{result.courseDetails.courseName}</span>
+                      </TextLink>
+                    </div>
+                  </p>
+                  <span className='text-right text-sm text-gray-500'>
                     {formatTimeSince(result.createdAt)}
                   </span>
                 </SearchCardContainer>
               )
             }
+            // New User Activity
             if (result.hasOwnProperty('username')) {
               return (
                 <SearchCardContainer
@@ -96,7 +97,7 @@ const Page = async ({
                   underlineColor='text-primary-500'
                   key={result._id}
                 >
-                  <div className='ml-4'>
+                  <p className='mx-2 flex-row flex-wrap text-sm md:text-base'>
                     New user{' '}
                     <TextLink
                       className='font-bold'
@@ -105,8 +106,8 @@ const Page = async ({
                       {result.username}
                     </TextLink>{' '}
                     joined.
-                  </div>
-                  <span className='text-sm text-gray-500'>
+                  </p>
+                  <span className='text-right text-sm text-gray-500'>
                     {formatTimeSince(result.createdAt)}
                   </span>
                 </SearchCardContainer>

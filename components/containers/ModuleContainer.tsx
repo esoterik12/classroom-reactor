@@ -10,7 +10,8 @@ import { useState } from 'react'
 import RemoveModule from '../ui/RemoveModule'
 
 type IModuleContainer = {
-  userId: string
+  userMongoId: string
+  permissions: 'admin' | 'manager' | 'member'
   courseId: string
   moduleId: string
   moduleTitle: string
@@ -21,7 +22,8 @@ type IModuleContainer = {
 }
 
 const ModuleContainer = ({
-  userId,
+  userMongoId,
+  permissions,
   courseId,
   moduleId,
   moduleTitle,
@@ -65,7 +67,12 @@ const ModuleContainer = ({
                   </button>
 
                   {/* Delete Module Section */}
-                  <RemoveModule courseId={courseId} moduleId={moduleId} />
+                  <RemoveModule
+                    userMongoId={userMongoId}
+                    permissionDisabled={permissions !== 'admin'}
+                    courseId={courseId}
+                    moduleId={moduleId}
+                  />
                 </div>
               </CourseContainerPopover>
             </div>
@@ -83,7 +90,7 @@ const ModuleContainer = ({
         </div>
       ) : (
         <NewModuleForm
-          userId={userId}
+          userId={userMongoId}
           courseId={courseId}
           editModuleTitle={moduleTitle}
           editModuleContent={parsedModule}

@@ -317,12 +317,9 @@ export async function deleteCourse({
   try {
     await connectToDB()
 
-    console.log('started deleteCourse action')
-
     const user = await User.findById(userMongoId)
 
     if (user.permissions !== 'admin') {
-      console.log('no permsisions if statement')
       return {
         code: 403,
         message: 'Error 403: You do not have permission to delete a course.'
@@ -337,16 +334,15 @@ export async function deleteCourse({
         message: `Failed to delete: Course with id ${courseId} not found.`
       }
     }
-
-    return {
-      code: 200,
-      message: `Course ${courseId} deleted successfully.`
-    }
+    
+    console.log(`Course with id ${courseId} deleted.`)
   } catch (error: any) {
     console.error(`Failed to delete course with id ${courseId}`, error)
     return {
       code: 500,
       message: `Failed to delete course with id ${courseId}: ${error.message}`
     }
+  } finally {
+    redirect(`/reactor/courses`)
   }
 }

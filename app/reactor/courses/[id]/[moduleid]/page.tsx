@@ -20,12 +20,11 @@ const Page = async ({
 
   // Fetched module from db in JSON format
   const fetchedModule = await fetchModule(params.moduleid)
-  console.log('module', module)
+
   // Convert to slate object
   const parsedModule = await JSON.parse(fetchedModule.htmlContent)
-  // console.log('parsedModule', parsedModule)
 
-  // format for serialize function (function from Slate docs - developed)
+  // Format for serialize function (function from Slate docs - developed)
   const editor = {
     type: 'document',
     children: parsedModule
@@ -36,7 +35,8 @@ const Page = async ({
   return (
     <BasicPageContainer>
       <ModuleContainer
-        userId={userInfo._id.toString()}
+        userMongoId={userInfo._id.toString()}
+        permissions={userInfo.permissions}
         courseId={params.id}
         moduleId={fetchedModule._id.toString()}
         moduleTitle={fetchedModule.moduleTitle}

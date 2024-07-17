@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { connectToDB } from '../mongoose'
 import Course from '../models/course.model'
 import Module from '../models/module.model'
+import User from '../models/user.models'
 
 export async function fetchModule(moduleId: string) {
   try {
@@ -46,7 +47,7 @@ export async function addNewModule({
       htmlContent: content,
       unit,
       lesson,
-      createdBy,
+      createdBy
     })
 
     const savedModule = await newModule.save()
@@ -106,14 +107,34 @@ export async function updateModule({
   }
 }
 
-export async function deleteModule(moduleId: string, courseId: string) {
+export async function deleteModule({
+  userMongoId,
+  moduleId,
+  courseId
+}: {
+  userMongoId: string
+  moduleId: string
+  courseId: string
+}) {
   try {
     await connectToDB()
+
+    const user = await User.findById(userMongoId)
+
+    if (user.permissions !== 'admin') {
+      return {
+        code: 403,
+        message: 'Error 403: You do not have permission to remove a module.'
+      }
+    }
 
     const moduleFromDB = await Module.findByIdAndDelete(moduleId)
 
     if (!moduleFromDB) {
-      throw new Error(`Module with ID ${moduleId} not found.`)
+      return {
+        code: 404,
+        message: `Module with ID ${moduleId} not found.`
+      }
     }
 
     const updatedCourse = await Course.updateOne(
@@ -123,17 +144,18 @@ export async function deleteModule(moduleId: string, courseId: string) {
 
     // Check if the update was successful (GPT suggested improvement)
     if (updatedCourse.matchedCount === 0) {
-      throw new Error(`Course with ID ${courseId} not found`)
+      return {
+        code: 404,
+        message: `Course with ID ${courseId} not found`
+      }
     }
-    if (updatedCourse.modifiedCount === 0) {
-      throw new Error(`Module ID ${moduleId} was not found in the course`)
-    }
-
-    console.log(
-      `Module ${moduleId} deleted and removed from course ${courseId}`
-    )
+    console.log(`Module ${moduleId} deleted successfully.`)
   } catch (error: any) {
-    throw new Error(`Failed to delete module: ${error.message}`)
+    console.error(`Failed to delete module with id ${moduleId}`, error)
+    return {
+      code: 500,
+      message: `Failed to delete module: ${error.message}`
+    }
   } finally {
     redirect(`/reactor/courses/${courseId}`)
   }

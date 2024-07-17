@@ -15,12 +15,13 @@ export default async function AllCoursesPage({
   )
 
   return (
-    <main className='flex min-h-screen flex-col items-center p-6'>
-      <section className='mb-5 flex w-full flex-row justify-between'>
-        <p className='mt-2 text-lg font-semibold text-gray-500'>Filter Here</p>
-        <LinkButton href='/reactor/courses/new'>
-          <p>+ Course</p>
-        </LinkButton>
+    <main className='mb-12 flex min-h-screen flex-col items-center p-6'>
+      <section className='mb-5 flex w-full items-end'>
+        <div className='ml-auto'>
+          <LinkButton href='/reactor/courses/new'>
+            <p>+ Course</p>
+          </LinkButton>
+        </div>
       </section>
 
       {/* Course list with Course Card - Link to each course */}

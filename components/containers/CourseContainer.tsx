@@ -20,7 +20,6 @@ const CourseContainer = async ({
   createdAt,
   modules
 }: ICourseContainer) => {
-  // Check user is admin
   // Getting Clerk user data
   const user = await currentUser()
   if (!user) return null
@@ -129,8 +128,10 @@ const CourseContainer = async ({
                         U{module.unit}L{module.lesson}: {module.moduleTitle}
                       </p>
                       <RemoveModule
+                        userMongoId={userInfo._id.toString()}
                         moduleId={module._id.toString()}
                         courseId={courseId.toString()}
+                        permissionDisabled={userInfo.permissions !== 'admin'}
                       />
                     </CourseContainerPopover>
                   </div>

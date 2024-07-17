@@ -1,5 +1,4 @@
 'use client'
-import { useRouter } from 'next/navigation'
 import SelectIcon from '../icons/SelectIcon'
 import { useState } from 'react'
 import { deleteCourse } from '@/lib/actions/course.actions'
@@ -14,17 +13,12 @@ function DeleteCourse({
   permissionDisabled?: boolean
 }) {
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
 
   const onDelete = async () => {
     setIsLoading(true)
     const result = await deleteCourse({ courseId, userMongoId })
-    console.log('Delete course result:', result)
+    console.log('on Delete result: ', result)
     setIsLoading(false)
-
-    if (result.code === 200) {
-      router.push('/router/courses')
-    }
   }
 
   return (
