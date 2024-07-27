@@ -334,7 +334,7 @@ export async function deleteCourse({
         message: `Failed to delete: Course with id ${courseId} not found.`
       }
     }
-    
+
     console.log(`Course with id ${courseId} deleted.`)
   } catch (error: any) {
     console.error(`Failed to delete course with id ${courseId}`, error)
@@ -344,5 +344,33 @@ export async function deleteCourse({
     }
   } finally {
     redirect(`/reactor/courses`)
+  }
+}
+
+export async function fetchEnrolledCourses(userId: string) {
+  await connectToDB()
+
+  try {
+    const enrolledCoursesQuery = await Course.find({
+      members: { $elemMatch: { user: new mongoose.Types.ObjectId(userId) } }
+    }).select('courseName _id image discussion members')
+
+    if (!enrolledCoursesQuery) {
+      return {
+        code: 404,
+        message: `Failed to fetch courses for user with id ${userId}`
+      }
+    }
+
+    return {
+      code: 200,
+      message: 'Successfully fetched user courses',
+      enrolledCoursesQuery
+    }
+  } catch (error: any) {
+    return {
+      code: 500,
+      message: `Failed to fetch courses for user with id ${userId}: ${error.message}`
+    }
   }
 }

@@ -159,7 +159,7 @@ export default function AccountProfileForm({
                 error={errors.bio}
               />
             </div>
-            <div>
+            <div className='ml-1'>
               <CustomButton btnType='submit' isDisabled={!imageUrl}>
                 <p>Update Profile</p>
               </CustomButton>

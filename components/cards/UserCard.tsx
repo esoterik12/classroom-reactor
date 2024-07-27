@@ -18,7 +18,7 @@ function UserCard({ authUserId, name, username, imgUrl }: UserCardProps) {
         <div className='ml-3 mt-1 flex-1'>
           <p className='text-sm text-gray-500'>{name}</p>
           <p className='text-lg font-semibold'>@{username}</p>
-        </div>{' '}
+        </div>
       </Link>
     </SearchCardContainer>
   )

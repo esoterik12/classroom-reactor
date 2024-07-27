@@ -74,7 +74,6 @@ async function Page({
                   image={course.image}
                   numOfMembers={course.members.length}
                   numOfDissComments={course.discussion.length}
-
                 />
               </div>
             ))}

@@ -1,31 +1,54 @@
-import DUMMY_COURSES from '@/components/DUMMY_COURSES'
-import DUMMY_MODULES from '@/components/DUMMY_MODULES'
-import DUMMY_USER from '@/components/DUMMY_USER'
 import { currentUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import { fetchUser } from '@/lib/actions/user.actions'
+import { fetchEnrolledCourses } from '@/lib/actions/course.actions'
+import CourseDashboardCard from '@/components/cards/CourseDashboardCard'
+import BasicPageContainer from '@/components/containers/BasicPageContainer'
 
-export default async function Page() {
+export default async function DashboardPage() {
   // Getting Clerk user data
   const user = await currentUser()
   if (!user) return null
 
   // // Getting DB user data
   const userInfo = await fetchUser(user.id)
-  console.log('userInfo', userInfo)
   if (!userInfo?.onboarded) redirect('/onboarding')
 
+  const enrolledCourses = await fetchEnrolledCourses(userInfo._id)
+  if (!enrolledCourses.enrolledCoursesQuery) return null
+
+  console.log(
+    'enrolledCourses in Dashboard Page',
+    enrolledCourses.enrolledCoursesQuery
+  )
+
   return (
-    <main className='flex flex-col items-center justify-between p-6'>
-      <p>Dashboard Page</p>
-      <div className='m-6 border border-secondary-500 p-2'>
-        <p>UNFINISHED: Permissions.</p>
-        <p>UNFINISHED: Rate limits.</p>
-        <p>UNFINISHED: User dashboard - add all new users to three courses.</p>
-      </div>
-      <DUMMY_USER />
-      <DUMMY_COURSES userId={userInfo._id.toString()} />
-      <DUMMY_MODULES userId={userInfo._id.toString()} />
-    </main>
+    <BasicPageContainer>
+      <>
+        <div className='w-full rounded-md bg-grayLight-500 py-4 text-center text-lg font-semibold dark:bg-jet-500'>
+          Dashboard Page
+        </div>
+        <div className='flex w-full flex-wrap items-start justify-start gap-1 p-1 sm:p-4'>
+          <p className='ml-2'>
+            <span className='font-semibold '>
+              {userInfo.username}&apos;s&nbsp;
+            </span>
+            enrolled courses:
+          </p>
+          <div className='flex w-full flex-wrap items-start justify-start gap-1 py-2'>
+            {enrolledCourses.enrolledCoursesQuery.map(course => (
+              <CourseDashboardCard
+                key={course._id}
+                _id={course._id}
+                courseName={course.courseName}
+                image={course.image}
+                numOfComments={course.discussion.length}
+                numOfMembers={course.members.length}
+              />
+            ))}
+          </div>
+        </div>
+      </>
+    </BasicPageContainer>
   )
 }

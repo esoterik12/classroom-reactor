@@ -10,13 +10,18 @@ const DUMMY_USER = (props: Props) => {
   }
 
   return (
-    <>
+    <div className='m-2 w-full rounded-lg p-2 text-center md:w-2/3'>
       <p>
         Use this to add a few dummy users for working with the website if users
-        deleted
+        deleted:
       </p>
-      <button className='text-primary-500' onClick={addDummy}>Add dummy users</button>
-    </>
+      <button
+        className='font-semibold text-primary-500 transition-colors duration-150 hover:text-primary-300'
+        onClick={addDummy}
+      >
+        Add dummy users
+      </button>
+    </div>
   )
 }
 

@@ -1,7 +1,7 @@
 // May require suppressHydrationWarning in html of layout.tsx
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputField } from './InputField'
 import { usePathname } from 'next/navigation'
@@ -53,6 +53,12 @@ export default function NewCourseForm({
       createdBy: user ? user : ''
     }
   })
+
+  useEffect(() => {
+    if (image) {
+      setImageUrl(image)
+    }
+  }, [])
 
   async function onSubmit(data: NewCourseProps) {
     setLoading(true)
@@ -168,9 +174,9 @@ export default function NewCourseForm({
                 error={errors.description}
               />
             </div>
-            <div>
+            <div className='ml-1'>
               <CustomButton btnType='submit' isDisabled={!imageUrl}>
-                <p>Create Course</p>
+                <p>{courseName ? 'Edit Course' : 'Create Course'}</p>
               </CustomButton>
             </div>
           </form>

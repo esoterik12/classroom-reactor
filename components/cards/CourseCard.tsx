@@ -2,7 +2,7 @@ import SelectIcon from '../icons/SelectIcon'
 import SearchCardContainer from '../containers/SearchCardContainer'
 import Link from 'next/link'
 
-interface ICourseCard {
+interface CourseCardProps {
   _id: string
   image: string
   courseName: string
@@ -10,7 +10,13 @@ interface ICourseCard {
   numOfDissComments: number
 }
 
-function CourseCard({ _id, image, courseName, numOfMembers, numOfDissComments }: ICourseCard) {
+function CourseCard({
+  _id,
+  image,
+  courseName,
+  numOfMembers,
+  numOfDissComments
+}: CourseCardProps) {
   return (
     <SearchCardContainer
       image={image}
