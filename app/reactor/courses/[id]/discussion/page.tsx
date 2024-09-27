@@ -66,7 +66,7 @@ const CourseDiscussionPage = async ({
             )
           )}
           <PaginationButtons
-            path={`http://localhost:3000/reactor/courses/${params.id}/discussion`}
+            path={`/reactor/courses/${params.id}/discussion`}
             pageNumber={searchParams?.p ? +searchParams.p : 1}
             isNext={fetchCommentsResult.isNext}
           />

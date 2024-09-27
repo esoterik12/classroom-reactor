@@ -30,7 +30,7 @@ const Page = async ({
     <BasicPageContainer>
       <>
         <div className='w-full rounded-md bg-grayLight-500 py-4 text-center text-lg font-semibold dark:bg-jet-500'>
-          Latest Creates
+          Recent Activity
         </div>
         <div className='w-full p-4'>
           {result?.fetchActivityResults?.map(result => {
@@ -66,7 +66,7 @@ const Page = async ({
                   underlineColor='text-primary-500'
                   key={result._id}
                 >
-                  <p className='mx-2 flex flex-col md:flex-row text-sm md:text-base'>
+                  <p className='mx-2 flex flex-col text-sm md:flex-row md:text-base'>
                     <TextLink
                       className='font-bold'
                       href={`/reactor/profile/${result.id}`}
@@ -116,7 +116,7 @@ const Page = async ({
           })}
         </div>
         <PaginationButtons
-          path='http://localhost:3000/reactor/activity'
+          path='/reactor/activity'
           pageNumber={searchParams?.p ? +searchParams.p : 1}
           isNext={result?.isNext}
         />

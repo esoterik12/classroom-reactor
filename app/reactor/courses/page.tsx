@@ -38,7 +38,7 @@ export default async function AllCoursesPage({
         ))}
       </section>
       <PaginationButtons
-        path='http://localhost:3000/reactor/courses'
+        path='/reactor/courses'
         pageNumber={searchParams?.p ? +searchParams.p : 1}
         isNext={courseResult.isNext}
       />
